@@ -17,7 +17,6 @@ class userRepository implements UserRepository{
         return userFound
     }
 
-
 }
 
 export default userRepository

@@ -35,7 +35,25 @@ class userController {
                 res.status(200).json(userSave)
             }
         } catch (error) {
+            console.log(error)
+        }
+    }
 
+
+    async login(req:Request,res:Response){
+        try {
+            const user = req.body
+            const loginStatus = await this.userUsecase.userLogin(user)
+            if(loginStatus.data && typeof loginStatus.data === 'object' && 'token' in loginStatus.data){
+                res.cookie('userJWT', loginStatus.data.token, {
+                    httpOnly: true,
+                    sameSite: 'strict',
+                    maxAge: 30 * 24 * 60 * 60 * 1000
+                });
+            }
+            res.status(loginStatus.status).json(loginStatus)
+        } catch (error) {
+            console.log(error)
         }
     }
 }

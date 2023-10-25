@@ -14,3 +14,5 @@ class JwtCreate implements Ijwt{
         throw new Error("JWT_KEY is not defined");
     }
 }
+
+export default JwtCreate
