@@ -47,7 +47,7 @@ class Userusecase {
             const verify = await this.twilioService.sendTwilioOtp(mobile)
             return {
                 status: 200,
-                data: verify
+                data: verify,
             }
         } catch (error) {
             return {

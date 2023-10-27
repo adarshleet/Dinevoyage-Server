@@ -10,15 +10,14 @@ class userController {
     async signUp(req: Request, res: Response) {
         try {
             const user = req.body
+            console.log(user)
             const userFound = await this.userUsecase.mobileExistCheck(user.mobile)
-            console.log(userFound.data)
             if (!userFound.data) {
                 req.app.locals = user
                 const verify = await this.userUsecase.verifyMobile(user.mobile)
-                console.log(verify)
                 res.status(200).json(verify)
             }else{
-                res.status(401).json('mobile number already existing')
+                res.status(200).json('mobile number already existing')
             }
         } catch (error) {
             console.log(error)
@@ -28,12 +27,14 @@ class userController {
     async otpVerification(req: Request, res: Response) {
         try {
             const user: User = req.app.locals as User
-            const { otp } = req.body
+            const  otp  = req.body.otp
+            console.log('here',otp)
             const verifyOtp = await this.userUsecase.verifyOtp(user.mobile, otp)
             if (verifyOtp.data) {
                 const userSave = await this.userUsecase.saveUser(user)
                 res.status(200).json(userSave)
             }
+            return verifyOtp
         } catch (error) {
             console.log(error)
         }

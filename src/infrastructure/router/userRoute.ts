@@ -19,7 +19,7 @@ const usecase = new Userusecase(repository,twilio,encrypt,jwtCreate)
 const controller = new userController(usecase)
 
 route.post('/api/user/signup',(req,res)=>controller.signUp(req,res))
-route.post('/api/user/otpVerify',(req,res)=>controller.otpVerification(req,res))
+route.post('/api/user/otpVerify',(req,res)=>controller.otpVerification(req,res));
 route.post('/api/user/login',(req,res)=>controller.login(req,res))
 
 export default route
