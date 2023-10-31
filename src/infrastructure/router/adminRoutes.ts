@@ -16,6 +16,8 @@ const controller = new adminController(usecase)
 
 
 router.post('/api/admin/login',(req,res)=>controller.adminLogin(req,res))
+router.get('/api/admin/allUsers',(req,res)=>controller.getAllUsers(req,res))
+router.put('/api/admin/blockUser',(req,res)=>controller.blockUser(req,res))
 
 export default router
 

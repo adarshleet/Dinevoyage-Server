@@ -15,47 +15,6 @@ class Adminusecase {
     }
 
 
-    // async adminLogin(admin: { email: string, password: string }){
-    //     try {
-    //         const adminFound:any = await this.AdminRepository.adminLoginCheck(admin.email)
-    //         if(adminFound){
-    //             const passwordMatch = await this.Encrypt.compare(admin.password,adminFound.password)
-    //             const token = this.JwtCreate.createJwt(adminFound._id)
-    //             if(passwordMatch){
-    //                 return{
-    //                     status:200,
-    //                     data:{
-    //                         success:true,
-    //                         message: "authentication successfull",
-    //                         adminId:adminFound._id,
-    //                         token:token
-    //                     }
-    //                 }
-    //             }
-    //             else{
-    //                 return {
-    //                     status: 200,
-    //                     data: {
-    //                         success : false,
-    //                         message : 'invalid email or password',
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //         else{
-    //             return {
-    //                 status: 200,
-    //                 data: {
-    //                     success : false,
-    //                     message : 'invalid email or password',
-    //                 }
-    //             }
-    //         }
-            
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
 
     async adminLogin(admin: { email: string, password: string }) {
         try {
@@ -100,6 +59,32 @@ class Adminusecase {
         }
     }
     
+
+    async getAllUsers(){
+        try {
+            const allUsers = await this.AdminRepository.allUsers()
+            console.log(allUsers)
+            return{
+                status:200,
+                data:allUsers
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    async blockUser(id:string){
+        try {
+            const userStatus = await this.AdminRepository.blockUser(id)
+            return{
+                status:200,
+                data:userStatus
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 }
 

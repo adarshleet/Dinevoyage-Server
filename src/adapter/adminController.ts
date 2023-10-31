@@ -11,7 +11,6 @@ class adminController{
     async adminLogin(req:Request,res:Response){
         try {
             const admin = req.body
-            console.log(admin)
             const loginStatus = await this.Adminusecase.adminLogin(admin)
             console.log(loginStatus)
             if (loginStatus.data && typeof loginStatus.data === 'object' && 'token' in loginStatus.data) {
@@ -22,6 +21,29 @@ class adminController{
                 });
             }
             res.status(loginStatus.status).json(loginStatus)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    async getAllUsers(req:Request,res:Response){
+        try {
+            const allUsers = await this.Adminusecase.getAllUsers()
+            res.status(200).json(allUsers?.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    async blockUser(req:Request,res:Response){
+        try {
+            const id = req.body.id as string
+            console.log(id)
+            const userStatus = await this.Adminusecase.blockUser(id)
+            console.log(userStatus)
+            res.status(200).json(userStatus)
         } catch (error) {
             console.log(error)
         }
