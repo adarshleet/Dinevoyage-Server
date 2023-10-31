@@ -103,6 +103,7 @@ class Userusecase {
                     return {
                         status: 200,
                         data: {
+                            success :true,
                             message: 'authentication succesfull',
                             userId: userFound._id,
                             token: token
@@ -110,8 +111,9 @@ class Userusecase {
                     }
                 } else {
                     return {
-                        status: 400,
+                        status: 200,
                         data: {
+                            success :false,
                             message: 'invalid mobile or password',
                         }
                     }
@@ -119,8 +121,9 @@ class Userusecase {
             }
             else {
                 return {
-                    status: 400,
+                    status: 200,
                     data: {
+                        success:false,
                         message: 'invalid mobile or password',
                     }
                 }

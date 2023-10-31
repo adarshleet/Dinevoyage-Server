@@ -31,11 +31,13 @@ class TwilioService implements Itwilio {
 
     async verifyOtp(mobile: string, otp: string): Promise<boolean> {
         try {
-            const var_check = await client.verify.v2
-                .services("VA0368af8cae07819ac37e7e6fc5f82cd9")
+            if(serviceID){
+                const var_check = await client.verify.v2
+                .services(serviceID)
                 .verificationChecks.create({ to: `+91${mobile}`, code: otp });
-            return var_check.status === "approved";
-            // return true
+                return var_check.status === "approved";
+            }
+            return true
         } catch (error) {
             console.log(error)
             return false

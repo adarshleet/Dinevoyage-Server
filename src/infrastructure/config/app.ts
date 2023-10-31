@@ -1,5 +1,6 @@
 import express from 'express'
 import userRoute from '../router/userRoute'
+import adminRoute from '../router/adminRoutes'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 
@@ -23,6 +24,7 @@ export const createServer = ()=>{
         );
 
         app.use(userRoute);
+        app.use(adminRoute)
 
         return app
 

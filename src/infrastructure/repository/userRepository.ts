@@ -11,6 +11,7 @@ class userRepository implements UserRepository{
         return newUser
     }
 
+    
     //checking given mobile exist on database
     async mobileExistCheck(mobile:string){
         const userFound = await UserModel.findOne({mobile})

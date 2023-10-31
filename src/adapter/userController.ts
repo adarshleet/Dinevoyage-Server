@@ -17,7 +17,7 @@ class userController {
                 const verify = await this.userUsecase.verifyMobile(user.mobile)
                 res.status(200).json(verify)
             }else{
-                res.status(200).json('mobile number already existing')
+                res.status(200).json({data:false,message:'Mobile number already in use'})
             }
         } catch (error) {
             console.log(error)
@@ -28,13 +28,12 @@ class userController {
         try {
             const user: User = req.app.locals as User
             const  otp  = req.body.otp
-            console.log('here',otp)
             const verifyOtp = await this.userUsecase.verifyOtp(user.mobile, otp)
             if (verifyOtp.data) {
                 const userSave = await this.userUsecase.saveUser(user)
-                res.status(200).json(userSave)
+                // res.status(200).json(userSave)
             }
-            return verifyOtp
+            res.status(200).json(verifyOtp)
         } catch (error) {
             console.log(error)
         }

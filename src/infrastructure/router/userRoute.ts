@@ -1,4 +1,4 @@
-import express,{Request,Response} from 'express'
+import express from 'express'
 const route = express.Router()
 
 import userController from '../../adapter/userController'
