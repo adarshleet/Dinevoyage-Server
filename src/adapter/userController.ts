@@ -28,6 +28,7 @@ class userController {
         try {
             const user: User = req.app.locals as User
             const  otp  = req.body.otp
+            console.log(user)
             const verifyOtp = await this.userUsecase.verifyOtp(user.mobile, otp)
             if (verifyOtp.data) {
                 const userSave = await this.userUsecase.saveUser(user)

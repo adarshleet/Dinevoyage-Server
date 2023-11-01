@@ -60,10 +60,10 @@ class Adminusecase {
     }
     
 
-    async getAllUsers(){
+    async getAllUsers(page:number){
         try {
-            const allUsers = await this.AdminRepository.allUsers()
-            console.log(allUsers)
+            const allUsers = await this.AdminRepository.allUsers(page)
+            // console.log(allUsers)
             return{
                 status:200,
                 data:allUsers

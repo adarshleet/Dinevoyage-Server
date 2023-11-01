@@ -29,7 +29,8 @@ class adminController{
 
     async getAllUsers(req:Request,res:Response){
         try {
-            const allUsers = await this.Adminusecase.getAllUsers()
+            const page:number = req.query.page ? parseInt(req.query.page as string) : 1
+            const allUsers = await this.Adminusecase.getAllUsers(page)
             res.status(200).json(allUsers?.data)
         } catch (error) {
             console.log(error)
@@ -42,7 +43,7 @@ class adminController{
             const id = req.body.id as string
             console.log(id)
             const userStatus = await this.Adminusecase.blockUser(id)
-            console.log(userStatus)
+            // console.log(userStatus)
             res.status(200).json(userStatus)
         } catch (error) {
             console.log(error)

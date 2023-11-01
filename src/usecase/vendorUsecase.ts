@@ -1,43 +1,37 @@
-import User from "../domain/user"
-import userRepository from "../infrastructure/repository/userRepository"
+import Vendor from "../domain/vendor";
+import VendorRepository from "./interface/vendoRepository";
 import TwilioService from './../infrastructure/utils/twilio'
 import Encrypt from "../infrastructure/utils/hashPassword"
 import JwtCreate from "../infrastructure/utils/jwtCreate"
 
+class Vendorusecase {
+    private vendorRepository:VendorRepository
+    private twilioService : TwilioService
+    private encrypt : Encrypt
+    private jwtCreate : JwtCreate
 
-class Userusecase {
-    private userRepository: userRepository
-    private twilioService: TwilioService
-    private Encrypt: Encrypt
-    private jwtCreate: JwtCreate
-
-    constructor(userRepository: userRepository, twilioService: TwilioService, Encrypt: Encrypt, jwtCreate: JwtCreate) {
-        this.userRepository = userRepository
+    constructor(vendorRepository:VendorRepository,twilioService:TwilioService,encrypt:Encrypt,jwtCreate:JwtCreate){
+        this.vendorRepository = vendorRepository
         this.twilioService = twilioService
-        this.Encrypt = Encrypt
+        this.encrypt = encrypt
         this.jwtCreate = jwtCreate
     }
 
 
-    //saving user to database
-    async saveUser(user: User) {
+    async mobileExistCheck(mobile:string){
         try {
-            const hashedPassword = await this.Encrypt.createHash(user.password)
-            user.password = hashedPassword
-            const userSave = await this.userRepository.save(user)
-            return {
-                status: 200,
-                data: userSave
+            const vendorFound = await this.vendorRepository.mobileExistCheck(mobile)
+            return{
+                status:200,
+                data:vendorFound
             }
         } catch (error) {
-            return {
-                status: 400,
-                data: error
+            return{
+                status:400,
+                data:error
             }
         }
     }
-
-
 
 
 
@@ -74,42 +68,43 @@ class Userusecase {
         }
     }
 
-
-    //checking mobile number exist on database
-    async mobileExistCheck(mobile: string) {
+    async saveVendor(vendor:Vendor){
         try {
-            const userFound = await this.userRepository.mobileExistCheck(mobile)
-            return {
-                status: 200,
-                data: userFound
+            const hashedPassword = await this.encrypt.createHash(vendor.password)
+            vendor.password = hashedPassword
+            const vendorSave = await this.vendorRepository.saveVendor(vendor)
+            console.log(vendorSave)
+            return{
+                status:200,
+                data:vendorSave
             }
         } catch (error) {
-            return {
-                status: 400,
-                data: error
+            return{
+                status:400,
+                data:error
             }
         }
     }
+    
 
-    //checking user mobile exist and compare password
-    async userLogin(user: { mobile: string, password: string }) {
+    async vendorLogin(vendor:Vendor){
         try {
-            const userFound: any = await this.userRepository.mobileExistCheck(user.mobile)
-            console.log(userFound)
-            if (userFound) {
-                const passwordMatch = await this.Encrypt.compare(user.password, userFound.password)
-                if (passwordMatch) {
-                    const token = this.jwtCreate.createJwt(userFound._id)
+            const vendorFound= await this.vendorRepository.mobileExistCheck(vendor.mobile)
+            if(vendorFound){
+                const passwordMatch = await this.encrypt.compare(vendor.password,vendorFound.password)
+                if(passwordMatch){
+                    const token = this.jwtCreate.createJwt(vendorFound._id)
                     return {
                         status: 200,
                         data: {
                             success :true,
                             message: 'authentication succesfull',
-                            userId: userFound._id,
+                            vendorId: vendorFound._id,
                             token: token
                         }
                     }
-                } else {
+                }
+                else{
                     return {
                         status: 200,
                         data: {
@@ -119,11 +114,11 @@ class Userusecase {
                     }
                 }
             }
-            else {
+            else{
                 return {
                     status: 200,
                     data: {
-                        success:false,
+                        success :false,
                         message: 'invalid mobile or password',
                     }
                 }
@@ -138,4 +133,5 @@ class Userusecase {
 
 }
 
-export default Userusecase
+
+export default Vendorusecase

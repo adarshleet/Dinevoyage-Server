@@ -2,7 +2,7 @@ import Admin from "../../domain/admin";
 
 interface AdminRepository{
     adminLoginCheck(email:string),
-    allUsers()
+    allUsers(page:number)
     blockUser(id:string)
 }
 

@@ -9,9 +9,17 @@ class adminRepository implements AdminRepository {
         return adminFound
     }
 
-    async allUsers() {
-        const allUsers = await UserModel.find()
-        return allUsers
+    async allUsers(page:number) {
+        let limit = 2
+        const allUsers = await UserModel.find().skip((page-1)*limit).limit(limit)
+        const totalUsers = await UserModel.countDocuments()
+        const usersDetails={
+            allUsers,
+            totalUsers,
+            totalPages : Math.ceil(totalUsers/limit),
+            limit
+        }
+        return usersDetails
     }
 
     async blockUser(id: string) {
