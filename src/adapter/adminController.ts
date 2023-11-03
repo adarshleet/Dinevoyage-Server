@@ -50,6 +50,26 @@ class adminController{
         }
     }
 
+    async getAllVendors(req:Request,res:Response){
+        try {
+            const page:number = req.query.page ? parseInt(req.query.page as string) : 1
+            const allVendors = await this.Adminusecase.getAllVendors(page)
+            res.status(200).json(allVendors?.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    
+    async blockVendor(req:Request,res:Response){
+        try {
+            const id = req.body.id as string
+            const vendorStatus = await this.Adminusecase.blockVendor(id)
+            res.status(200).json(vendorStatus)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }
 
 export default adminController

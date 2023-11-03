@@ -15,9 +15,28 @@ const usecase = new Adminusecase(repository,encrypt,jwtCreate)
 const controller = new adminController(usecase)
 
 
+
+
 router.post('/api/admin/login',(req,res)=>controller.adminLogin(req,res))
 router.get('/api/admin/allUsers',(req,res)=>controller.getAllUsers(req,res))
 router.put('/api/admin/blockUser',(req,res)=>controller.blockUser(req,res))
+router.get('/api/admin/allVendors',(req,res)=>controller.getAllVendors(req,res))
+router.put('/api/admin/blockVendor',(req,res)=>controller.blockVendor(req,res))
+
+
+//cuisine and facility routes
+import cuisineRepository from '../repository/cuisineRepository'
+import cuisineController from '../../adapter/cuisineController'
+import CuisineUseCase from '../../usecase/cuisineUsecase'
+
+const cuisineRepo = new cuisineRepository()
+const cuisineusecase = new CuisineUseCase(cuisineRepo)
+const cuisineControll = new cuisineController(cuisineusecase)
+
+router.get('/api/admin/allFacilities',(req,res)=>cuisineControll.allFacilities(req,res))
+router.post('/api/admin/addFacility',(req,res)=>cuisineControll.addFacility(req,res))
+router.post('/api/admin/addCuisine',(req,res)=>cuisineControll.addCuisine(req,res))
+router.get('/api/admin/allCuisines',(req,res)=>cuisineControll.allCuisines(req,res))
 
 export default router
 

@@ -8,8 +8,8 @@ class Adminusecase {
     private Encrypt : Encrypt
     private JwtCreate : JwtCreate
 
-    constructor(AdminRepositoy:AdminRepository,Encrypt:Encrypt,JwtCreate:JwtCreate){
-        this.AdminRepository = AdminRepositoy
+    constructor(AdminRepository:AdminRepository,Encrypt:Encrypt,JwtCreate:JwtCreate){
+        this.AdminRepository = AdminRepository
         this.Encrypt = Encrypt
         this.JwtCreate = JwtCreate
     }
@@ -80,6 +80,30 @@ class Adminusecase {
             return{
                 status:200,
                 data:userStatus
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async getAllVendors(page:number){
+        try {
+            const allVendors = await this.AdminRepository.allVendors(page)
+            return{
+                status:200,
+                data:allVendors
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async blockVendor(id:string){
+        try {
+            const vendorStatus = await this.AdminRepository.blockVendor(id)
+            return{
+                status:200,
+                data:vendorStatus
             }
         } catch (error) {
             console.log(error)
