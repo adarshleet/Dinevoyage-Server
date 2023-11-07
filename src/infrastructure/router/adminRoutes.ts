@@ -22,6 +22,7 @@ router.get('/api/admin/allUsers',(req,res)=>controller.getAllUsers(req,res))
 router.put('/api/admin/blockUser',(req,res)=>controller.blockUser(req,res))
 router.get('/api/admin/allVendors',(req,res)=>controller.getAllVendors(req,res))
 router.put('/api/admin/blockVendor',(req,res)=>controller.blockVendor(req,res))
+router.get('/api/admin/logout',(req,res)=>controller.adminLogout(req,res))
 
 
 //cuisine and facility routes
@@ -37,6 +38,26 @@ router.get('/api/admin/allFacilities',(req,res)=>cuisineControll.allFacilities(r
 router.post('/api/admin/addFacility',(req,res)=>cuisineControll.addFacility(req,res))
 router.post('/api/admin/addCuisine',(req,res)=>cuisineControll.addCuisine(req,res))
 router.get('/api/admin/allCuisines',(req,res)=>cuisineControll.allCuisines(req,res))
+
+
+
+//restaurant details for admin
+import restaurantRepository from '../repository/restaurantRepository'
+import restaurantController from '../../adapter/restaurantController'
+import RestaurantUsecase from '../../usecase/restaurantUsecase'
+import Cloudinary from '../utils/cloudinary'
+
+
+const restaurantRepo = new restaurantRepository()
+const cloudinary = new Cloudinary()
+const restaurantusecase = new RestaurantUsecase(restaurantRepo,cloudinary)
+const restaurantControll = new restaurantController(restaurantusecase)
+
+
+router.get('/api/admin/allRequests',(req,res)=>restaurantControll.restaurantRequests(req,res))
+router.get('/api/admin/restaurantRequest/:id',(req,res)=>restaurantControll.singleRestaurantRequest(req,res))
+router.post('/api/admin/changeRestaurantStatus',(req,res)=>restaurantControll.changeRestaurantStatus(req,res))
+
 
 export default router
 

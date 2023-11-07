@@ -35,6 +35,23 @@ class Vendorusecase {
 
 
 
+    async emailExistCheck(email:string){
+        try {
+            const vendorFound = await this.vendorRepository.emailExistCheck(email)
+            return{
+                status:200,
+                data : vendorFound
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
+
+
     //sending otp to given mobile number
     async verifyMobile(mobile: string) {
         try {
@@ -87,10 +104,24 @@ class Vendorusecase {
     }
     
 
-    async vendorLogin(vendor:Vendor){
+    async vendorLogin(vendor:any){
         try {
-            const vendorFound= await this.vendorRepository.mobileExistCheck(vendor.mobile)
+            let vendorFound:any
+            if(vendor.isGoogle){
+                vendorFound = await this.vendorRepository.emailExistCheck(vendor.email)
+            }else{
+                vendorFound= await this.vendorRepository.mobileExistCheck(vendor.mobile)
+            }
             if(vendorFound){
+                if(vendorFound.isBlocked){
+                    return {
+                        status: 200,
+                        data: {
+                            success :false,
+                            message: 'You have been blocked',
+                        }
+                    }
+                }
                 const passwordMatch = await this.encrypt.compare(vendor.password,vendorFound.password)
                 if(passwordMatch){
                     const token = this.jwtCreate.createJwt(vendorFound._id)

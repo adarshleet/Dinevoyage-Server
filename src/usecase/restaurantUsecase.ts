@@ -12,16 +12,13 @@ class RestaurantUsecase {
 
     async addRestaurant(restaurantData: Restaurant) {
         try {
-            console.log('here', restaurantData)
-            // const banners = await this.cloudinary.saveToCloudinary(restaurantData.banners[0])
             const uploadedBanners = await Promise.all(
                 restaurantData.banners.map(async (file:any) => {
                     return await this.cloudinary.saveToCloudinary(file);
                 })
             );
 
-            // uploadedBanners is an array containing the results of cloudinary.saveToCloudinary()
-            console.log(uploadedBanners);
+            restaurantData.banners = uploadedBanners
 
             const restaurantStatus = await this.restaurantRepository.addRestaurant(restaurantData)
 
@@ -33,6 +30,64 @@ class RestaurantUsecase {
             console.log(error)
         }
     }
+
+
+
+    async vendorRestaurant(vendorId:string){
+        try {
+            const restaurant = await this.restaurantRepository.vendorRestaurant(vendorId)
+            return{
+                status:200,
+                data:restaurant
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+
+    async restaurantRequests(){
+        try {
+            const restaurantRequests = await this.restaurantRepository.restaurantRequests()
+            return{
+                status:200,
+                data:restaurantRequests
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    //single restaurant request
+    async singleRestaurantRequest(restaurantId:string){
+        try {
+            const restaurantData = await this.restaurantRepository.singleRestaurantRequest(restaurantId)
+            return{
+                status:200,
+                data:restaurantData
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    //change restaurant status
+    async changeRestaurantStatus(id:string,status:number){
+        try {
+            const restaurantStatus = await this.restaurantRepository.changeRestaurantStatus(id,status)
+            return{
+                status:200,
+                data:restaurantStatus
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
 }
 
 export default RestaurantUsecase

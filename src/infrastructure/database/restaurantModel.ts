@@ -10,11 +10,11 @@ export interface IRestaurants extends Document{
     district :string;
     openingTime :string;
     closingTime :string;
-    minCost :string;
+    minCost : Number;
     contactNumber :string;
     googlemapLocation : string;
     tableCounts : object;
-    status : string;
+    status : Number;
     banners : Array<string>;
     cuisines : Array<string>;
     facilities : Array<string>
@@ -44,14 +44,15 @@ const restaurantSchema: Schema = new Schema({
     closingTime:{
         type:String
     },
-    minCoast:{
+    minCost:{
         type:Number
     },
     contactNumber:{
         type:String
     },
     status:{
-        type:String
+        type:Number,
+        default : 1
     },
     tableCounts:{
         type:Object

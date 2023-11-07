@@ -91,12 +91,44 @@ class Userusecase {
         }
     }
 
-    //checking user mobile exist and compare password
-    async userLogin(user: { mobile: string, password: string }) {
+
+    //email exist check
+    async emailExistCheck(email:string){
         try {
-            const userFound: any = await this.userRepository.mobileExistCheck(user.mobile)
+            const userFound = await this.userRepository.emailExistCheck(email)
+            return{
+                status:200,
+                data:userFound
+            }
+        } catch (error) {
+            return{
+                status:200,
+                data:error
+            }
+        }
+    }
+
+    //checking user mobile exist and compare password
+    async userLogin(user:any) {
+        try {
+            let userFound:any
+            if(user.isGoogle){
+                userFound = await this.userRepository.emailExistCheck(user.email)
+            }
+            else{
+                userFound = await this.userRepository.mobileExistCheck(user.mobile)
+            }
             console.log(userFound)
             if (userFound) {
+                if(userFound.isBlocked){
+                    return {
+                        status: 200,
+                        data: {
+                            success : false,
+                            message: 'You have been blocked',
+                        }
+                    }
+                }
                 const passwordMatch = await this.Encrypt.compare(user.password, userFound.password)
                 if (passwordMatch) {
                     const token = this.jwtCreate.createJwt(userFound._id)

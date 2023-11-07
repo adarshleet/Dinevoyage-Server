@@ -18,6 +18,11 @@ class userRepository implements UserRepository{
         return userFound
     }
 
+    async emailExistCheck(email: string) {
+        const userFound = await UserModel.findOne({email})
+        return userFound
+    }
+
 }
 
 export default userRepository

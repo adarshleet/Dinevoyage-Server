@@ -22,6 +22,7 @@ const controller = new vendorController(usecase)
 route.post('/api/vendor/register',(req,res)=>controller.vendorRegister(req,res))
 route.post('/api/vendor/otpverify',(req,res)=>controller.otpVerification(req,res))
 route.post('/api/vendor/login',(req,res)=>controller.login(req,res))
+route.get('/api/vendor/vendorLogout',(req,res)=>controller.vendorLogout(req,res))
 
 
 //vendor restaurant management
@@ -36,5 +37,6 @@ const restaurantUsecase = new RestaurantUsecase(restaurantRepo,cloudinary)
 const restaurantControll = new restaurantController(restaurantUsecase)
 
 route.post('/api/vendor/addRestaurant',multerMid.array('image'),(req,res)=>restaurantControll.addRestaurant(req,res))
+route.get('/api/vendor/getRestaurant',(req,res)=>restaurantControll.restaurantForVendor(req,res))
 
 export default route

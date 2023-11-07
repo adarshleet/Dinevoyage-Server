@@ -70,6 +70,19 @@ class adminController{
             console.log(error)
         }
     }
+
+
+    async adminLogout(req:Request,res:Response){
+        try {
+            res.cookie('adminJWT', '', {
+                httpOnly: true,
+                expires: new Date(0)
+            })
+            res.status(200).json({success:true})
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }
 
 export default adminController

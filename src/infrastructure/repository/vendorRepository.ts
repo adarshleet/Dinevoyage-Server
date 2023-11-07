@@ -17,6 +17,12 @@ class vendoRepository implements VendorRepository{
         return newVendor
     }
 
+
+    async emailExistCheck(email: string) {
+        const vendorFound = await vendorModel.findOne({email})
+        return vendorFound
+    }
+
 }
 
 export default vendoRepository
