@@ -50,6 +50,29 @@ class cusineController{
         }
     }
 
+    async editCuisine(req:Request,res:Response){
+        try {
+            const index = parseInt(req.query.index as string)
+            const cuisine = req.query.cuisine as string
+            const cuisineEdit = await this.cuisineUsecase.editCuisine(cuisine,index)
+            res.status(200).json(cuisineEdit)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    async deleteCuisine(req:Request,res:Response){
+        try {
+            const cuisine = req.query.cuisine as string
+            const cuisineDelete = await this.cuisineUsecase.deleteCuisine(cuisine)
+            console.log(cuisineDelete)
+            res.status(200).json(cuisineDelete)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
 
 }

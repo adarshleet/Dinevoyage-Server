@@ -4,8 +4,8 @@ import Restaurant from "../../domain/restaurant";
 
 class restaurantRepository implements RestaurantRepository{
     async addRestaurant(restaurantData: Restaurant) {
-        const restaurantRequest = new restaurantModel(restaurantData)
-        await restaurantRequest.save()
+        const restaurant = new restaurantModel(restaurantData)
+        const restaurantRequest = await restaurant.save()
         return restaurantRequest
     }
 

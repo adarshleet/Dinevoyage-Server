@@ -11,7 +11,6 @@ cloudinary.config({
 class Cloudinary implements CloudinaryRepository{
     async saveToCloudinary(file: any) {
         const result = await cloudinary.uploader.upload(file?.path)
-        console.log(result)
         file = result.secure_url
         return file
     }

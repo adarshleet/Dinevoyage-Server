@@ -33,9 +33,9 @@ class restaurantController{
                 tableCounts,
                 banners
             }
-            console.log(restaurantData)
 
-            const restaurantAdd = this.restaurantUsecase.addRestaurant(restaurantData)
+            const restaurantAdd = await this.restaurantUsecase.addRestaurant(restaurantData)
+            console.log('statas',restaurantAdd)
             res.status(200).json(restaurantAdd);
             
         } catch (error) {

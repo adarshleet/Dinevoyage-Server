@@ -24,6 +24,7 @@ class RestaurantUsecase {
 
             return {
                 status: 200,
+                success: true,
                 data: restaurantStatus
             }
         } catch (error) {

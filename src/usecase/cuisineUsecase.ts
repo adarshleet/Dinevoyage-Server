@@ -58,6 +58,31 @@ class CuisineUseCase{
         }
     }
 
+    async editCuisine(cuisine:string,index:number){
+        try {
+            const cuisineEdit = await this.cuisineRepository.editCuisine(cuisine,index)
+            return{
+                status:200,
+                data : cuisineEdit
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    async deleteCuisine(cuisine:string){
+        try {
+            const cuisineDelete = await this.cuisineRepository.deleteCuisine(cuisine)
+            return{
+                status:200,
+                data:cuisineDelete
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 }
 
 export default CuisineUseCase
