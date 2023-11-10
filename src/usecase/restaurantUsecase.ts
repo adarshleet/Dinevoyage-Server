@@ -89,6 +89,34 @@ class RestaurantUsecase {
     }
 
 
+    //changing restaurant cuisines by vendor
+    async selectCuisines(id:string,cuisines:Array<string>){
+        try {
+            const selectedCuisines = await this.restaurantRepository.selectRestaurantCuisines(id,cuisines)
+            return{
+                status:200,
+                data: selectedCuisines
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+
+    //already selected cuisines and facilities
+    async selectedCuisinesAndFacilities(id:string){
+        try {
+            const selectedCuisinesAndFacilities = await this.restaurantRepository.selectedCuisinesAndFacilities(id)
+            return{
+                status:200,
+                data:selectedCuisinesAndFacilities
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 }
 
 export default RestaurantUsecase

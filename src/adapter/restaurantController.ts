@@ -102,6 +102,40 @@ class restaurantController{
         }
     }
 
+
+    //select restaurant cuisines by vendor
+    async selectCuisines(req:Request,res:Response){
+        try {
+            const cuisines = req.body.cuisines
+            const id = req.query.restaurantId as string
+            const cuisinesSelected = await this.restaurantUsecase.selectCuisines(id,cuisines)
+            res.status(200).json(cuisinesSelected)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+
+    //selected cuisines and facilities by restaurant
+    async selectedCuisinesAndFacilities(req:Request,res:Response){
+        try {
+            let id
+            const token = req.cookies.vendorJWT
+            if(token){
+                const decoded = jwt.verify(token, process.env.JWT_KEY as string) as JwtPayload;
+                id = decoded.id
+            }
+            console.log('here',id)
+            const selectedCuisinesAndFacilities = await this.restaurantUsecase.selectedCuisinesAndFacilities(id)
+            console.log(selectedCuisinesAndFacilities)
+            res.status(200).json(selectedCuisinesAndFacilities)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
 }
 
 export default restaurantController
