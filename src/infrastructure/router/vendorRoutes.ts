@@ -39,6 +39,7 @@ const restaurantControll = new restaurantController(restaurantUsecase)
 route.post('/api/vendor/addRestaurant',multerMid.array('image'),(req,res)=>restaurantControll.addRestaurant(req,res))
 route.get('/api/vendor/getRestaurant',(req,res)=>restaurantControll.restaurantForVendor(req,res))
 route.post('/api/vendor/selectCuisines',(req,res)=>restaurantControll.selectCuisines(req,res))
+route.post('/api/vendor/selectFacilities',(req,res)=>restaurantControll.selectFacilities(req,res))
 route.get('/api/vendor/selectedCuisinesAndFacilities',(req,res)=>restaurantControll.selectedCuisinesAndFacilities(req,res))
 
 export default route

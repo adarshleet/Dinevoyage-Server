@@ -116,6 +116,21 @@ class restaurantController{
     }
 
 
+    //select restaurant facilities by vendor
+    async selectFacilities(req:Request,res:Response){
+        try {
+            const facilities = req.body.facilities
+            const id = req.query.restaurantId as string
+            console.log(facilities,id)
+            const facilitiesSelected = await this.restaurantUsecase.selectFacilities(id,facilities)
+            console.log(facilitiesSelected)
+            res.status(200).json(facilitiesSelected)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
 
     //selected cuisines and facilities by restaurant
     async selectedCuisinesAndFacilities(req:Request,res:Response){

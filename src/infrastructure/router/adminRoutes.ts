@@ -36,6 +36,9 @@ const cuisineControll = new cuisineController(cuisineusecase)
 
 router.get('/api/admin/allFacilities',(req,res)=>cuisineControll.allFacilities(req,res))
 router.post('/api/admin/addFacility',(req,res)=>cuisineControll.addFacility(req,res))
+router.post('/api/admin/editFacility',(req,res)=>cuisineControll.editFacility(req,res))
+router.post('/api/admin/deleteFacility',(req,res)=>cuisineControll.deleteFacility(req,res))
+
 router.post('/api/admin/addCuisine',(req,res)=>cuisineControll.addCuisine(req,res))
 router.get('/api/admin/allCuisines',(req,res)=>cuisineControll.allCuisines(req,res))
 router.post('/api/admin/editCuisine',(req,res)=>cuisineControll.editCuisine(req,res))

@@ -103,6 +103,20 @@ class RestaurantUsecase {
     }
 
 
+    //changing restaurant facilities by vendor
+    async selectFacilities(id:string,facilities:Array<string>){
+        try {
+            const selectedFacilities = await this.restaurantRepository.selectRestaurantFacilities(id,facilities)
+            return{
+                status:200,
+                data:selectedFacilities
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
 
     //already selected cuisines and facilities
     async selectedCuisinesAndFacilities(id:string){

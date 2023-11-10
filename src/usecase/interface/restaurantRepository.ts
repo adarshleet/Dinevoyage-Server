@@ -8,6 +8,7 @@ interface RestaurantRepository{
     changeRestaurantStatus(id:string,status:number)
 
     selectRestaurantCuisines(id:string,selectedCuisines:Array<string>)
+    selectRestaurantFacilities(id:string,selectedFacilities:Array<string>)
     selectedCuisinesAndFacilities(id:string)
 }
 

@@ -45,6 +45,13 @@ class restaurantRepository implements RestaurantRepository{
     }
 
 
+    //selecting restaurant facilities by vendor
+    async selectRestaurantFacilities(id: string, selectedFacilities: string[]) {
+        const facilitySelect = await restaurantModel.findOneAndUpdate({_id:id},{$set:{facilities:selectedFacilities}},{new:true})
+        return facilitySelect
+    }
+
+
     //already selected cuisines for showing
     async selectedCuisinesAndFacilities(id: string) {
         console.log(id)

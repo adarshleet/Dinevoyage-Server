@@ -23,6 +23,30 @@ class cuisineRepository implements CuisineRepository{
     }
 
 
+    async editFacility(facility: string, index: number) {
+        const facilityExists = await cuisineModel.findOne({ facilities: { $in: [facility] } }); 
+        if(facilityExists){
+            return false
+        }
+        const facilityEdit = await cuisineModel.updateMany(
+            {},
+            { $set: { [`facilities.${index}`]: facility } }
+        );
+        return facilityEdit
+    }
+
+
+    async deleteFacilty(facility: string) {
+        const facilityDelete = await cuisineModel.updateOne(
+            {},{$pull:{facilities:facility}}
+        );
+        return facilityDelete
+    }
+
+
+
+
+
     async addCuisine(cuisine: string) {
         const newCuisine = await cuisineModel.updateOne(
             {},
@@ -57,6 +81,7 @@ class cuisineRepository implements CuisineRepository{
         );
         return cuisineDelete
     }
+
 
 
 }

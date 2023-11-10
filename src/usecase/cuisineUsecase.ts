@@ -34,6 +34,34 @@ class CuisineUseCase{
     }
 
 
+    async editFacility(facility:string,index:number){
+        try {
+            const facilityEdit =  await this.cuisineRepository.editFacility(facility,index)
+            return{
+                status:200,
+                data:facilityEdit
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    
+    async deleteFacility(facility:string){
+        try {
+            const facilityDelete = await this.cuisineRepository.deleteFacilty(facility)
+            return{
+                status:200,
+                data:facilityDelete
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+
+
     async addCuisine(cuisine:string){
         try {
             const cuisineStatus = await this.cuisineRepository.addCuisine(cuisine)
