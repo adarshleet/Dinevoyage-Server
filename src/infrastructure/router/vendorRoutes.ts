@@ -24,6 +24,7 @@ route.post('/api/vendor/otpverify',(req,res)=>controller.otpVerification(req,res
 route.post('/api/vendor/login',(req,res)=>controller.login(req,res))
 route.get('/api/vendor/vendorLogout',(req,res)=>controller.vendorLogout(req,res))
 
+//-------------------------------------------------------------------------------//
 
 //vendor restaurant management
 import restaurantRepository from '../repository/restaurantRepository'
@@ -41,5 +42,43 @@ route.get('/api/vendor/getRestaurant',(req,res)=>restaurantControll.restaurantFo
 route.post('/api/vendor/selectCuisines',(req,res)=>restaurantControll.selectCuisines(req,res))
 route.post('/api/vendor/selectFacilities',(req,res)=>restaurantControll.selectFacilities(req,res))
 route.get('/api/vendor/selectedCuisinesAndFacilities',(req,res)=>restaurantControll.selectedCuisinesAndFacilities(req,res))
+
+
+//------------------------------------------------------------------------------------------------------------------------//
+
+
+//vendor category management
+import categoryRepository from '../repository/categoryRepository'
+import CategoryUsecase from '../../usecase/categoryUsecase'
+import CategoryContoller from '../../adapter/categoryController'
+
+
+const CategoryRepository = new categoryRepository()
+const categoryUsecae = new CategoryUsecase(CategoryRepository)
+const categoryController = new CategoryContoller(categoryUsecae)
+
+route.post('/api/vendor/addCategory',(req,res)=>categoryController.addCategory(req,res))
+route.get('/api/vendor/categories',(req,res)=>categoryController.allCategories(req,res))
+route.post('/api/vendor/editCategory',(req,res)=>categoryController.editCategory(req,res))
+route.post('/api/vendor/changeCategoryStatus',(req,res)=>categoryController.changeCategoryStatus(req,res))
+
+
+
+//---------------------------------------------------------------------------------------------------------------------//
+
+//vendor kitchen management
+
+import kitchenRepository from '../repository/kitchenRepository'
+import KitchenUsecase from '../../usecase/kitchenUsecase'
+import KitchenController from '../../adapter/kitchenController'
+
+const KitchenRepository = new kitchenRepository()
+const kitchenUsecase = new KitchenUsecase(KitchenRepository)
+const kitchenController = new KitchenController(kitchenUsecase)
+
+route.post('/api/vendor/addItem',(req,res)=>kitchenController.addItem(req,res))
+route.get('/api/vendor/viewItems',(req,res)=>kitchenController.viewItems(req,res))
+
+
 
 export default route

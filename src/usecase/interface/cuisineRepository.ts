@@ -1,5 +1,4 @@
 interface CuisineRepository {
-    facilityExistCheck(facility: string),
 
     addFacility(facility: string),
     allFacilities(),

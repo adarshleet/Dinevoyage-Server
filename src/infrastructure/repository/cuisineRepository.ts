@@ -2,9 +2,7 @@ import cuisineModel from "../database/cusinesAndFacilitiesModel";
 import CuisineRepository from "../../usecase/interface/cuisineRepository";
 
 class cuisineRepository implements CuisineRepository{
-    async facilityExistCheck(facility: string) {
-        
-    }
+    
 
     async addFacility(facility: string) {
         const newFacility = await cuisineModel.updateOne(
