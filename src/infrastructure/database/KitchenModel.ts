@@ -14,9 +14,26 @@ const kitchenSchema:Schema = new Schema({
         ref : 'Restaurant'
     },
     items:[{
+        itemName:{
+            type:String
+        },
         category:{
             type:mongoose.Schema.Types.ObjectId,
             ref : 'Category'
+        },
+        price:{
+            type:Number
+        },
+        veg:{
+            type:Boolean,
+            default:false
+        },
+        description:{
+            type:String
+        },
+        isListed:{
+            type:Boolean,
+            default:true
         }
     }]
 })

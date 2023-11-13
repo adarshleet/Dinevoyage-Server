@@ -83,6 +83,29 @@ class userController {
     }
 
 
+
+    async restaurantsToDisplay(req:Request,res:Response){
+        try {
+            const restaurants = await this.userUsecase.restaurantsToDisplay()
+            res.status(200).json(restaurants)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    async singleRestaurant(req:Request,res:Response){
+        try {
+            const restaurantId = req.query.restaurantId as string
+            const restaurant = await this.userUsecase.singleRestaurant(restaurantId)
+            res.status(200).json(restaurant)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+
 }
 
 export default userController

@@ -23,4 +23,7 @@ route.post('/api/user/otpVerify',(req,res)=>controller.otpVerification(req,res))
 route.post('/api/user/login',(req,res)=>controller.login(req,res))
 route.get('/api/user/logout',(req,res)=>controller.userLogout(req,res))
 
+route.get('/api/user/restaurantsToDisplay',(req,res)=>controller.restaurantsToDisplay(req,res))
+route.get('/api/user/singleRestaurant',(req,res)=>controller.singleRestaurant(req,res))
+
 export default route

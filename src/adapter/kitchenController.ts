@@ -13,9 +13,8 @@ class KitchenController{
     async addItem(req:Request,res:Response){
         try {
             const restaurantId = req.query.restaurantId as string
-            const category = req.body.category 
-            console.log(restaurantId,category)
-            const itemAdd = await this.KitchenUsecase.addItem(restaurantId,category)
+            const item = req.body.itemData
+            const itemAdd = await this.KitchenUsecase.addItem(restaurantId,item)
             console.log(itemAdd)
             res.status(200).json(itemAdd)
         } catch (error) {

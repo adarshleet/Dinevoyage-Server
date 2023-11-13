@@ -15,13 +15,13 @@ class TwilioService implements Itwilio {
 
     async sendTwilioOtp(mobile: string): Promise<boolean> {
         try {
-            if(serviceID){
-                await client.verify.v2
-                .services(serviceID).verifications.create({
-                    to: `+91${mobile}`,
-                    channel: "sms",
-                })
-            }
+            // if(serviceID){
+            //     await client.verify.v2
+            //     .services(serviceID).verifications.create({
+            //         to: `+91${mobile}`,
+            //         channel: "sms",
+            //     })
+            // }
             return true
         } catch (error) {
             console.log(error)

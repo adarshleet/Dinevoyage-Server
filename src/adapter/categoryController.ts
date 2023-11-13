@@ -37,7 +37,6 @@ class CategoryContoller{
     async changeCategoryStatus(req:Request,res:Response){
         try {
             const categoryId = req.query.categoryId as string
-            console.log(categoryId)
             const categoryStatus = await this.CategoryUsecase.changeCategoryStatus(categoryId)
             res.status(200).json(categoryStatus)
 

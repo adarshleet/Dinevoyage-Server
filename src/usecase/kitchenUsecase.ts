@@ -1,3 +1,4 @@
+import Kitchen from "../domain/kitchen";
 import KitchenRepository from "./interface/kitchenRepository";
 
 
@@ -9,9 +10,9 @@ class KitchenUsecase{
     }
 
 
-    async addItem(restauarantId:string,category:string){
+    async addItem(restauarantId:string,item:Kitchen){
         try {
-            const itemAdd = await this.KitchenRepository.addItem(restauarantId,category)
+            const itemAdd = await this.KitchenRepository.addItem(restauarantId,item)
             return{
                 status:200,
                 data:itemAdd

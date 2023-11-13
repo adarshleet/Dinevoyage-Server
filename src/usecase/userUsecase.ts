@@ -168,6 +168,45 @@ class Userusecase {
         }
     }
 
+
+
+
+
+
+
+    //restaurants showing
+    async restaurantsToDisplay(){
+        try {
+            const restaurants = await this.userRepository.restaurantsToShow()
+            return{
+                status:200,
+                data:restaurants
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    //single restaurant page
+    async singleRestaurant(restauarantId:string){
+        try {
+            const restaurant = await this.userRepository.singleRestaurant(restauarantId)
+            return{
+                status:200,
+                data:restaurant
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+
+
+
+
+
 }
 
 export default Userusecase
