@@ -1,77 +1,81 @@
-import mongoose,{Schema,Document,ObjectId} from "mongoose";
+import mongoose, { Schema, Document, ObjectId } from "mongoose";
 
 
-export interface IRestaurants extends Document{
-    _id : string;
-    vendorId : ObjectId;
+export interface IRestaurants extends Document {
+    _id: string;
+    vendorId: ObjectId;
     restaurantName: string;
-    landmark :string;
-    locality :string;
-    district :string;
-    openingTime :string;
-    closingTime :string;
-    minCost : Number;
-    contactNumber :string;
-    googlemapLocation : string;
-    tableCounts : object;
-    status : Number;
-    banners : Array<string>;
-    cuisines : Array<string>;
-    facilities : Array<string>
+    landmark: string;
+    locality: string;
+    district: string;
+    openingTime: string;
+    closingTime: string;
+    minCost: Number;
+    contactNumber: string;
+    googlemapLocation: string;
+    tableCounts: object;
+    status: Number;
+    banners: Array<string>;
+    cuisines: Array<string>;
+    facilities: Array<string>
 }
 
 
 const restaurantSchema: Schema = new Schema({
-    vendorId:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref : 'Vendor'
+    vendorId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Vendor'
     },
-    restaurantName:{
-        type:String
+    restaurantName: {
+        type: String
     },
-    landmark:{
-        type:String
+    landmark: {
+        type: String
     },
-    locality:{
-        type:String
+    locality: {
+        type: String
     },
-    district:{
-        type:String
+    district: {
+        type: String
     },
-    openingTime:{
-        type:String
+    openingTime: {
+        type: String
     },
-    closingTime:{
-        type:String
+    closingTime: {
+        type: String
     },
-    minCost:{
-        type:Number
+    minCost: {
+        type: Number
     },
-    contactNumber:{
-        type:String
+    contactNumber: {
+        type: String
     },
-    status:{
-        type:Number,
-        default : 1
+    status: {
+        type: Number,
+        default: 1
     },
-    tableCounts:{
-        type:Object
+    tableCounts: {
+        type: Object
     },
-    banners:{
-        type:Array
-    },
-    cuisines:{
+    banners: {
         type: Array
     },
-    facilities:{
-        type:Array
+    cuisines: {
+        type: Array
     },
-    googlemapLocation:{
-        type:String
+    facilities: {
+        type: Array
+    },
+    googlemapLocation: {
+        type: String
     }
-})
+},
+    {
+        timestamps: true
+    }
+)
 
 
-const restaurantModel = mongoose.model<IRestaurants>('Restaurant',restaurantSchema)
+const restaurantModel = mongoose.model<IRestaurants>('Restaurant', restaurantSchema)
 
 export default restaurantModel

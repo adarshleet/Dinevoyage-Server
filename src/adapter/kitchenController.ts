@@ -27,13 +27,28 @@ class KitchenController{
         try {
             const restaurantId = req.query.restaurantId as string
             const items = await this.KitchenUsecase.viewItem(restaurantId)
-            console.log(items)
-            res.json(items)
+            res.status(200).json(items)
         } catch (error) {
             console.log(error);
             
         }
     }
+
+
+
+    //User
+    //all kitchen items for ordering
+    async allItems(req:Request,res:Response){
+        try {
+            const restaurantId = req.query.restaurantId as string
+            const kitchenItems = await this.KitchenUsecase.allItems(restaurantId)
+            res.status(200).json(kitchenItems)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
 }
 
 export default KitchenController

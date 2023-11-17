@@ -23,6 +23,12 @@ class vendoRepository implements VendorRepository{
         return vendorFound
     }
 
+
+    async findVendorById(id: string) {
+        const vendorFound = await vendorModel.findById(id)
+        return vendorFound
+    }
+
 }
 
 export default vendoRepository

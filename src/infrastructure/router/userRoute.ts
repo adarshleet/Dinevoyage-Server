@@ -1,5 +1,8 @@
 import express from 'express'
 const route = express.Router()
+import { protect } from '../middlewares/userAuth'
+
+//----------------------------------------------------------------------------------------------------------
 
 import userController from '../../adapter/userController'
 import userRepository from '../repository/userRepository'
@@ -25,5 +28,24 @@ route.get('/api/user/logout',(req,res)=>controller.userLogout(req,res))
 
 route.get('/api/user/restaurantsToDisplay',(req,res)=>controller.restaurantsToDisplay(req,res))
 route.get('/api/user/singleRestaurant',(req,res)=>controller.singleRestaurant(req,res))
+
+
+//-----------------------------------------------------------------------------------------------------------
+
+
+import KitchenController from '../../adapter/kitchenController'
+import KitchenUsecase from '../../usecase/kitchenUsecase'
+import kitchenRepository from '../repository/kitchenRepository'
+
+const kitchenRepo = new kitchenRepository()
+const kitchenUsecase = new KitchenUsecase(kitchenRepo)
+const kitchenController = new KitchenController(kitchenUsecase)
+
+
+route.get('/api/user/allKitchenItems',(req,res)=>kitchenController.allItems(req,res))
+
+
+
+
 
 export default route

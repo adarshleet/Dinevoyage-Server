@@ -1,5 +1,6 @@
 import express from 'express'
 const router = express.Router()
+import { multerMid } from '../middlewares/multerMiddleware'
 
 import adminRepository from '../repository/adminRepository'
 import adminController from '../../adapter/adminController'
@@ -67,6 +68,37 @@ router.post('/api/admin/changeRestaurantStatus',(req,res)=>restaurantControll.ch
 
 
 //-------------------------------------------------------------------------------------------------------------------//
+
+
+//banner management by admin
+import bannerRepository from '../repository/bannerRepository'
+import BannerController from '../../adapter/bannerrController'
+import BannerUsecase from '../../usecase/bannerUsecase'
+
+const BannerRepository = new bannerRepository()
+const bannerUsecase = new BannerUsecase(BannerRepository,cloudinary)
+const bannerController = new BannerController(bannerUsecase)
+
+
+router.post('/api/admin/addBanner',multerMid.single('image'),(req,res)=>bannerController.addBanner(req,res))
+router.get('/api/admin/getBanners',(req,res)=>bannerController.getBanners(req,res))
+router.put('/api/admin/deleteBanner',(req,res)=>bannerController.deleteBanner(req,res))
+
+
+//---------------------------------------------------------------------------------------------------------------------//
+
+
+//location management by admin
+import locationRepository from '../repository/locationRepository'
+import locationUsecase from '../../usecase/locationUsecase'
+import locationController from '../../adapter/locationController'
+
+const locationRepo = new locationRepository()
+const LocationUsecase = new locationUsecase(locationRepo)
+const locationControll = new locationController(LocationUsecase)
+
+router.post('/api/admin/addLocality',(req,res)=>locationControll.addLocation(req,res))
+router.get('/api/admin/allLocality',(req,res)=>locationControll.allLocality(req,res))
 
 
 export default router

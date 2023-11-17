@@ -26,6 +26,12 @@ class userRepository implements UserRepository{
     }
 
 
+    async findUserById(user: string) {
+        const userFound = await UserModel.findById(user)
+        return userFound
+    }
+
+
 
 
 

@@ -1,6 +1,7 @@
 import express from 'express'
 import { multerMid } from '../middlewares/multerMiddleware'
 const route = express.Router()
+import { protect } from '../middlewares/vendorAuth'
 
 
 import vendorController from '../../adapter/vendorController'
@@ -37,11 +38,11 @@ const restaurantRepo = new restaurantRepository()
 const restaurantUsecase = new RestaurantUsecase(restaurantRepo,cloudinary)
 const restaurantControll = new restaurantController(restaurantUsecase)
 
-route.post('/api/vendor/addRestaurant',multerMid.array('image'),(req,res)=>restaurantControll.addRestaurant(req,res))
-route.get('/api/vendor/getRestaurant',(req,res)=>restaurantControll.restaurantForVendor(req,res))
-route.post('/api/vendor/selectCuisines',(req,res)=>restaurantControll.selectCuisines(req,res))
-route.post('/api/vendor/selectFacilities',(req,res)=>restaurantControll.selectFacilities(req,res))
-route.get('/api/vendor/selectedCuisinesAndFacilities',(req,res)=>restaurantControll.selectedCuisinesAndFacilities(req,res))
+route.post('/api/vendor/addRestaurant',(protect),multerMid.array('image'),(req,res)=>restaurantControll.addRestaurant(req,res))
+route.get('/api/vendor/getRestaurant',(protect),(req,res)=>restaurantControll.restaurantForVendor(req,res))
+route.post('/api/vendor/selectCuisines',(protect),(req,res)=>restaurantControll.selectCuisines(req,res))
+route.post('/api/vendor/selectFacilities',(protect),(req,res)=>restaurantControll.selectFacilities(req,res))
+route.get('/api/vendor/selectedCuisinesAndFacilities',(protect),(req,res)=>restaurantControll.selectedCuisinesAndFacilities(req,res))
 
 
 //------------------------------------------------------------------------------------------------------------------------//
@@ -57,10 +58,10 @@ const CategoryRepository = new categoryRepository()
 const categoryUsecae = new CategoryUsecase(CategoryRepository)
 const categoryController = new CategoryContoller(categoryUsecae)
 
-route.post('/api/vendor/addCategory',(req,res)=>categoryController.addCategory(req,res))
-route.get('/api/vendor/categories',(req,res)=>categoryController.allCategories(req,res))
-route.post('/api/vendor/editCategory',(req,res)=>categoryController.editCategory(req,res))
-route.post('/api/vendor/changeCategoryStatus',(req,res)=>categoryController.changeCategoryStatus(req,res))
+route.post('/api/vendor/addCategory',(protect),(req,res)=>categoryController.addCategory(req,res))
+route.get('/api/vendor/categories',(protect),(req,res)=>categoryController.allCategories(req,res))
+route.post('/api/vendor/editCategory',(protect),(req,res)=>categoryController.editCategory(req,res))
+route.post('/api/vendor/changeCategoryStatus',(protect),(req,res)=>categoryController.changeCategoryStatus(req,res))
 
 
 
@@ -76,8 +77,8 @@ const KitchenRepository = new kitchenRepository()
 const kitchenUsecase = new KitchenUsecase(KitchenRepository)
 const kitchenController = new KitchenController(kitchenUsecase)
 
-route.post('/api/vendor/addItem',(req,res)=>kitchenController.addItem(req,res))
-route.get('/api/vendor/viewItems',(req,res)=>kitchenController.viewItems(req,res))
+route.post('/api/vendor/addItem',(protect),(req,res)=>kitchenController.addItem(req,res))
+route.get('/api/vendor/viewItems',(protect),(req,res)=>kitchenController.viewItems(req,res))
 
 
 

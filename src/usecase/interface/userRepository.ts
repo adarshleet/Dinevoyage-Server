@@ -4,6 +4,7 @@ interface UserRepository{
     save(user:User),
     mobileExistCheck(mobile:string),
     emailExistCheck(email:string),
+    findUserById(user:string)
 
     restaurantsToShow()
     singleRestaurant(restauarantId:string)
