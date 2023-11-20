@@ -4,6 +4,8 @@ import adminRoute from '../router/adminRoutes'
 import vendorRoute from '../router/vendorRoutes'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import session, { SessionOptions } from 'express-session';
+
 
 //configuring express
 export const createServer = ()=>{
@@ -23,6 +25,19 @@ export const createServer = ()=>{
             credentials: true, // If you need to send cookies or authentication headers
             })
         );
+
+
+        const sessionOptions: SessionOptions = {
+            secret: 'your-secret-key',
+            resave: false,
+            saveUninitialized: false,
+            cookie: {
+              secure: false, 
+              maxAge: 3600000, 
+            },
+        };
+      
+        app.use(session(sessionOptions));
 
         app.use(userRoute);
         app.use(adminRoute)

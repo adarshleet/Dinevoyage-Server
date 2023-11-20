@@ -1,6 +1,7 @@
 import Kitchen from "../../domain/kitchen";
 import kitchenModel from "../database/KitchenModel";
 import KitchenRepository from "../../usecase/interface/kitchenRepository";
+import { Types } from 'mongoose';
 
 
 class kitchenRepository implements KitchenRepository {
@@ -32,6 +33,68 @@ class kitchenRepository implements KitchenRepository {
             // }, {});
             console.log(result)
             return result
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+    //in the booking page
+    async kitchenAllItems(restaurantId: string) {
+        try {
+            const allKitchenItems = await kitchenModel.aggregate([
+                {
+                  $match: {
+                    "restaurantId": new Types.ObjectId(restaurantId)
+                  }
+                },
+                {
+                  $unwind: "$items"
+                },
+                {
+                  $match: {
+                    "items.isListed": true,
+                  }
+                },
+                {
+                  $group: {
+                    _id: "$items.category",
+                    items: {
+                      $push: {
+                        itemName: "$items.itemName",
+                        price: "$items.price",
+                        description: "$items.description",
+                        _id: "$items._id"
+                      }
+                    }
+                  }
+                },
+                {
+                  $lookup: {
+                    from: "categories", // Replace with your actual collection name
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "categoryDetails"
+                  }
+                },
+                {
+                  $unwind: "$categoryDetails"
+                },
+                {
+                    $match:{
+                        "categoryDetails.isListed" : true
+                    }
+                },
+                {
+                  $project: {
+                    _id: 0,
+                    category: "$categoryDetails.category",
+                    items: 1
+                  }
+                }
+              ])
+              return allKitchenItems
+              console.log(allKitchenItems)
         } catch (error) {
             console.log(error);
         }

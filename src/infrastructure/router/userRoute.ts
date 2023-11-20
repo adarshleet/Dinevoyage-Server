@@ -44,6 +44,24 @@ const kitchenController = new KitchenController(kitchenUsecase)
 
 route.get('/api/user/allKitchenItems',(req,res)=>kitchenController.allItems(req,res))
 
+route.get('/api/user/kitchenItems',(req,res)=>kitchenController.allKitchenItems(req,res))
+
+//------------------------------------------------------------------------------------------------------------
+
+import bookingRepository from '../repository/bookingRepository'
+import BookingController from '../../adapter/bookingController'
+import BookingUsecase from '../../usecase/bookingUsecase'
+import Session from '../repository/session'
+
+const bookingRepo = new bookingRepository()
+const bookingUsecase = new BookingUsecase(bookingRepo)
+const session = new Session()
+const bookingController = new BookingController(bookingUsecase,session)
+
+
+route.get('/api/user/seatDetails',(req,res)=>bookingController.dateSeatDetails(req,res))
+route.post('/api/user/confirmBooking',(req,res)=>bookingController.confirmBooking(req,res))
+route.post('/api/user/tableCounts',(req,res)=>bookingController.tableCounts(req,res))
 
 
 

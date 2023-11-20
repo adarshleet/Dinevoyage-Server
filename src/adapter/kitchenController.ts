@@ -49,6 +49,17 @@ class KitchenController{
     }
 
 
+    //for booking page
+    async allKitchenItems(req:Request,res:Response){
+        try {
+            const restaurantId = req.query.restaurantId as string
+            const kitchenAllItems = await this.KitchenUsecase.allKitchenItems(restaurantId)
+            res.status(200).json(kitchenAllItems)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 }
 
 export default KitchenController

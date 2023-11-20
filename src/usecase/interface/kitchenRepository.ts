@@ -5,11 +5,12 @@ interface KitchenRepository{
     viewItem(restauarantId:string)
 
 
-
-
     //user
     //item booking view page
     allItems(restaurantId:string)
+
+    //getting all items for showing in booking
+    kitchenAllItems(restaurantId:string)
 
 }
 

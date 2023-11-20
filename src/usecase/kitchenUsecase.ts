@@ -53,6 +53,22 @@ class KitchenUsecase {
             }
         }
     }
+
+
+    async allKitchenItems(restauarantId:string){
+        try {
+            const kitchenAllItems = await this.KitchenRepository.kitchenAllItems(restauarantId)
+            return{
+                status:200,
+                data:kitchenAllItems
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
 }
 
 export default KitchenUsecase
