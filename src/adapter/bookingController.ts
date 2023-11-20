@@ -28,11 +28,12 @@ class BookingController{
 
     async confirmBooking(req:Request,res:Response){
         try {
-            const restaurantId = req.query.restaurantId as string
-            const {time,date,table} = req.body
-            console.log(restaurantId)
-            const bookingConfirm = await this.bookingUsecase.confirmBooking(restaurantId,date,time,table)
-            res.status(200).json(bookingConfirm)
+            const bookingDetails = req.app.locals
+            console.log(req.body.data.object.status,'bookingDetails here')
+            if(req.body.data.object.status == 'complete'){
+                const bookingConfirm = await this.bookingUsecase.confirmBooking(bookingDetails)
+                res.status(200).json(bookingConfirm)
+            }
         } catch (error) {
             console.log(error);
         }
@@ -54,6 +55,24 @@ class BookingController{
             console.log(error);
         }
     }
+
+
+    //payment
+    async makePayment(req:Request,res:Response){
+        try {
+            const bookingDetails = req.body
+            console.log('prcie',bookingDetails)
+            req.app.locals = bookingDetails
+            await this.session.sessionSetup(req,bookingDetails);
+            const sessionDetails = req.session
+            console.log(sessionDetails)
+            const paymentDetails = await this.bookingUsecase.makePayment(bookingDetails)
+            res.status(200).json(paymentDetails)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
 
     

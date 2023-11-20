@@ -52,9 +52,11 @@ import bookingRepository from '../repository/bookingRepository'
 import BookingController from '../../adapter/bookingController'
 import BookingUsecase from '../../usecase/bookingUsecase'
 import Session from '../repository/session'
+import StripePayment from '../utils/stripe'
 
 const bookingRepo = new bookingRepository()
-const bookingUsecase = new BookingUsecase(bookingRepo)
+const stripe = new StripePayment()
+const bookingUsecase = new BookingUsecase(bookingRepo,stripe)
 const session = new Session()
 const bookingController = new BookingController(bookingUsecase,session)
 
@@ -62,6 +64,8 @@ const bookingController = new BookingController(bookingUsecase,session)
 route.get('/api/user/seatDetails',(req,res)=>bookingController.dateSeatDetails(req,res))
 route.post('/api/user/confirmBooking',(req,res)=>bookingController.confirmBooking(req,res))
 route.post('/api/user/tableCounts',(req,res)=>bookingController.tableCounts(req,res))
+
+route.post('/api/user/proceedToPayment',(req,res)=>bookingController.makePayment(req,res))
 
 
 

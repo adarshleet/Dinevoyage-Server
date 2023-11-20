@@ -10,6 +10,7 @@ export interface IBooking extends Document{
         guestMobile : string,
         time : string,
         date : string,
+        special: string,
         items : [{
             itemName : string,
             price : string
@@ -28,7 +29,7 @@ const bookingSchema:Schema = new Schema({
             type:mongoose.Schema.Types.ObjectId,
             ref : 'User'
         },
-        guestName : {
+        name : {
             type:String
         },
         guestCount:{
@@ -37,7 +38,10 @@ const bookingSchema:Schema = new Schema({
         table:{
             type:String
         },
-        guestMobile :{
+        mobile :{
+            type:String
+        },
+        special:{
             type:String
         },
         time:{
@@ -51,11 +55,11 @@ const bookingSchema:Schema = new Schema({
             default:1
         },
         items:[{
-            itemsName:{
+            item:{
                 type: String
             },
             price:{
-                type : String
+                type : Number
             },
             count:{
                 type:Number

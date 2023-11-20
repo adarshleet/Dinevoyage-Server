@@ -1,6 +1,8 @@
+import Booking from "../../domain/booking"
+
 interface BookingRepository{
     dateSeatDetails(restaurantId:string,date:string,time:string)
-    confirmBooking(restaurantId:string,date:string,time:string,table:string)
+    confirmBooking(bookingDetails:Booking)
     tableCounts(restaurantId:string,date:string,time:string)
 }
 

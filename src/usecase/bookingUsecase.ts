@@ -1,11 +1,15 @@
 import BookingRepository from "./interface/bookingRepository";
+import StripePayment from "../infrastructure/utils/stripe";
+import Booking from "../domain/booking";
 
 
 class BookingUsecase{
     private bookingRepository : BookingRepository
+    private StripePayment : StripePayment
 
-    constructor(bookingRepository : BookingRepository){
+    constructor(bookingRepository : BookingRepository,StripePayment:StripePayment){
         this.bookingRepository = bookingRepository
+        this.StripePayment = StripePayment
     }
 
 
@@ -25,9 +29,9 @@ class BookingUsecase{
     }
 
 
-    async confirmBooking(restaurantId:string,date:string,time:string,table:string){
+    async confirmBooking(bookingDetails:Booking){
         try {
-            const bookingConfirm = await this.bookingRepository.confirmBooking(restaurantId,date,time,table)
+            const bookingConfirm = await this.bookingRepository.confirmBooking(bookingDetails)
             return{
                 status:200,
                 data:bookingConfirm
@@ -47,6 +51,22 @@ class BookingUsecase{
             return{
                 status:200,
                 data:seatCounts
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    async makePayment(bookingDetails:Booking){
+        try {
+            const totalPrice = bookingDetails?.total as number
+            console.log(totalPrice)
+            const paymentDetails = await this.StripePayment.makePayment(totalPrice);
+            console.log(paymentDetails)
+            return{
+                status:200,
+                data : paymentDetails
             }
         } catch (error) {
             console.log(error)

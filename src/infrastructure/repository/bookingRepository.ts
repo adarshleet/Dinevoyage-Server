@@ -2,6 +2,7 @@ import bookingModel from "../database/bookingsModel";
 import BookingRepository from "../../usecase/interface/bookingRepository";
 import { Types } from 'mongoose';
 import restaurantModel from "../database/restaurantModel";
+import Booking from "../../domain/booking";
 
 interface TableCounts {
     [key: string]: number;
@@ -16,9 +17,10 @@ class bookingRepository implements BookingRepository {
         }
     }
 
-    async confirmBooking(restaurantId: string, date: string, time: string, table: string) {
+    async confirmBooking(bookingDetails:Booking) {
         try {
-            const bookingConfirm = await bookingModel.updateOne({ restaurantId }, { $push: { bookings: { date, time, table } } }, { upsert: true })
+            const restaurantId = bookingDetails.restaurantId
+            const bookingConfirm = await bookingModel.updateOne({ restaurantId }, { $push: { bookings: bookingDetails } }, { upsert: true })
             return bookingConfirm
         } catch (error) {
             console.log(error);

@@ -2,7 +2,7 @@ import { ObjectId } from "mongoose"
 
 interface Booking{
     // _id ?: ObjectId,
-    // restaurantId ?: ObjectId,
+    restaurantId ?: string,
     // bookings ?:{
         user ?:ObjectId,
         guestName ?: string,
@@ -10,9 +10,11 @@ interface Booking{
         guestMobile ?: string,
         time ?: string,
         date ?: string,
+        total ?: number, 
         items ?: {
             itemName ?: string,
-            price ?: string
+            price ?: number,
+            count ?: number
         }
     // }
 }
