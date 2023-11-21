@@ -60,10 +60,8 @@ class BookingUsecase{
 
     async makePayment(bookingDetails:Booking){
         try {
-            const totalPrice = bookingDetails?.total as number
-            console.log(totalPrice)
+            const totalPrice = bookingDetails?.totalAmount as number
             const paymentDetails = await this.StripePayment.makePayment(totalPrice);
-            console.log(paymentDetails)
             return{
                 status:200,
                 data : paymentDetails
@@ -73,6 +71,75 @@ class BookingUsecase{
         }
     }
 
+
+
+    //all booking for user
+    async userBookings(userId:string){
+        try {
+            const bookings = await this.bookingRepository.userBookings(userId)
+            return{
+                status:200,
+                data:bookings
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
+
+    //user booking cancellation
+    async userBookingCancellation(bookingId:string,reason:string){
+        try {
+            const bookingStatus = await this.bookingRepository.userBookingCancellation(bookingId,reason)
+            return{
+                status:200,
+                data:bookingStatus
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
+
+
+    //admin
+    //all bookings
+    async allBookings(restaurantId:string){
+        try {
+            const allBookingDetails = await this.bookingRepository.allBookings(restaurantId)
+            return{
+                status:200,
+                data:allBookingDetails
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
+    //change booking status
+    async changeBookingStatus(bookingId:string,reason:string){
+        try {
+            const bookingStatus = await this.bookingRepository.changeBookingStatus(bookingId,reason)
+            return{
+                status:200,
+                data:bookingStatus
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
 
 }
 

@@ -10,7 +10,7 @@ interface Booking{
         guestMobile ?: string,
         time ?: string,
         date ?: string,
-        total ?: number, 
+        totalAmount ?: number, 
         items ?: {
             itemName ?: string,
             price ?: number,

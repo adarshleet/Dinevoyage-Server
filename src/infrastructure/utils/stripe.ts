@@ -6,7 +6,6 @@ import IStripe from "../../usecase/interface/stripe";
 
 class StripePayment implements IStripe{
     async makePayment(totalPrice:number) {
-        console.log('here')
         const lineItems = [{
             price_data: {
                 currency: 'inr',

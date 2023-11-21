@@ -17,7 +17,7 @@ class bookingRepository implements BookingRepository {
         }
     }
 
-    async confirmBooking(bookingDetails:Booking) {
+    async confirmBooking(bookingDetails: Booking) {
         try {
             const restaurantId = bookingDetails.restaurantId
             const bookingConfirm = await bookingModel.updateOne({ restaurantId }, { $push: { bookings: bookingDetails } }, { upsert: true })
@@ -41,8 +41,8 @@ class bookingRepository implements BookingRepository {
                 {
                     $match: {
                         'bookings.table': { $exists: true },
-                        'bookings.date' : date,
-                        'bookings.time' : time
+                        'bookings.date': date,
+                        'bookings.time': time
                     }
                 },
                 {
@@ -65,21 +65,21 @@ class bookingRepository implements BookingRepository {
             console.log(restaurantDetails?.tableCounts, seatCounts)
 
             if (restaurantDetails) {
-            
+
                 const tableCounts = restaurantDetails.tableCounts as TableCounts | undefined;
-            
+
                 const calculateDifference = (): { [key: string]: number } => {
                     const difference: { [key: string]: number } = {};
-                
+
                     // Initialize difference with all possible table types and their full counts
                     Object.keys(tableCounts || {}).forEach((tableType) => {
                         // Assuming tableCounts values are meant to be numbers, convert them
-                        let fullCount:any = (tableCounts?.[tableType] as number) || 0;
+                        let fullCount: any = (tableCounts?.[tableType] as number) || 0;
                         fullCount = parseInt(fullCount)
 
                         difference[tableType] = fullCount;
                     });
-                
+
                     seatCounts.forEach((item) => {
                         const tableType = item.table;
                         const countFromDict = tableCounts?.[tableType] || 0;
@@ -87,12 +87,12 @@ class bookingRepository implements BookingRepository {
                         // Subtract the count from seatCounts
                         difference[tableType] -= countFromList;
                     });
-                
+
                     return difference;
                 };
                 // Calculate the difference
                 const result = calculateDifference();
-            
+
                 // Print the difference
                 console.log(result);
                 return result
@@ -101,6 +101,73 @@ class bookingRepository implements BookingRepository {
             }
         } catch (error) {
             console.log(error);
+        }
+    }
+
+
+    //user bookings
+    async userBookings(userId: string) {
+        try {
+            const bookings = await bookingModel.find({'bookings.user':userId}).populate('restaurantId')
+            console.log(bookings)
+            return bookings
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    //user booking cancellation
+    async userBookingCancellation(bookingId: string,reason:string) {
+        try {
+            const bookingStatus = await bookingModel.findOneAndUpdate(
+                {
+                    'bookings._id': bookingId
+                },
+                {
+                    $set: { 'bookings.$.orderStatus': 3,'bookings.$.cancelReason':reason }
+                },
+                { new: true }
+            );
+            return bookingStatus
+        } catch (error) {
+            console.log(error)
+        }    
+    }
+
+
+
+
+
+
+
+    //admin
+    //all booking lists
+    async allBookings(restaurantId: string) {
+        try {
+            const allBookingDetails = await bookingModel.findOne({ restaurantId })
+            console.log(allBookingDetails)
+            return allBookingDetails
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    //change booking status
+    async changeBookingStatus(bookingId: string,reason:string) {
+        try {
+            const bookingStatus = await bookingModel.findOneAndUpdate(
+                {
+                    'bookings._id': bookingId
+                },
+                {
+                    $set: { 'bookings.$.orderStatus': 2,'bookings.$.cancelReason':reason }
+                },
+                { new: true }
+            );
+            return bookingStatus
+        } catch (error) {
+            console.log(error)
         }
     }
 }

@@ -11,10 +11,12 @@ export interface IBooking extends Document{
         time : string,
         date : string,
         special: string,
+        cancelReason : string,
         items : [{
             itemName : string,
             price : string
-        }]
+        }],
+        totalAmount : number
     }]
 }
 
@@ -54,6 +56,9 @@ const bookingSchema:Schema = new Schema({
             type:Number,
             default:1
         },
+        cancelReason:{
+            type:String
+        },
         items:[{
             item:{
                 type: String
@@ -64,7 +69,10 @@ const bookingSchema:Schema = new Schema({
             count:{
                 type:Number
             }
-        }]
+        }],
+        totalAmount : {
+            type: Number
+        }
     }]
 })
 

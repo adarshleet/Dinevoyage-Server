@@ -66,6 +66,8 @@ route.post('/api/user/confirmBooking',(req,res)=>bookingController.confirmBookin
 route.post('/api/user/tableCounts',(req,res)=>bookingController.tableCounts(req,res))
 
 route.post('/api/user/proceedToPayment',(req,res)=>bookingController.makePayment(req,res))
+route.get('/api/user/allbookings',(req,res)=>bookingController.userBookings(req,res))
+route.put('/api/user/cancelBooking',(req,res)=>bookingController.userBookingCancellation(req,res))
 
 
 

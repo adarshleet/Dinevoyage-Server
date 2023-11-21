@@ -63,6 +63,7 @@ class userController {
                     maxAge: 30 * 24 * 60 * 60 * 1000
                 });
             }
+            
             res.status(loginStatus.status).json(loginStatus)
         } catch (error) {
             console.log(error)

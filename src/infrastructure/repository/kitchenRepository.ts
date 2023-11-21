@@ -54,6 +54,7 @@ class kitchenRepository implements KitchenRepository {
                 {
                   $match: {
                     "items.isListed": true,
+                    // "items.veg": true
                   }
                 },
                 {
