@@ -127,11 +127,50 @@ class RestaurantUsecase {
                 data:selectedCuisinesAndFacilities
             }
         } catch (error) {
-            console.log(error)
+            return{
+                status:400,
+                data:error
+            }
         }
     }
 
 
+    //restauarnt details for editing
+    async getRestaurantDetails(restauarantId:string){
+        try {
+            const restauarantDetails = await this.restaurantRepository.getRestaurantDetails(restauarantId)
+            return{
+                status:200,
+                data:restauarantDetails
+            } 
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
+
+    //remove banner
+    async removeRestaurantBanner(restaurantId:string,image:string){
+        try {
+            const removeBanner = this.restaurantRepository.removeRestaurantBanner(restaurantId,image)
+            return{
+                status:200,
+                data:removeBanner
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
+
+
+    //User
     //searching restaurant
     async searchRestaurants(searcQuery:string){
         try {

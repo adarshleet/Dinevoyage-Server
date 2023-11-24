@@ -43,6 +43,8 @@ route.get('/api/vendor/getRestaurant',(protect),(req,res)=>restaurantControll.re
 route.post('/api/vendor/selectCuisines',(protect),(req,res)=>restaurantControll.selectCuisines(req,res))
 route.post('/api/vendor/selectFacilities',(protect),(req,res)=>restaurantControll.selectFacilities(req,res))
 route.get('/api/vendor/selectedCuisinesAndFacilities',(protect),(req,res)=>restaurantControll.selectedCuisinesAndFacilities(req,res))
+route.get('/api/vendor/getRestaurantDetails',(req,res)=>restaurantControll.getRestaurantDetails(req,res))
+route.put('/api/vendor/deleteBanner',(req,res)=>restaurantControll.removeRestaurantBanner(req,res))
 
 
 //------------------------------------------------------------------------------------------------------------------------//

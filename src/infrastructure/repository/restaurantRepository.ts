@@ -55,12 +55,33 @@ class restaurantRepository implements RestaurantRepository {
 
     //already selected cuisines for showing
     async selectedCuisinesAndFacilities(id: string) {
-        console.log(id)
         const selectedCuisines = await restaurantModel.find({ vendorId: id, status: { $gt: 3 } })
         return selectedCuisines
     }
 
+    async getRestaurantDetails(restauarantId: string) {
+        try {
+            const restauarantDetails =  await restaurantModel.findOne({_id:restauarantId})
+            return restauarantDetails
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
+
+    //remove restaurant banner
+    async removeRestaurantBanner(restauarantId: string, image: string) {
+        try {
+            const removeBanner = await restaurantModel.findByIdAndUpdate(restauarantId,{$pull:{banners:image}})
+            return removeBanner
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+
+    //user
     //search restaurants
     async searchRestaurant(searchQuery: string) {
         try {

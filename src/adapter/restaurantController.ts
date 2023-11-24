@@ -151,6 +151,32 @@ class restaurantController{
     }
 
 
+    async getRestaurantDetails(req:Request,res:Response){
+        try {
+            const restaurantId = req.query.restaurantId as string
+            const restauarantDetails = await this.restaurantUsecase.getRestaurantDetails(restaurantId)
+            res.status(200).json(restauarantDetails)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    //remove banner
+    async removeRestaurantBanner(req:Request,res:Response){
+        try {
+            const restaurantId = req.query.restaurantId as string
+            const image = req.query.image as string
+            const removeBanner = await this.restaurantUsecase.removeRestaurantBanner(restaurantId,image)
+            res.status(200).json(removeBanner)
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    //user
     //search restaurants
     async searchRestaurants(req:Request,res:Response){
         try {
