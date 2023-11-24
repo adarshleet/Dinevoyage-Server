@@ -10,6 +10,9 @@ interface RestaurantRepository{
     selectRestaurantCuisines(id:string,selectedCuisines:Array<string>)
     selectRestaurantFacilities(id:string,selectedFacilities:Array<string>)
     selectedCuisinesAndFacilities(id:string)
+
+    searchRestaurant(searchQuery:string)
+    filterRestaurant(cuisines:Array<string>,facilities:Array<string>)
 }
 
 export default RestaurantRepository

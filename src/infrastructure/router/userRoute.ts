@@ -62,12 +62,30 @@ const bookingController = new BookingController(bookingUsecase,session)
 
 
 route.get('/api/user/seatDetails',(req,res)=>bookingController.dateSeatDetails(req,res))
-route.post('/api/user/confirmBooking',(req,res)=>bookingController.confirmBooking(req,res))
 route.post('/api/user/tableCounts',(req,res)=>bookingController.tableCounts(req,res))
 
-route.post('/api/user/proceedToPayment',(req,res)=>bookingController.makePayment(req,res))
-route.get('/api/user/allbookings',(req,res)=>bookingController.userBookings(req,res))
-route.put('/api/user/cancelBooking',(req,res)=>bookingController.userBookingCancellation(req,res))
+route.post('/api/user/confirmBooking',(req,res)=>bookingController.confirmBooking(req,res))
+route.post('/api/user/proceedToPayment',(protect),(req,res)=>bookingController.makePayment(req,res))
+route.get('/api/user/allbookings',(protect),(req,res)=>bookingController.userBookings(req,res))
+route.put('/api/user/cancelBooking',(protect),(req,res)=>bookingController.userBookingCancellation(req,res))
+
+//--------------------------------------------------------------------------------------------------------//
+
+//restaurant details for user
+import restaurantRepository from '../repository/restaurantRepository'
+import restaurantController from '../../adapter/restaurantController'
+import RestaurantUsecase from '../../usecase/restaurantUsecase'
+import Cloudinary from '../utils/cloudinary'
+
+
+const restaurantRepo = new restaurantRepository()
+const cloudinary = new Cloudinary()
+const restaurantusecase = new RestaurantUsecase(restaurantRepo,cloudinary)
+const restaurantControll = new restaurantController(restaurantusecase)
+
+
+route.get('/api/user/search',(req,res)=>restaurantControll.searchRestaurants(req,res))
+route.post('/api/user/filterRestaurants',(req,res)=>restaurantControll.filterRestaurants(req,res))
 
 
 

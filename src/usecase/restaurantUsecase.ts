@@ -131,6 +131,40 @@ class RestaurantUsecase {
         }
     }
 
+
+    //searching restaurant
+    async searchRestaurants(searcQuery:string){
+        try {
+            const searchResults = await this.restaurantRepository.searchRestaurant(searcQuery)
+            return{
+                status:200,
+                data:searchResults
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
+
+    //filter restaurant
+    async filterRestaurants(cuisines:string[],facilities:string[]){
+        try {
+            const restaurants = await this.restaurantRepository.filterRestaurant(cuisines,facilities)
+            return{
+                status:200,
+                data :restaurants
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
 }
 
 export default RestaurantUsecase

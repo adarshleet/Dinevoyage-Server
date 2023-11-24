@@ -28,6 +28,7 @@ class BookingController{
 
     async confirmBooking(req:Request,res:Response){
         try {
+            console.log('hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeere')
             const bookingDetails = req.app.locals
             if(req.body.data.object.status == 'complete'){
                 const bookingConfirm = await this.bookingUsecase.confirmBooking(bookingDetails)

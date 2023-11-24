@@ -151,6 +151,30 @@ class restaurantController{
     }
 
 
+    //search restaurants
+    async searchRestaurants(req:Request,res:Response){
+        try {
+            const searchQuery = req.query.search as string
+            const searchResults = await this.restaurantUsecase.searchRestaurants(searchQuery)
+            res.status(200).json(searchResults)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    //filter restaurants
+    async filterRestaurants(req:Request,res:Response){
+        try {
+            const {cuisines,facilities} = req.body
+            console.log(cuisines,facilities)
+            const restauarants = await this.restaurantUsecase.filterRestaurants(cuisines,facilities)
+            res.status(200).json(restauarants)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
 }
 
 export default restaurantController
