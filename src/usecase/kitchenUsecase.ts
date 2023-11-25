@@ -1,18 +1,25 @@
 import Kitchen from "../domain/kitchen";
 import KitchenRepository from "./interface/kitchenRepository";
+import Cloudinary from "../infrastructure/utils/cloudinary";
 
 
 class KitchenUsecase {
     private KitchenRepository: KitchenRepository
+    private cloudinary : Cloudinary
 
-    constructor(KitchenRepository: KitchenRepository) {
+    constructor(KitchenRepository: KitchenRepository,cloudinary : Cloudinary) {
         this.KitchenRepository = KitchenRepository
+        this.cloudinary = cloudinary
     }
 
 
     async addItem(restauarantId: string, item: Kitchen) {
         try {
+
+            item.image = await this.cloudinary.saveToCloudinary(item.image);
+
             const itemAdd = await this.KitchenRepository.addItem(restauarantId, item)
+            item.image = itemAdd
             return {
                 status: 200,
                 data: itemAdd
@@ -36,6 +43,41 @@ class KitchenUsecase {
     }
 
 
+    //edit item details
+    async editItem(itemId:string,itemData:Kitchen,image:Object|undefined){
+        try {
+            if(image){
+                itemData.image = await this.cloudinary.saveToCloudinary(image);
+            }
+            const itemEditStatus = await this.KitchenRepository.editItem(itemId,itemData)
+            return{
+                status:200,
+                data:itemEditStatus
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
+
+    async changeItemStatus(itemId:string){
+        try {
+            const item = await this.KitchenRepository.changeItemStatus(itemId)
+            return{
+                status:200,
+                data:item
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
 
     //User
     //viewing items for ordering
@@ -55,9 +97,9 @@ class KitchenUsecase {
     }
 
 
-    async allKitchenItems(restauarantId:string){
+    async allKitchenItems(restauarantId:string,veg:boolean){
         try {
-            const kitchenAllItems = await this.KitchenRepository.kitchenAllItems(restauarantId)
+            const kitchenAllItems = await this.KitchenRepository.kitchenAllItems(restauarantId,veg)
             return{
                 status:200,
                 data:kitchenAllItems

@@ -4,7 +4,8 @@ interface Kitchen{
     category ?: string,
     price ?: string,
     description ?: string,
-    isListed ?: boolean
+    isListed ?: boolean,
+    image :string
 }
 
 export default Kitchen

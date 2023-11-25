@@ -28,6 +28,9 @@ const kitchenSchema:Schema = new Schema({
             type:Boolean,
             default:false
         },
+        image:{
+            type:String
+        },
         description:{
             type:String
         },

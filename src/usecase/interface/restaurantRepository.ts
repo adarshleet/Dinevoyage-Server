@@ -12,6 +12,7 @@ interface RestaurantRepository{
     selectRestaurantFacilities(id:string,selectedFacilities:Array<string>)
     selectedCuisinesAndFacilities(id:string)
     removeRestaurantBanner(restauarantId:string,image:string)
+    editRestaurant(restaurantId:string,restaurantDetails:Restaurant)
 
     searchRestaurant(searchQuery:string)
     filterRestaurant(cuisines:Array<string>,facilities:Array<string>)

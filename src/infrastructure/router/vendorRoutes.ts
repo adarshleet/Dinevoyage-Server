@@ -45,6 +45,7 @@ route.post('/api/vendor/selectFacilities',(protect),(req,res)=>restaurantControl
 route.get('/api/vendor/selectedCuisinesAndFacilities',(protect),(req,res)=>restaurantControll.selectedCuisinesAndFacilities(req,res))
 route.get('/api/vendor/getRestaurantDetails',(req,res)=>restaurantControll.getRestaurantDetails(req,res))
 route.put('/api/vendor/deleteBanner',(req,res)=>restaurantControll.removeRestaurantBanner(req,res))
+route.put('/api/vendor/editRestaurant',multerMid.array('image'),(req,res)=>restaurantControll.editRestaurant(req,res))
 
 
 //------------------------------------------------------------------------------------------------------------------------//
@@ -76,12 +77,13 @@ import KitchenUsecase from '../../usecase/kitchenUsecase'
 import KitchenController from '../../adapter/kitchenController'
 
 const KitchenRepository = new kitchenRepository()
-const kitchenUsecase = new KitchenUsecase(KitchenRepository)
+const kitchenUsecase = new KitchenUsecase(KitchenRepository,cloudinary)
 const kitchenController = new KitchenController(kitchenUsecase)
 
-route.post('/api/vendor/addItem',(protect),(req,res)=>kitchenController.addItem(req,res))
+route.post('/api/vendor/addItem',(protect),multerMid.single('image'),(req,res)=>kitchenController.addItem(req,res))
 route.get('/api/vendor/viewItems',(protect),(req,res)=>kitchenController.viewItems(req,res))
-
+route.patch('/api/vendor/editItem',multerMid.single('image'),(req,res)=>kitchenController.editItem(req,res))
+route.put('/api/vendor/changeItemStatus',(req,res)=>kitchenController.changeItemStatus(req,res))
 
 
 export default route

@@ -2,6 +2,9 @@ import express from 'express'
 const route = express.Router()
 import { protect } from '../middlewares/userAuth'
 
+
+
+
 //----------------------------------------------------------------------------------------------------------
 
 import userController from '../../adapter/userController'
@@ -36,9 +39,11 @@ route.get('/api/user/singleRestaurant',(req,res)=>controller.singleRestaurant(re
 import KitchenController from '../../adapter/kitchenController'
 import KitchenUsecase from '../../usecase/kitchenUsecase'
 import kitchenRepository from '../repository/kitchenRepository'
+import CloudinaryM from '../utils/cloudinary'
 
+const cloudinaryM = new CloudinaryM()
 const kitchenRepo = new kitchenRepository()
-const kitchenUsecase = new KitchenUsecase(kitchenRepo)
+const kitchenUsecase = new KitchenUsecase(kitchenRepo,cloudinaryM)
 const kitchenController = new KitchenController(kitchenUsecase)
 
 
@@ -76,10 +81,9 @@ import restaurantRepository from '../repository/restaurantRepository'
 import restaurantController from '../../adapter/restaurantController'
 import RestaurantUsecase from '../../usecase/restaurantUsecase'
 import Cloudinary from '../utils/cloudinary'
-
+const cloudinary = new Cloudinary()
 
 const restaurantRepo = new restaurantRepository()
-const cloudinary = new Cloudinary()
 const restaurantusecase = new RestaurantUsecase(restaurantRepo,cloudinary)
 const restaurantControll = new restaurantController(restaurantusecase)
 

@@ -80,6 +80,27 @@ class restaurantRepository implements RestaurantRepository {
     }
 
 
+    //edit restaurant details
+    async editRestaurant(restaurantId: string, restaurantDetails: Restaurant) {
+        try {
+
+            let { banners, ...restDetailsWithoutBanners } = restaurantDetails;
+            if(!banners){
+                banners = []
+            }
+            const editedRestauarantStatus = await restaurantModel.findByIdAndUpdate(restaurantId,
+                {$set:{...restDetailsWithoutBanners},
+                $push:{banners:{$each:banners}}},
+                {new:true}
+            )
+
+            return editedRestauarantStatus
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
 
     //user
     //search restaurants

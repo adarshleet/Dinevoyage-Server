@@ -16,21 +16,48 @@ class kitchenRepository implements KitchenRepository {
     }
 
 
+    async editItem(itemId: string, itemData: Kitchen) {
+        try {
+            //if no image selected. assigning old image
+            if (!itemData.image) {
+                const item = await kitchenModel.findOne({ 'items._id': itemId }, { 'items.$': 1, _id: 0 }) as { items: [{ image: string }] }
+                if (item && item.items.length > 0) {
+                    const image = item.items[0].image;
+                    itemData.image = image;
+                }
+            }
+            const itemEditStatus = await kitchenModel.updateOne({ 'items._id': itemId }, { $set: { 'items.$': itemData } })
+            return itemEditStatus
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    async changeItemStatus(itemId: string) {
+        try {
+            const item = await kitchenModel.findOne({ 'items._id': itemId }, { 'items.$': 1, _id: 0 }) as { items: [{ isListed: boolean }] }
+            let status
+            if (item && item.items.length > 0) {
+                status = item.items[0].isListed;
+            }
+
+            const itemStatus = await kitchenModel.updateOne({'items._id':itemId},{$set:{'items.$.isListed':!status}})
+            return itemStatus
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
     //User
     //viewing items for booking
     async allItems(restaurantId: string) {
         try {
             console.log(restaurantId)
-            const result = await kitchenModel.findOne({restaurantId}).populate('items.category')
-            // const groupedItems = result?.items.reduce((grouped, item) => {
-            //     const category = item.category.category;
-            //     if (!grouped[category]) {
-            //         grouped[category] = [];
-            //     }
-            //     grouped[category].push(item);
-            //     return grouped;
-            // }, {});
+            const result = await kitchenModel.findOne({ restaurantId }).populate('items.category')
+
             console.log(result)
             return result
         } catch (error) {
@@ -40,62 +67,77 @@ class kitchenRepository implements KitchenRepository {
 
 
     //in the booking page
-    async kitchenAllItems(restaurantId: string) {
+    async kitchenAllItems(restaurantId: string, veg: boolean) {
         try {
+
+            let query
+
+            if (veg == true) {
+                query = {
+                    $match: {
+                        "items.isListed": true,
+                        "items.veg": veg
+                    }
+                }
+            }
+            else {
+                query = {
+                    $match: {
+                        "items.isListed": true
+                    }
+                }
+            }
+
             const allKitchenItems = await kitchenModel.aggregate([
                 {
-                  $match: {
-                    "restaurantId": new Types.ObjectId(restaurantId)
-                  }
-                },
-                {
-                  $unwind: "$items"
-                },
-                {
-                  $match: {
-                    "items.isListed": true,
-                    // "items.veg": true
-                  }
-                },
-                {
-                  $group: {
-                    _id: "$items.category",
-                    items: {
-                      $push: {
-                        itemName: "$items.itemName",
-                        price: "$items.price",
-                        description: "$items.description",
-                        _id: "$items._id"
-                      }
-                    }
-                  }
-                },
-                {
-                  $lookup: {
-                    from: "categories", // Replace with your actual collection name
-                    localField: "_id",
-                    foreignField: "_id",
-                    as: "categoryDetails"
-                  }
-                },
-                {
-                  $unwind: "$categoryDetails"
-                },
-                {
-                    $match:{
-                        "categoryDetails.isListed" : true
+                    $match: {
+                        "restaurantId": new Types.ObjectId(restaurantId)
                     }
                 },
                 {
-                  $project: {
-                    _id: 0,
-                    category: "$categoryDetails.category",
-                    items: 1
-                  }
+                    $unwind: "$items"
+                },
+                query
+                ,
+                {
+                    $group: {
+                        _id: "$items.category",
+                        items: {
+                            $push: {
+                                itemName: "$items.itemName",
+                                price: "$items.price",
+                                description: "$items.description",
+                                image: "$items.image",
+                                _id: "$items._id"
+                            }
+                        }
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "categories", // Replace with your actual collection name
+                        localField: "_id",
+                        foreignField: "_id",
+                        as: "categoryDetails"
+                    }
+                },
+                {
+                    $unwind: "$categoryDetails"
+                },
+                {
+                    $match: {
+                        "categoryDetails.isListed": true
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        category: "$categoryDetails.category",
+                        items: 1
+                    }
                 }
-              ])
-              return allKitchenItems
-              console.log(allKitchenItems)
+            ])
+            return allKitchenItems
         } catch (error) {
             console.log(error);
         }

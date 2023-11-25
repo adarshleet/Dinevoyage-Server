@@ -13,7 +13,7 @@ class RestaurantUsecase {
     async addRestaurant(restaurantData: Restaurant) {
         try {
             const uploadedBanners = await Promise.all(
-                restaurantData.banners.map(async (file:any) => {
+                restaurantData.banners.map(async (file: any) => {
                     return await this.cloudinary.saveToCloudinary(file);
                 })
             );
@@ -34,26 +34,26 @@ class RestaurantUsecase {
 
 
 
-    async vendorRestaurant(vendorId:string){
+    async vendorRestaurant(vendorId: string) {
         try {
             const restaurant = await this.restaurantRepository.vendorRestaurant(vendorId)
-            return{
-                status:200,
-                data:restaurant
+            return {
+                status: 200,
+                data: restaurant
             }
         } catch (error) {
             console.log(error);
-            
+
         }
     }
 
 
-    async restaurantRequests(){
+    async restaurantRequests() {
         try {
             const restaurantRequests = await this.restaurantRepository.restaurantRequests()
-            return{
-                status:200,
-                data:restaurantRequests
+            return {
+                status: 200,
+                data: restaurantRequests
             }
         } catch (error) {
             console.log(error)
@@ -62,12 +62,12 @@ class RestaurantUsecase {
 
 
     //single restaurant request
-    async singleRestaurantRequest(restaurantId:string){
+    async singleRestaurantRequest(restaurantId: string) {
         try {
             const restaurantData = await this.restaurantRepository.singleRestaurantRequest(restaurantId)
-            return{
-                status:200,
-                data:restaurantData
+            return {
+                status: 200,
+                data: restaurantData
             }
         } catch (error) {
             console.log(error)
@@ -76,12 +76,12 @@ class RestaurantUsecase {
 
 
     //change restaurant status
-    async changeRestaurantStatus(id:string,status:number){
+    async changeRestaurantStatus(id: string, status: number) {
         try {
-            const restaurantStatus = await this.restaurantRepository.changeRestaurantStatus(id,status)
-            return{
-                status:200,
-                data:restaurantStatus
+            const restaurantStatus = await this.restaurantRepository.changeRestaurantStatus(id, status)
+            return {
+                status: 200,
+                data: restaurantStatus
             }
         } catch (error) {
             console.log(error)
@@ -90,11 +90,11 @@ class RestaurantUsecase {
 
 
     //changing restaurant cuisines by vendor
-    async selectCuisines(id:string,cuisines:Array<string>){
+    async selectCuisines(id: string, cuisines: Array<string>) {
         try {
-            const selectedCuisines = await this.restaurantRepository.selectRestaurantCuisines(id,cuisines)
-            return{
-                status:200,
+            const selectedCuisines = await this.restaurantRepository.selectRestaurantCuisines(id, cuisines)
+            return {
+                status: 200,
                 data: selectedCuisines
             }
         } catch (error) {
@@ -104,12 +104,12 @@ class RestaurantUsecase {
 
 
     //changing restaurant facilities by vendor
-    async selectFacilities(id:string,facilities:Array<string>){
+    async selectFacilities(id: string, facilities: Array<string>) {
         try {
-            const selectedFacilities = await this.restaurantRepository.selectRestaurantFacilities(id,facilities)
-            return{
-                status:200,
-                data:selectedFacilities
+            const selectedFacilities = await this.restaurantRepository.selectRestaurantFacilities(id, facilities)
+            return {
+                status: 200,
+                data: selectedFacilities
             }
         } catch (error) {
             console.log(error);
@@ -119,51 +119,79 @@ class RestaurantUsecase {
 
 
     //already selected cuisines and facilities
-    async selectedCuisinesAndFacilities(id:string){
+    async selectedCuisinesAndFacilities(id: string) {
         try {
             const selectedCuisinesAndFacilities = await this.restaurantRepository.selectedCuisinesAndFacilities(id)
-            return{
-                status:200,
-                data:selectedCuisinesAndFacilities
+            return {
+                status: 200,
+                data: selectedCuisinesAndFacilities
             }
         } catch (error) {
-            return{
-                status:400,
-                data:error
+            return {
+                status: 400,
+                data: error
             }
         }
     }
 
 
     //restauarnt details for editing
-    async getRestaurantDetails(restauarantId:string){
+    async getRestaurantDetails(restauarantId: string) {
         try {
             const restauarantDetails = await this.restaurantRepository.getRestaurantDetails(restauarantId)
-            return{
-                status:200,
-                data:restauarantDetails
-            } 
+            return {
+                status: 200,
+                data: restauarantDetails
+            }
         } catch (error) {
-            return{
-                status:400,
-                data:error
+            return {
+                status: 400,
+                data: error
             }
         }
     }
 
 
     //remove banner
-    async removeRestaurantBanner(restaurantId:string,image:string){
+    async removeRestaurantBanner(restaurantId: string, image: string) {
         try {
-            const removeBanner = this.restaurantRepository.removeRestaurantBanner(restaurantId,image)
-            return{
-                status:200,
-                data:removeBanner
+            const removeBanner = this.restaurantRepository.removeRestaurantBanner(restaurantId, image)
+            return {
+                status: 200,
+                data: removeBanner
             }
         } catch (error) {
-            return{
-                status:400,
-                data:error
+            return {
+                status: 400,
+                data: error
+            }
+        }
+    }
+
+
+    //edit restaurant details
+    async editRestaurant(restaurantId: string, restaurantDetails: Restaurant) {
+        try {
+            if (restaurantDetails.banners) {
+                const uploadedBanners = await Promise.all(
+                    restaurantDetails.banners.map(async (file: any) => {
+                        return await this.cloudinary.saveToCloudinary(file);
+                    })
+                );
+                console.log(uploadedBanners)
+                restaurantDetails.banners = uploadedBanners
+            }
+            
+
+            const editedRestauarantStatus = await this.restaurantRepository.editRestaurant(restaurantId, restaurantDetails)
+            return {
+                status: 200,
+                data: editedRestauarantStatus
+            }
+        } catch (error) {
+            return {
+                status: 400,
+                data: error
             }
         }
     }
@@ -172,34 +200,34 @@ class RestaurantUsecase {
 
     //User
     //searching restaurant
-    async searchRestaurants(searcQuery:string){
+    async searchRestaurants(searcQuery: string) {
         try {
             const searchResults = await this.restaurantRepository.searchRestaurant(searcQuery)
-            return{
-                status:200,
-                data:searchResults
+            return {
+                status: 200,
+                data: searchResults
             }
         } catch (error) {
-            return{
-                status:400,
-                data:error
+            return {
+                status: 400,
+                data: error
             }
         }
     }
 
 
     //filter restaurant
-    async filterRestaurants(cuisines:string[],facilities:string[]){
+    async filterRestaurants(cuisines: string[], facilities: string[]) {
         try {
-            const restaurants = await this.restaurantRepository.filterRestaurant(cuisines,facilities)
-            return{
-                status:200,
-                data :restaurants
+            const restaurants = await this.restaurantRepository.filterRestaurant(cuisines, facilities)
+            return {
+                status: 200,
+                data: restaurants
             }
         } catch (error) {
-            return{
-                status:400,
-                data:error
+            return {
+                status: 400,
+                data: error
             }
         }
     }

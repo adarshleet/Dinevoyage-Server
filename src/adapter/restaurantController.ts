@@ -35,7 +35,6 @@ class restaurantController{
             }
 
             const restaurantAdd = await this.restaurantUsecase.addRestaurant(restaurantData)
-            console.log('statas',restaurantAdd)
             res.status(200).json(restaurantAdd);
             
         } catch (error) {
@@ -54,7 +53,6 @@ class restaurantController{
             }
 
             const restaurant = await this.restaurantUsecase.vendorRestaurant(vendorId)
-            console.log(restaurant)
             res.status(200).json(restaurant)
 
         } catch (error) {
@@ -67,7 +65,6 @@ class restaurantController{
     async restaurantRequests(req:Request,res:Response){
         try {
             const restaurantRequests = await this.restaurantUsecase.restaurantRequests()
-            console.log(restaurantRequests)
             res.status(200).json(restaurantRequests)
         } catch (error) {
             console.log(error)
@@ -79,9 +76,7 @@ class restaurantController{
     async singleRestaurantRequest(req:Request,res:Response){
         try {
             const restaurantId = req.params.id as string
-            // console.log(restaurantId)
             const restaurantData = await this.restaurantUsecase.singleRestaurantRequest(restaurantId);
-            // console.log(restaurantData)
             res.status(200).json(restaurantData)
         } catch (error) {
             console.log(error)
@@ -95,7 +90,6 @@ class restaurantController{
             const id = req.query.id as string
             let status = parseInt(req.query.status as string)
             const restaurantStatus = await this.restaurantUsecase.changeRestaurantStatus(id,status)
-            console.log(restaurantStatus)
             res.status(200).json(restaurantStatus)
         } catch (error) {
             console.log(error)
@@ -121,9 +115,7 @@ class restaurantController{
         try {
             const facilities = req.body.facilities
             const id = req.query.restaurantId as string
-            console.log(facilities,id)
             const facilitiesSelected = await this.restaurantUsecase.selectFacilities(id,facilities)
-            console.log(facilitiesSelected)
             res.status(200).json(facilitiesSelected)
         } catch (error) {
             console.log(error)
@@ -143,7 +135,6 @@ class restaurantController{
             }
             console.log('here',id)
             const selectedCuisinesAndFacilities = await this.restaurantUsecase.selectedCuisinesAndFacilities(id)
-            console.log(selectedCuisinesAndFacilities)
             res.status(200).json(selectedCuisinesAndFacilities)
         } catch (error) {
             console.log(error)
@@ -176,6 +167,22 @@ class restaurantController{
     }
 
 
+
+    //edit restaurant details
+    async editRestaurant(req:Request,res:Response){
+        try {
+            const restaurantId = req.query.restaurantId as string
+            let restauarantDetails = req.body
+            const banners =  req.files
+            restauarantDetails.banners = banners
+            const editedRestauarantStatus = await this.restaurantUsecase.editRestaurant(restaurantId,restauarantDetails)
+            res.status(200).json(editedRestauarantStatus)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
     //user
     //search restaurants
     async searchRestaurants(req:Request,res:Response){
@@ -192,7 +199,6 @@ class restaurantController{
     async filterRestaurants(req:Request,res:Response){
         try {
             const {cuisines,facilities} = req.body
-            console.log(cuisines,facilities)
             const restauarants = await this.restaurantUsecase.filterRestaurants(cuisines,facilities)
             res.status(200).json(restauarants)
         } catch (error) {

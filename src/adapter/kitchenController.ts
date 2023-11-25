@@ -13,10 +13,15 @@ class KitchenController{
     async addItem(req:Request,res:Response){
         try {
             const restaurantId = req.query.restaurantId as string
-            const item = req.body.itemData
+            const item = req.body
+            const image = req.file
+            
+            item.veg = item.veg == 'true' ? true : false
+            item.image = image
+        
             const itemAdd = await this.KitchenUsecase.addItem(restaurantId,item)
-            console.log(itemAdd)
             res.status(200).json(itemAdd)
+
         } catch (error) {
             console.log(error)
         }
@@ -31,6 +36,36 @@ class KitchenController{
         } catch (error) {
             console.log(error);
             
+        }
+    }
+
+
+
+    //edit items
+    async editItem(req:Request,res:Response){
+        try {
+            const itemId = req.query.itemId as string
+            const itemData = req.body
+            const image = req.file
+
+            delete itemData.image
+            
+            const itemEditStatus = await this.KitchenUsecase.editItem(itemId,itemData,image)
+            res.status(200).json(itemEditStatus)
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    //get item
+    async changeItemStatus(req:Request,res:Response){
+        try {
+            const itemId = req.query.itemId as string
+            const item = await this.KitchenUsecase.changeItemStatus(itemId)
+            res.status(200).json(item)
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -53,12 +88,17 @@ class KitchenController{
     async allKitchenItems(req:Request,res:Response){
         try {
             const restaurantId = req.query.restaurantId as string
-            const kitchenAllItems = await this.KitchenUsecase.allKitchenItems(restaurantId)
-            //session data of guests
+            const vegString = req.query.veg as string
+            let veg = false
+            if(vegString == 'true'){
+                veg = true
+            }
+            const kitchenAllItems = await this.KitchenUsecase.allKitchenItems(restaurantId,veg)
+            // session data of guests
             const sessionData = req.session
             res.status(200).json({kitchenAllItems,sessionData})
         } catch (error) {
-            console.log(error);
+            console.log(error)
         }
     }
 
