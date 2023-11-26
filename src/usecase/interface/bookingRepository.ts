@@ -10,7 +10,7 @@ interface BookingRepository{
 
     //admin
     //allbookings
-    allBookings(restaurantId:string)
+    allBookings(restaurantId:string,page:number)
     changeBookingStatus(bookingId:string,reason:string)
 }
 

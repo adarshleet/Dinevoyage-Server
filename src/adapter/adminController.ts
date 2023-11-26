@@ -41,7 +41,6 @@ class adminController{
     async blockUser(req:Request,res:Response){
         try {
             const id = req.body.id as string
-            console.log(id)
             const userStatus = await this.Adminusecase.blockUser(id)
             // console.log(userStatus)
             res.status(200).json(userStatus)

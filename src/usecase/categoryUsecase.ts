@@ -49,9 +49,9 @@ class CategoryUsecase{
 
 
 
-    async allCategories(restaurantId:string){
+    async allCategories(restaurantId:string,search:string,page:number){
         try {
-            const categories = await this.CategoryRepository.viewCategories(restaurantId)
+            const categories = await this.CategoryRepository.viewCategories(restaurantId,search,page)
             return{
                 status:200,
                 data:categories

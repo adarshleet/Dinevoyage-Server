@@ -141,13 +141,25 @@ class bookingRepository implements BookingRepository {
 
 
 
-    //admin
+    //vendor
     //all booking lists
-    async allBookings(restaurantId: string) {
+    async allBookings(restaurantId: string,page:number) {
         try {
-            const allBookingDetails = await bookingModel.findOne({ restaurantId })
-            console.log(allBookingDetails)
-            return allBookingDetails
+            const limit = 2
+            const skip = (page - 1) * limit;
+
+
+            const result = await bookingModel.findOne({ restaurantId })
+
+            const totalCount = result?.bookings.length || 0;
+            const totalPages = Math.ceil(totalCount / limit);
+            const allBookingDetails = result?.bookings.slice(skip, skip + limit) || [];
+
+            return{
+                allBookingDetails,
+                totalPages,
+                currentPage :page
+            } 
         } catch (error) {
             console.log(error)
         }

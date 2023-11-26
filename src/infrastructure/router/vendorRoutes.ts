@@ -85,5 +85,24 @@ route.get('/api/vendor/viewItems',(protect),(req,res)=>kitchenController.viewIte
 route.patch('/api/vendor/editItem',multerMid.single('image'),(req,res)=>kitchenController.editItem(req,res))
 route.put('/api/vendor/changeItemStatus',(req,res)=>kitchenController.changeItemStatus(req,res))
 
+//---------------------------------------------------------------------------------------------------------------------
+
+//booking management by admin
+import bookingRepository from '../repository/bookingRepository'
+import BookingUsecase from '../../usecase/bookingUsecase'
+import BookingController from '../../adapter/bookingController'
+import StripePayment from '../utils/stripe'
+import Session from '../repository/session'
+
+const bookingRepo = new bookingRepository()
+const stripe = new StripePayment()
+const session =  new Session()
+const bookingUsecase = new BookingUsecase(bookingRepo,stripe)
+const bookingController = new BookingController(bookingUsecase,session)
+
+route.get('/api/vendor/allBookingDetails',(req,res)=>bookingController.allBookings(req,res))
+route.put('/api/vendor/changeBookingStatus',(req,res)=>bookingController.changeBookingStatus(req,res))
+
+
 
 export default route

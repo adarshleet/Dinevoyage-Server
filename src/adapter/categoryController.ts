@@ -49,7 +49,9 @@ class CategoryContoller{
     async allCategories(req:Request,res:Response){
         try {
             const restaurantId = req.query.restaurantId as string
-            const categories = await this.CategoryUsecase.allCategories(restaurantId)
+            const search = req.query.search as string
+            const page = parseInt(req.query.page as string)
+            const categories = await this.CategoryUsecase.allCategories(restaurantId,search,page)
             console.log(categories,restaurantId)
             res.status(200).json(categories)
         } catch (error) {

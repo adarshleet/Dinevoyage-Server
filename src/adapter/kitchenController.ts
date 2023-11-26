@@ -31,7 +31,10 @@ class KitchenController{
     async viewItems(req:Request,res:Response){
         try {
             const restaurantId = req.query.restaurantId as string
-            const items = await this.KitchenUsecase.viewItem(restaurantId)
+            const searchQuery = req.query.search as string || ''
+            const page = parseInt(req.query.page as string) || 1
+
+            const items = await this.KitchenUsecase.viewItem(restaurantId,searchQuery,page)
             res.status(200).json(items)
         } catch (error) {
             console.log(error);

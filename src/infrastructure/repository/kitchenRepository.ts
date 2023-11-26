@@ -10,9 +10,38 @@ class kitchenRepository implements KitchenRepository {
         return itemAdd
     }
 
-    async viewItem(restaurantId: string) {
-        const items = await kitchenModel.findOne({ restaurantId }).populate('items.category')
-        return items
+    async viewItem(restaurantId: string, searchQuery: string, page: number) {
+        try {
+            const limit = 5;
+            const skip = (page - 1) * limit;
+
+            const result = await kitchenModel.aggregate([
+                { $match: { restaurantId:new Types.ObjectId(restaurantId) } },
+                { $unwind: '$items' },
+                { $match: { 'items.itemName': { $regex: `^${searchQuery}`, $options: 'i' } } },
+                { $lookup: { from: 'categories', localField: 'items.category', foreignField: '_id', as: 'items.category' } },
+                {
+                    $group: {
+                      _id: '$restaurantId',
+                      items: { $push: '$items' },
+                    },
+                },
+              ]);
+
+
+            const totalCount = result[0]?.items.length || 0;
+            const totalPages = Math.ceil(totalCount / limit);
+            const items = result[0]?.items.slice(skip, skip + limit) || [];
+
+            return {
+                items,
+                totalCount,
+                totalPages,
+                currentPage: page,
+            };
+        } catch (error) {
+            console.log(error);
+        }
     }
 
 
@@ -42,7 +71,7 @@ class kitchenRepository implements KitchenRepository {
                 status = item.items[0].isListed;
             }
 
-            const itemStatus = await kitchenModel.updateOne({'items._id':itemId},{$set:{'items.$.isListed':!status}})
+            const itemStatus = await kitchenModel.updateOne({ 'items._id': itemId }, { $set: { 'items.$.isListed': !status } })
             return itemStatus
 
         } catch (error) {

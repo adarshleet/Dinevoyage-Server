@@ -40,9 +40,23 @@ class categoryRepository implements CategoryRepository{
     }
 
 
-    async viewCategories(restaurantId: string) {
-        const categories = await categoryModel.find({restaurantId})
-        return categories
+    async viewCategories(restaurantId: string,search:string,page:number) {
+        //for getting all categories for kitchen
+        if(page==-1){
+            const categories = await categoryModel.find({restaurantId})
+            return categories
+        }
+
+        const limit = 5
+
+        const categories = await categoryModel.find({restaurantId,category:{ $regex: `^${search}`, $options: 'i' } }).skip((page-1)*limit).limit(limit)
+        const totalCount = await categoryModel.find({restaurantId,category:{ $regex: `^${search}`, $options: 'i' }}).countDocuments()
+
+        return {
+            categories,
+            totalPages : Math.ceil(totalCount/limit),
+            currentPage : page
+        }
     }
 }
 

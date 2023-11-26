@@ -28,7 +28,6 @@ class BookingController{
 
     async confirmBooking(req:Request,res:Response){
         try {
-            console.log('hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeere')
             const bookingDetails = req.app.locals
             if(req.body.data.object.status == 'complete'){
                 const bookingConfirm = await this.bookingUsecase.confirmBooking(bookingDetails)
@@ -113,13 +112,14 @@ class BookingController{
 
 
 
-    //ADMIN
+    //vencor
     //all booking details
     async allBookings(req:Request,res:Response){
         try {
             const restaurantId = req.query.restaurantId as string
-            console.log(restaurantId)
-            const allBookingDetails = await this.bookingUsecase.allBookings(restaurantId)
+            const page = parseInt(req.query.page as string)
+
+            const allBookingDetails = await this.bookingUsecase.allBookings(restaurantId,page)
             res.status(200).json(allBookingDetails)
         } catch (error) {
             console.log(error)

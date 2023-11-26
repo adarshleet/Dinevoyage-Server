@@ -30,15 +30,18 @@ class KitchenUsecase {
     }
 
 
-    async viewItem(restaurantId: string) {
+    async viewItem(restaurantId: string,searchQuery:string,page:number) {
         try {
-            const viewItems = await this.KitchenRepository.viewItem(restaurantId)
+            const viewItems = await this.KitchenRepository.viewItem(restaurantId,searchQuery,page)
             return {
                 status: 200,
                 data: viewItems
             }
         } catch (error) {
-            console.log(error)
+            return{
+                status:400,
+                data:error
+            }
         }
     }
 

@@ -110,9 +110,9 @@ class BookingUsecase{
 
     //admin
     //all bookings
-    async allBookings(restaurantId:string){
+    async allBookings(restaurantId:string,page:number){
         try {
-            const allBookingDetails = await this.bookingRepository.allBookings(restaurantId)
+            const allBookingDetails = await this.bookingRepository.allBookings(restaurantId,page)
             return{
                 status:200,
                 data:allBookingDetails

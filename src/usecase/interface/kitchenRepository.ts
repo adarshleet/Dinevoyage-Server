@@ -2,7 +2,7 @@ import Kitchen from "../../domain/kitchen"
 
 interface KitchenRepository{
     addItem(restauarantId:string,item:Kitchen)
-    viewItem(restauarantId:string)
+    viewItem(restauarantId:string,searchQuery:string,page:number)
     editItem(itemId:string,itemData:Kitchen)
     changeItemStatus(itemId:string)
 
