@@ -133,7 +133,6 @@ class restaurantController{
                 const decoded = jwt.verify(token, process.env.JWT_KEY as string) as JwtPayload;
                 id = decoded.id
             }
-            console.log('here',id)
             const selectedCuisinesAndFacilities = await this.restaurantUsecase.selectedCuisinesAndFacilities(id)
             res.status(200).json(selectedCuisinesAndFacilities)
         } catch (error) {

@@ -75,6 +75,25 @@ class Userusecase {
     }
 
 
+    //change mobile
+    async changeMobile(userId:string,mobile:string){
+        try {
+            console.log(mobile)
+            const mobileChangeStatus = await this.userRepository.mobileChange(userId,mobile)
+            return{
+                status:200,
+                data:mobileChangeStatus
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
+
+
     //checking mobile number exist on database
     async mobileExistCheck(mobile: string) {
         try {
@@ -170,7 +189,67 @@ class Userusecase {
 
 
 
+    //find user by id
+    async findUser(user:string){
+        try {
+            const userFound = await this.userRepository.findUserById(user)
+            return{
+                status:200,
+                data:userFound
+            }
+        } catch (error) {
+            return{
+                status:400,
+                return:error
+            }
+        }
+    }
 
+
+    //user name change
+    async changeName(userId:string,name:string){
+        try {
+            const nameChangeStatus = await this.userRepository.usernameChange(userId,name)
+            return{
+                status:200,
+                data:nameChangeStatus
+            }
+        } catch (error) {
+            return{
+                status:200,
+                data:error
+            }
+        }
+    }
+
+    //password change
+    async changePassword(userId:string,password:string,currentPassword:string){
+        try {
+            const userFound = await this.userRepository.findUserById(userId)
+            if(userFound){
+                const passwordMatch = await this.Encrypt.compare(currentPassword,userFound.password as string)
+                if(passwordMatch){
+                    const hashedPassword = await this.Encrypt.createHash(password) 
+                    const passwordChangeStatus = await this.userRepository.changePassword(userId,hashedPassword)
+                    return{
+                        status:200,
+                        data:passwordChangeStatus
+                    }
+                }
+                else{
+                    return{
+                        status:200,
+                        data:passwordMatch
+                    }
+                }
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
 
 
 

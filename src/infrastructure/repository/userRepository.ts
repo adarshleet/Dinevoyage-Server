@@ -32,6 +32,38 @@ class userRepository implements UserRepository{
     }
 
 
+    //user name change
+    async usernameChange(userId:string ,name: string) {
+        try {
+            const nameChangeStatus = await UserModel.findByIdAndUpdate(userId,{$set:{name}})
+            return nameChangeStatus
+        } catch (error) {
+            console.log(error)
+        }    
+    }
+
+    //user mobile change
+    async mobileChange(userId: string, mobile: string) {
+        try {
+            console.log("red",mobile,userId)
+            const mobileChangeStatus = await UserModel.findByIdAndUpdate(userId,{$set:{mobile}},{new:true})
+            return mobileChangeStatus
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    //change password
+    async changePassword(userId: string, password: string) {
+        try {
+            const passwordChangeStatus = await UserModel.findByIdAndUpdate(userId,{$set:{password}},{new:true})
+            return passwordChangeStatus
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
 
 

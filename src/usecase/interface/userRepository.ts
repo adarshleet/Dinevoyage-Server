@@ -6,6 +6,10 @@ interface UserRepository{
     emailExistCheck(email:string),
     findUserById(user:string)
 
+    usernameChange(userId: string , name:string)
+    mobileChange(userId:string , mobile:string)
+    changePassword(userId:string,password:string)
+
     restaurantsToShow()
     singleRestaurant(restauarantId:string)
 }
