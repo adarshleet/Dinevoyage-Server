@@ -162,6 +162,103 @@ class Vendorusecase {
         }
     }
 
+
+    async getVendorDetails(vendorId:string){
+        try {
+            const vendorDetails = await this.vendorRepository.findVendorById(vendorId)
+            return{
+                status:200,
+                data:vendorDetails
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
+
+    async changeVendorName(vendorId:string,name:string){
+        try {
+            const vendorNameChange = await this.vendorRepository.changeVendorName(vendorId,name)
+            return{
+                status:200,
+                data:vendorNameChange
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
+
+    //verify otp and change mobile
+    async changeMobile(vendorId:string,mobile:string,otp:string){
+        try {
+            const verifyOtp = await this.twilioService.verifyOtp(mobile, otp)
+            if(verifyOtp){
+                const changeMobileStatus = await this.vendorRepository.changeMobile(vendorId,mobile)
+                return{
+                    status:200,
+                    data:changeMobileStatus
+                }
+            }
+            else{
+                return{
+                    status:200,
+                    data:verifyOtp
+                }
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
+
+    async changePassword(vendorId:string,password:string,currentPassword :string){
+        try {
+            const vendorFound = await this.vendorRepository.findVendorById(vendorId)
+            if(vendorFound){
+                const passwordMatch = await this.encrypt.compare(currentPassword,vendorFound.password)
+                if(passwordMatch){
+                    const hashedPassword = await this.encrypt.createHash(password)
+                    const passwordChangeStatus = await this.vendorRepository.changePassword(vendorId,hashedPassword)
+                    return{
+                        status:200,
+                        data:passwordChangeStatus
+                    }
+                }
+                else{
+                    return{
+                        status:200,
+                        data:false
+                    }
+                }
+            }
+            else{
+                return{
+                    status:200,
+                    data:false
+                }
+            }
+
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+    
+
+
+
 }
 
 

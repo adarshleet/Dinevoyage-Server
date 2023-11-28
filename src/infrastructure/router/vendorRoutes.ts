@@ -25,6 +25,12 @@ route.post('/api/vendor/otpverify',(req,res)=>controller.otpVerification(req,res
 route.post('/api/vendor/login',(req,res)=>controller.login(req,res))
 route.get('/api/vendor/vendorLogout',(req,res)=>controller.vendorLogout(req,res))
 
+route.get('/api/vendor/getVendorDetails',(protect),(req,res)=>controller.getVendorDetails(req,res))
+route.put('/api/vendor/changeName',(protect),(req,res)=>controller.changeVendorName(req,res))
+route.post('/api/vendor/verifyMobile',(protect),(req,res)=>controller.verifyNewMobile(req,res))
+route.put('/api/vendor/changeMobile',(protect),(req,res)=>controller.changeMobile(req,res))
+route.put('/api/vendor/changePassword',(protect),(req,res)=>controller.changePassword(req,res))
+
 //-------------------------------------------------------------------------------//
 
 //vendor restaurant management

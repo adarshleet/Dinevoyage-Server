@@ -1,7 +1,6 @@
 import { Request,Response } from "express";
 import RestaurantUsecase from "../usecase/restaurantUsecase";
 import jwt,{JwtPayload} from "jsonwebtoken";
-import mongoose from "mongoose";
 
 class restaurantController{
     private restaurantUsecase : RestaurantUsecase
