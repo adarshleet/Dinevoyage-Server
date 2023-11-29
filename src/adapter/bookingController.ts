@@ -112,7 +112,7 @@ class BookingController{
 
 
 
-    //vencor
+    //vendor
     //all booking details
     async allBookings(req:Request,res:Response){
         try {
@@ -140,6 +140,30 @@ class BookingController{
         }
     }
 
+
+     //sales chart
+     async salesChart(req:Request,res:Response){
+        try {
+            const restaurantId = req.query.restaurantId as string
+            console.log(restaurantId)
+            const sales = await this.bookingUsecase.salesChart(restaurantId)
+            res.status(200).json(sales)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    //admin dashboard
+    async adminDashboard(req:Request,res:Response){
+        try {
+            console.log('ger')
+            const dashboard = await this.bookingUsecase.adminDashboard()
+            res.status(200).json(dashboard)
+        } catch (error) {
+            console.log(error)
+        }
+    }
     
 
 }

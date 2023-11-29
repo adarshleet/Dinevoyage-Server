@@ -108,7 +108,7 @@ class BookingUsecase{
 
 
 
-    //admin
+    //vendor
     //all bookings
     async allBookings(restaurantId:string,page:number){
         try {
@@ -140,6 +140,39 @@ class BookingUsecase{
             }
         }
     }
+
+    async salesChart(restaurantId:string){
+        try {
+            const sales = await this.bookingRepository.salesChart(restaurantId)
+            return{
+                status:200,
+                data:sales
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
+
+    //admin dashboad
+    async adminDashboard(){
+        try {
+            const dashboard = await this.bookingRepository.salesDetails()
+            return{
+                status:200,
+                data:dashboard
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
 
 }
 

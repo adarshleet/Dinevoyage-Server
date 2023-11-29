@@ -104,6 +104,23 @@ router.get('/api/admin/allLocality',(req,res)=>locationControll.allLocality(req,
 //----------------------------------------------------------------------------------------------------------------------//
 
 
+import bookingRepository from '../repository/bookingRepository'
+import BookingUsecase from '../../usecase/bookingUsecase'
+import BookingController from '../../adapter/bookingController'
+import StripePayment from '../utils/stripe'
+import Session from '../repository/session'
+
+const bookingRepo = new bookingRepository()
+const stripe = new StripePayment()
+const session =  new Session()
+const bookingUsecase = new BookingUsecase(bookingRepo,stripe)
+const bookingController = new BookingController(bookingUsecase,session)
+
+
+router.get('/api/admin/dashboard',(req,res)=>bookingController.adminDashboard(req,res))
+
+//-----------------------------------------------------------------------------------------------------------------------//
+
 
 export default router
 

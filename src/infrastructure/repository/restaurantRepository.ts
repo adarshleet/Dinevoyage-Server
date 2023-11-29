@@ -2,6 +2,7 @@ import restaurantModel from "../database/restaurantModel";
 import RestaurantRepository from "../../usecase/interface/restaurantRepository";
 import Restaurant from "../../domain/restaurant";
 import kitchenModel from "../database/KitchenModel";
+import { Types } from 'mongoose';
 
 class restaurantRepository implements RestaurantRepository {
     async addRestaurant(restaurantData: Restaurant) {
@@ -99,6 +100,9 @@ class restaurantRepository implements RestaurantRepository {
             console.log(error)
         }
     }
+
+
+    
 
 
 

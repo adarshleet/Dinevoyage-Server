@@ -8,10 +8,17 @@ interface BookingRepository{
     userBookingCancellation(bookingId:string,reason:string)
 
 
-    //admin
+    //vendor
     //allbookings
     allBookings(restaurantId:string,page:number)
     changeBookingStatus(bookingId:string,reason:string)
+
+    salesChart(restaurantId:string)
+
+
+    //admin
+    salesDetails()
+
 }
 
 export default BookingRepository

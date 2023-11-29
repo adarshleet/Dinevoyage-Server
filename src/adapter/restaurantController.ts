@@ -181,6 +181,10 @@ class restaurantController{
     }
 
 
+
+   
+
+
     //user
     //search restaurants
     async searchRestaurants(req:Request,res:Response){

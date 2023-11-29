@@ -54,6 +54,7 @@ route.put('/api/vendor/deleteBanner',(req,res)=>restaurantControll.removeRestaur
 route.put('/api/vendor/editRestaurant',multerMid.array('image'),(req,res)=>restaurantControll.editRestaurant(req,res))
 
 
+
 //------------------------------------------------------------------------------------------------------------------------//
 
 
@@ -93,7 +94,7 @@ route.put('/api/vendor/changeItemStatus',(req,res)=>kitchenController.changeItem
 
 //---------------------------------------------------------------------------------------------------------------------
 
-//booking management by admin
+//booking management by vendor
 import bookingRepository from '../repository/bookingRepository'
 import BookingUsecase from '../../usecase/bookingUsecase'
 import BookingController from '../../adapter/bookingController'
@@ -108,6 +109,8 @@ const bookingController = new BookingController(bookingUsecase,session)
 
 route.get('/api/vendor/allBookingDetails',(req,res)=>bookingController.allBookings(req,res))
 route.put('/api/vendor/changeBookingStatus',(req,res)=>bookingController.changeBookingStatus(req,res))
+route.get('/api/vendor/salesChart',(req,res)=>bookingController.salesChart(req,res))
+
 
 
 
