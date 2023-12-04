@@ -69,17 +69,24 @@ class userRepository implements UserRepository{
 
 
     //restaurant to showing 
-    async restaurantsToShow() {
+    async restaurantsToShow(page:number) {
         const restaurantIds = await kitchenModel.find({
             items: { $exists: true, $not: { $size: 0 } }
         }, { restaurantId: 1, _id: 0 })
 
         const restaurantIdStrings = restaurantIds.map((res)=>res.restaurantId?.toString())
+
+        const limit = 3
         
-        const restaurants = await restaurantModel.find({ _id: { $in: restaurantIdStrings } })
-        return restaurants
+        const restaurants = await restaurantModel.find({ _id: { $in: restaurantIdStrings } }).skip((page-1)*limit).limit(limit)
+        const totalCount = await restaurantModel.find({ _id: { $in: restaurantIdStrings } }).countDocuments()
 
+        const totalPages = Math.floor(totalCount/limit)
 
+        return{
+            restaurants,
+            totalPages
+        }
     }
 
 

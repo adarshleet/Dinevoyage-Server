@@ -2,6 +2,7 @@ import { Request,Response } from "express";
 import BookingUsecase from "../usecase/bookingUsecase";
 import Session from "../infrastructure/repository/session";
 import jwt,{JwtPayload} from "jsonwebtoken";
+import Booking from "../domain/booking";
 
 class BookingController{
     private bookingUsecase : BookingUsecase
@@ -28,9 +29,11 @@ class BookingController{
 
     async confirmBooking(req:Request,res:Response){
         try {
-            const bookingDetails = req.app.locals
+            const bookingDetails = req.app.locals as Booking
             if(req.body.data.object.status == 'complete'){
+        
                 const bookingConfirm = await this.bookingUsecase.confirmBooking(bookingDetails)
+
                 res.status(200).json(bookingConfirm)
             }
         } catch (error) {
@@ -38,6 +41,27 @@ class BookingController{
         }
     }
 
+
+    async bookingWithWallet(req:Request,res:Response){
+        try {
+            const bookingDetails = req.body
+
+             //user id for booking reference
+             const token = req.cookies.userJWT
+             let user
+             if(token){
+                 const decoded = jwt.verify(token, process.env.JWT_KEY as string) as JwtPayload;
+                 user = decoded.id
+             }
+             bookingDetails.user = user
+
+            const bookingConfirm = await this.bookingUsecase.confirmBooking(bookingDetails)
+            
+            res.status(200).json(bookingConfirm)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     async tableCounts(req:Request,res:Response){
         try {
@@ -58,6 +82,7 @@ class BookingController{
     async makePayment(req:Request,res:Response){
         try {
             const bookingDetails = req.body
+            console.log(bookingDetails)
             
             //user id for booking reference
             const token = req.cookies.userJWT
@@ -67,7 +92,6 @@ class BookingController{
                 user = decoded.id
             }
             bookingDetails.user = user
-            console.log('beer',bookingDetails)
             
             req.app.locals = bookingDetails
             await this.session.sessionSetup(req,bookingDetails);

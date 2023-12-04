@@ -10,7 +10,7 @@ interface UserRepository{
     mobileChange(userId:string , mobile:string)
     changePassword(userId:string,password:string)
 
-    restaurantsToShow()
+    restaurantsToShow(page:number)
     singleRestaurant(restauarantId:string)
 }
 

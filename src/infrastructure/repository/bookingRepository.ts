@@ -5,6 +5,7 @@ import { Types } from 'mongoose';
 import restaurantModel from "../database/restaurantModel";
 import Booking from "../../domain/booking";
 import vendorModel from "../database/vendorModel";
+import couponModel from "../database/couponModal";
 
 interface TableCounts {
     [key: string]: number;
@@ -13,6 +14,7 @@ class bookingRepository implements BookingRepository {
     async dateSeatDetails(restaurantId: string, date: string, time: string) {
         try {
             const seatDetails = await bookingModel.findOne({ restaurantId, bookings: { $elemMatch: { date, time } } })
+
             return seatDetails
         } catch (error) {
             console.log(error);
@@ -22,6 +24,19 @@ class bookingRepository implements BookingRepository {
     async confirmBooking(bookingDetails: Booking) {
         try {
             const restaurantId = bookingDetails.restaurantId
+            if(bookingDetails?.appliedCoupon?.couponName){
+                const addUserToCoupon = await couponModel.updateOne({couponName:bookingDetails?.appliedCoupon.couponName},{$push:{usedUsers:bookingDetails.user}})
+            }
+
+            if(bookingDetails.walletAmountUsed > 0){
+                const walletUpdate = await UserModel.updateOne({_id:bookingDetails.user},{$inc:{wallet:-bookingDetails.walletAmountUsed},$push:{walletHistory:{
+                    transactionType: 'Table Booking',
+                    method:'Debit',
+                    amount: bookingDetails.walletAmountUsed,
+                    date: Date.now()
+                }}})
+            }
+
             const bookingConfirm = await bookingModel.updateOne({ restaurantId }, { $push: { bookings: bookingDetails } }, { upsert: true })
             return bookingConfirm
         } catch (error) {
@@ -110,7 +125,7 @@ class bookingRepository implements BookingRepository {
     //user bookings
     async userBookings(userId: string) {
         try {
-            const bookings = await bookingModel.find({'bookings.user':userId}).populate('restaurantId')
+            const bookings = await bookingModel.find({ 'bookings.user': userId }).populate('restaurantId')
             console.log(bookings)
             return bookings
         } catch (error) {
@@ -120,21 +135,33 @@ class bookingRepository implements BookingRepository {
 
 
     //user booking cancellation
-    async userBookingCancellation(bookingId: string,reason:string) {
+    async userBookingCancellation(bookingId: string, reason: string) {
         try {
+
             const bookingStatus = await bookingModel.findOneAndUpdate(
                 {
                     'bookings._id': bookingId
                 },
                 {
-                    $set: { 'bookings.$.orderStatus': 3,'bookings.$.cancelReason':reason }
+                    $set: { 'bookings.$.orderStatus': 3, 'bookings.$.cancelReason': reason }
                 },
                 { new: true }
             );
+
+            const bookingDetails = await bookingModel.findOne({'booking._id':bookingId})
+
+            // const booking = bookingDetails?.bookings[0]
+            // const walletUpdate = await UserModel.updateOne({_id:booking?.user},{$inc:{wallet:-booking?.walletAmountUsed},$push:{walletHistory:{
+            //     transactionType: 'Booking Cancellation',
+            //     method:'Debit',
+            //     amount: booking.walletAmountUsed,
+            //     date: Date.now()
+            // }}})
+
             return bookingStatus
         } catch (error) {
             console.log(error)
-        }    
+        }
     }
 
 
@@ -145,7 +172,7 @@ class bookingRepository implements BookingRepository {
 
     //vendor
     //all booking lists
-    async allBookings(restaurantId: string,page:number) {
+    async allBookings(restaurantId: string, page: number) {
         try {
             const limit = 2
             const skip = (page - 1) * limit;
@@ -157,28 +184,37 @@ class bookingRepository implements BookingRepository {
             const totalPages = Math.ceil(totalCount / limit);
             const allBookingDetails = result?.bookings.slice(skip, skip + limit) || [];
 
-            return{
+            return {
                 allBookingDetails,
                 totalPages,
-                currentPage :page
-            } 
+                currentPage: page
+            }
         } catch (error) {
             console.log(error)
         }
     }
 
     //change booking status
-    async changeBookingStatus(bookingId: string,reason:string) {
+    async changeBookingStatus(bookingId: string, reason: string) {
         try {
             const bookingStatus = await bookingModel.findOneAndUpdate(
                 {
                     'bookings._id': bookingId
                 },
                 {
-                    $set: { 'bookings.$.orderStatus': 2,'bookings.$.cancelReason':reason }
+                    $set: { 'bookings.$.orderStatus': 2, 'bookings.$.cancelReason': reason }
                 },
                 { new: true }
             );
+
+            // const booking = bookingStatus?.bookings[0]
+            // const walletUpdate = await UserModel.updateOne({_id:booking?.user},{$inc:{wallet:-booking?.walletAmountUsed},$push:{walletHistory:{
+            //     transactionType: 'Booking Cancellation',
+            //     method:'Debit',
+            //     amount: booking.walletAmountUsed,
+            //     date: Date.now()
+            // }}})
+            
             return bookingStatus
         } catch (error) {
             console.log(error)
@@ -190,99 +226,107 @@ class bookingRepository implements BookingRepository {
         try {
             const sales = await bookingModel.aggregate([
                 {
-                    $match:{
-                        'restaurantId' : new Types.ObjectId(restaurantId)
+                    $match: {
+                        'restaurantId': new Types.ObjectId(restaurantId)
                     }
                 },
                 {
                     $unwind: "$bookings",
-                  },
-                  {
+                },
+                {
                     $match: {
-                      "bookings.orderStatus": 4,
+                        "bookings.orderStatus": 4,
                     },
-                  },
-                  {
+                },
+                {
                     $addFields: {
-                      bookingDate: {
-                        $toDate: "$bookings.date",
-                      },
+                        bookingDate: {
+                            $toDate: "$bookings.date",
+                        },
                     },
-                  },
-                  {
+                },
+                {
                     $group: {
-                      _id: {
-                        month: { $month: "$bookingDate" },
-                        year: { $year: "$bookingDate" },
-                      },
-                      totalAmount: { $sum: "$bookings.totalAmount" },
+                        _id: {
+                            month: { $month: "$bookingDate" },
+                            year: { $year: "$bookingDate" },
+                        },
+                        totalAmount: {
+                            $sum: {
+                                $add: [
+                                    "$bookings.totalAmount",
+                                    { $ifNull: ["$bookings.walletAmountUsed", 0] } // Use $ifNull to handle potential null values
+                                ]
+                            }
+                        },
                     },
-                  },
-                  {
+                },
+                {
                     $set: {
                         month: '$_id.month',
-                      totalAmount: "$totalAmount",
+                        totalAmount: "$totalAmount",
                     },
-                  },
-                  {
+                },
+                {
                     $unset: "_id",
-                  },
-              ]);
+                },
+            ]);
 
-                const totalBookings = await bookingModel.aggregate([
-                    {
-                      $match: {
+            console.log(sales)
+            const totalBookings = await bookingModel.aggregate([
+                {
+                    $match: {
                         'restaurantId': new Types.ObjectId(restaurantId)
-                      }
-                    },
-                    {
-                      $unwind: '$bookings',
-                    },
-                    {
-                      $group: {
+                    }
+                },
+                {
+                    $unwind: '$bookings',
+                },
+                {
+                    $group: {
                         _id: null,
                         count: { $sum: 1 }
-                      }
                     }
-                  ]);
+                }
+            ]);
 
-                 const bookingCount = totalBookings[0]?.count || 0
+            const bookingCount = totalBookings[0]?.count || 0
 
-                 const result = await bookingModel.aggregate([
-                    {
-                      $match: {
+            const result = await bookingModel.aggregate([
+                {
+                    $match: {
                         'restaurantId': new Types.ObjectId(restaurantId),
                         'bookings.orderStatus': { $gt: 1, $lt: 4 }
-                      }
-                    },
-                    {
-                      $unwind: '$bookings',
-                    },
-                    {
-                      $match: {
+                    }
+                },
+                {
+                    $unwind: '$bookings',
+                },
+                {
+                    $match: {
                         'bookings.orderStatus': { $gt: 1, $lt: 4 }
-                      }
-                    },
-                    {
-                      $group: {
+                    }
+                },
+                {
+                    $group: {
                         _id: null,
                         count: { $sum: 1 },
                         totalAmount: { $sum: '$bookings.totalAmount' }
-                      }
                     }
-                  ]);
+                }
+            ]);
 
-              console.log(result)
-              const cancelledBookingAmount = result[0]?.totalAmount || 0
-              const cancelledBookingCount = result[0]?.count || 0
+            // console.log(result)
+            const cancelledBookingAmount = result[0]?.totalAmount || 0
+            const cancelledBookingCount = result[0]?.count || 0
 
-              return {
+            return {
                 sales,
                 bookingCount,
                 cancelledBookingCount,
                 cancelledBookingAmount
-              }
-              
+            }
+
         } catch (error) {
             console.log(error)
         }
@@ -305,7 +349,7 @@ class bookingRepository implements BookingRepository {
             //     {
             //       $unwind: "$restaurant"
             //     },
-                
+
             //     {
             //       $match: {
             //         "restaurant.status": { $lt: 5, $gt: 1 }
@@ -374,98 +418,98 @@ class bookingRepository implements BookingRepository {
 
             const revenueDetails = await bookingModel.aggregate([
                 {
-                  $lookup: {
-                    from: "restaurants",
-                    localField: "restaurantId",
-                    foreignField: "_id",
-                    as: "restaurant"
-                  }
-                },
-                {
-                  $unwind: "$restaurant"
-                },
-                {
-                  $match: {
-                    "restaurant.status": { $lt: 5, $gt: 1 },
-                    "restaurant.createdAt": {
-                      $gte: new Date(desiredYear),
-                      $lt: new Date(`${parseInt(desiredYear) + 1}`)
+                    $lookup: {
+                        from: "restaurants",
+                        localField: "restaurantId",
+                        foreignField: "_id",
+                        as: "restaurant"
                     }
-                  }
                 },
                 {
-                  $addFields: {
-                    "createdAt": {
-                      $toDate: "$restaurant.createdAt"
-                    }
-                  }
+                    $unwind: "$restaurant"
                 },
                 {
-                  $unwind: "$bookings"
-                },
-                {
-                  $group: {
-                    _id: {
-                      restaurantId: "$restaurantId",
-                      year: { $year: "$createdAt" },
-                      month: { $month: "$createdAt" },
-                      day: { $dayOfMonth: "$createdAt" }
-                    },
-                    totalBookings: { $sum: 1 },
-                    completedBookings: {
-                      $sum: {
-                        $cond: {
-                          if: { $eq: ["$bookings.orderStatus", 4] },
-                          then: 1,
-                          else: 0
+                    $match: {
+                        "restaurant.status": { $lt: 5, $gt: 1 },
+                        "restaurant.createdAt": {
+                            $gte: new Date(desiredYear),
+                            $lt: new Date(`${parseInt(desiredYear) + 1}`)
                         }
-                      }
                     }
-                  }
                 },
                 {
-                  $group: {
-                    _id: {
-                      year: "$_id.year",
-                      month: "$_id.month"
-                    },
-                    counts: {
-                      $push: {
-                        restaurantId: "$_id.restaurantId",
-                        day: "$_id.day",
-                        totalBookings: "$totalBookings",
-                        completedBookings: "$completedBookings"
-                      }
-                    },
-                    restaurantCount: { $sum: "$totalBookings" },
-                    totalCompletedBookings: { $sum: "$completedBookings" }
-                  }
+                    $addFields: {
+                        "createdAt": {
+                            $toDate: "$restaurant.createdAt"
+                        }
+                    }
                 },
                 {
-                  $project: {
-                    _id: 0,
-                    year: "$_id.year",
-                    month: "$_id.month",
-                    restaurantCount: 1,
-                    totalCompletedBookings: 1
-                  }
+                    $unwind: "$bookings"
+                },
+                {
+                    $group: {
+                        _id: {
+                            restaurantId: "$restaurantId",
+                            year: { $year: "$createdAt" },
+                            month: { $month: "$createdAt" },
+                            day: { $dayOfMonth: "$createdAt" }
+                        },
+                        totalBookings: { $sum: 1 },
+                        completedBookings: {
+                            $sum: {
+                                $cond: {
+                                    if: { $eq: ["$bookings.orderStatus", 4] },
+                                    then: 1,
+                                    else: 0
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    $group: {
+                        _id: {
+                            year: "$_id.year",
+                            month: "$_id.month"
+                        },
+                        counts: {
+                            $push: {
+                                restaurantId: "$_id.restaurantId",
+                                day: "$_id.day",
+                                totalBookings: "$totalBookings",
+                                completedBookings: "$completedBookings"
+                            }
+                        },
+                        restaurantCount: { $sum: "$totalBookings" },
+                        totalCompletedBookings: { $sum: "$completedBookings" }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        year: "$_id.year",
+                        month: "$_id.month",
+                        restaurantCount: 1,
+                        totalCompletedBookings: 1
+                    }
                 }
-              ]);
+            ]);
 
-              const totalUsers = await UserModel.find({}).countDocuments() 
+            const totalUsers = await UserModel.find({}).countDocuments()
 
-              const totalVendors = await vendorModel.find({}).countDocuments()
+            const totalVendors = await vendorModel.find({}).countDocuments()
 
-              const totalRestaurants = await restaurantModel.find({}).countDocuments()
+            const totalRestaurants = await restaurantModel.find({}).countDocuments()
 
-              console.log(revenueDetails,totalUsers,totalVendors,totalRestaurants)
+            console.log(revenueDetails, totalUsers, totalVendors, totalRestaurants)
 
-              return{
+            return {
                 revenueDetails,
                 totalUsers,
                 totalVendors,
                 totalRestaurants
-              }
+            }
 
         } catch (error) {
             console.log(error)

@@ -16,7 +16,7 @@ interface RestaurantRepository{
 
 
     searchRestaurant(searchQuery:string)
-    filterRestaurant(cuisines:Array<string>,facilities:Array<string>)
+    filterRestaurant(cuisines:Array<string>,facilities:Array<string>,page:number)
 }
 
 export default RestaurantRepository

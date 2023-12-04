@@ -254,9 +254,9 @@ class Userusecase {
 
 
     //restaurants showing
-    async restaurantsToDisplay(){
+    async restaurantsToDisplay(page:number){
         try {
-            const restaurants = await this.userRepository.restaurantsToShow()
+            const restaurants = await this.userRepository.restaurantsToShow(page)
             return{
                 status:200,
                 data:restaurants
@@ -277,7 +277,6 @@ class Userusecase {
             }
         } catch (error) {
             console.log(error);
-            
         }
     }
 

@@ -219,9 +219,9 @@ class RestaurantUsecase {
 
 
     //filter restaurant
-    async filterRestaurants(cuisines: string[], facilities: string[]) {
+    async filterRestaurants(cuisines: string[], facilities: string[],page:number) {
         try {
-            const restaurants = await this.restaurantRepository.filterRestaurant(cuisines, facilities)
+            const restaurants = await this.restaurantRepository.filterRestaurant(cuisines, facilities,page)
             return {
                 status: 200,
                 data: restaurants

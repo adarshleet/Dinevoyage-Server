@@ -1,6 +1,7 @@
 import express from 'express'
 const router = express.Router()
 import { multerMid } from '../middlewares/multerMiddleware'
+import { protect } from '../middlewares/adminAuth'
 
 import adminRepository from '../repository/adminRepository'
 import adminController from '../../adapter/adminController'
@@ -117,9 +118,26 @@ const bookingUsecase = new BookingUsecase(bookingRepo,stripe)
 const bookingController = new BookingController(bookingUsecase,session)
 
 
-router.get('/api/admin/dashboard',(req,res)=>bookingController.adminDashboard(req,res))
+router.get('/api/admin/dashboard',(protect),(req,res)=>bookingController.adminDashboard(req,res))
 
 //-----------------------------------------------------------------------------------------------------------------------//
+
+
+//admin coupon management
+import CouponRepository from '../repository/couponRepository'
+import CouponController from '../../adapter/couponController'
+import CouponUsecase from '../../usecase/couponUsecase'
+
+const couponRepo = new CouponRepository()
+const couponUsecase = new CouponUsecase(couponRepo)
+const couponController = new CouponController(couponUsecase)
+
+
+router.post('/api/admin/addCoupon',(req,res)=>couponController.addCoupon(req,res))
+router.get('/api/admin/allCoupons',(req,res)=>couponController.allCoupons(req,res))
+
+
+//-------------------------------------------------------------------------------------------------------------------------//
 
 
 export default router

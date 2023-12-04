@@ -72,6 +72,12 @@ const bookingSchema:Schema = new Schema({
         }],
         totalAmount : {
             type: Number
+        },
+        appliedCoupon:{
+            type:Object
+        },
+        walletAmountUsed:{
+            type:Number
         }
     }]
 })

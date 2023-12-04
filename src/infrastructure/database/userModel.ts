@@ -24,6 +24,16 @@ const UsersSchema: Schema = new Schema({
         type: String,
         require:true 
     },
+    wallet:{
+        type:Number,
+        default:0
+    },
+    walletHistory:[{
+        transactionType: String,
+        method: String,
+        amount: Number,
+        date: Date,
+    }],   
     isBlocked: { 
         type: Boolean,
         default:false 

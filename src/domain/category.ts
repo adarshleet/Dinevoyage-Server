@@ -5,3 +5,5 @@ interface Category{
     restaurantId: ObjectId,
     categories: object
 }
+
+export default Category

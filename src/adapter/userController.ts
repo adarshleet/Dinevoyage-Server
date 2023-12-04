@@ -192,7 +192,8 @@ class userController {
 
     async restaurantsToDisplay(req:Request,res:Response){
         try {
-            const restaurants = await this.userUsecase.restaurantsToDisplay()
+            const page = parseInt(req.query.page as string)
+            const restaurants = await this.userUsecase.restaurantsToDisplay(page)
             res.status(200).json(restaurants)
         } catch (error) {
             console.log(error)

@@ -81,6 +81,8 @@ route.post('/api/user/proceedToPayment',(protect),(req,res)=>bookingController.m
 route.get('/api/user/allbookings',(protect),(req,res)=>bookingController.userBookings(req,res))
 route.put('/api/user/cancelBooking',(protect),(req,res)=>bookingController.userBookingCancellation(req,res))
 
+route.post('/api/user/payWithWallet',(protect),(req,res)=>bookingController.bookingWithWallet(req,res))
+
 //--------------------------------------------------------------------------------------------------------//
 
 //restaurant details for user
@@ -98,6 +100,18 @@ const restaurantControll = new restaurantController(restaurantusecase)
 route.get('/api/user/search',(req,res)=>restaurantControll.searchRestaurants(req,res))
 route.post('/api/user/filterRestaurants',(req,res)=>restaurantControll.filterRestaurants(req,res))
 
+//-----------------------------------------------------------------------------------------------------------//
+
+import CouponRepository from '../repository/couponRepository'
+import CouponController from '../../adapter/couponController'
+import CouponUsecase from '../../usecase/couponUsecase'
+
+const couponRepo = new CouponRepository()
+const couponUsecase = new CouponUsecase(couponRepo)
+const couponController = new CouponController(couponUsecase)
+
+
+route.get('/api/user/couponsToShow',(req,res)=>couponController.couponToShow(req,res))
 
 
 

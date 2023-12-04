@@ -1,13 +1,10 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import vendorRepository from '../repository/vendorRepository'
-
-const vendorRepo = new vendorRepository();
 
 declare global {
     namespace Express {
         interface Request {
-            venforId?: string;
+            adminId?: string;
         }
     }
 }
@@ -15,19 +12,13 @@ declare global {
 const protect = async (req: Request, res: Response, next: NextFunction) => {
     let token;
 
-    token = req.cookies.vendorJWT;
+    token = req.cookies.adminJWT;
 
     if (token) {
-        try {
+               try {
             const decoded = jwt.verify(token, process.env.JWT_KEY as string) as JwtPayload;
-            const vendor = await vendorRepo.findVendorById(decoded.id as string);
-            if (vendor) {
-                // req.userId = user._id;
-                if (vendor.isBlocked) {
-                    return res.status(401).json({ message: 'Vendor have been blocked by admin' });
-                } else {
-                    next();
-                }
+            if (decoded) {
+                next();
             } else {
                 return res.status(401).json({ message: 'Not authorized, invalid token' });
             }

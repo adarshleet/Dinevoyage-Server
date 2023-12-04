@@ -201,7 +201,8 @@ class restaurantController{
     async filterRestaurants(req:Request,res:Response){
         try {
             const {cuisines,facilities} = req.body
-            const restauarants = await this.restaurantUsecase.filterRestaurants(cuisines,facilities)
+            const page = parseInt(req.query.page as string)
+            const restauarants = await this.restaurantUsecase.filterRestaurants(cuisines,facilities,page)
             res.status(200).json(restauarants)
         } catch (error) {
             console.log(error)

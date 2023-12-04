@@ -135,22 +135,30 @@ class restaurantRepository implements RestaurantRepository {
 
 
 
-    async filterRestaurant(cuisines: string[], facilities: string[]) {
+    async filterRestaurant(cuisines: string[], facilities: string[],page:number) {
         try {
-            console.log(cuisines)
             const restaurantIds = await kitchenModel.find({
                 items: { $exists: true, $not: { $size: 0 } }
             }, { restaurantId: 1, _id: 0 });
 
             const restaurantIdStrings = restaurantIds.map((res) => res.restaurantId?.toString());
 
-            let filterResult
+            const limit = 3
+            
+            let filterResult,totalPages
 
 
             if (!cuisines.length && !facilities.length) {
                 filterResult = await restaurantModel.find({
                     _id: { $in: restaurantIdStrings }
-                });
+                }).skip((page-1)*limit).limit(limit)
+
+                const totalCount = await restaurantModel.find({
+                    _id: { $in: restaurantIdStrings }
+                }).countDocuments()
+
+                totalPages = Math.floor(totalCount/limit)
+                
             }
             else {
                 filterResult = await restaurantModel.find({
@@ -159,11 +167,24 @@ class restaurantRepository implements RestaurantRepository {
                         { cuisines: { $all: cuisines } },
                         { facilities: { $all: facilities } },
                     ],
-                });
+                }).skip((page-1)*limit).limit(limit)
+
+                const totalCount = await restaurantModel.find({
+                    _id: { $in: restaurantIdStrings },
+                    $or: [
+                        { cuisines: { $all: cuisines } },
+                        { facilities: { $all: facilities } },
+                    ],
+                }).countDocuments()
+
+                totalPages = Math.floor(totalCount/limit)
             }
 
 
-            return filterResult;
+            return{
+                filterResult,
+                totalPages
+            } 
         } catch (error) {
             console.log(error);
             // Handle the error appropriately, e.g., throw or return an error message
