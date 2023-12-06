@@ -5,13 +5,20 @@ import vendorRoute from '../router/vendorRoutes'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import session, { SessionOptions } from 'express-session';
+import http from 'http'
+import { SocketRepository } from '../utils/socketRepository'
 
 
 //configuring express
-export const createServer = ()=>{
-    try {
+// export const createServer = ()=>{
+//     try {
 
         const app = express()
+
+        const httpServer = http.createServer(app);
+
+        const socket = new SocketRepository(httpServer);
+
         app.use(express.json())
         app.use(express.urlencoded({ extended: true }))
 
@@ -20,7 +27,7 @@ export const createServer = ()=>{
         // Allow requests from 'http://localhost:3000'
         app.use(
             cors({
-            origin: 'http://localhost:3000',
+            origin: process.env.CORS_URL,
             methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
             credentials: true, // If you need to send cookies or authentication headers
             })
@@ -43,9 +50,9 @@ export const createServer = ()=>{
         app.use(adminRoute)
         app.use(vendorRoute)
 
-        return app
+        export {httpServer}
 
-    } catch (error) {
-        console.log(error)
-    }
-}
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }

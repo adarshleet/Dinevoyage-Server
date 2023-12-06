@@ -30,6 +30,7 @@ route.post('/api/user/login',(req,res)=>controller.login(req,res))
 route.get('/api/user/logout',(req,res)=>controller.userLogout(req,res))
 
 route.get('/api/user/findUser',(req,res)=>controller.findUser(req,res))
+route.get('/api/user/findUserById',(req,res)=>controller.findUserById(req,res))
 route.put('/api/user/changeName',(req,res)=>controller.changeName(req,res))
 route.post('/api/user/verifyNewMobile',(req,res)=>controller.verifyNewMobile(req,res))
 route.put('/api/user/changeMobile',(req,res)=>controller.changeMobile(req,res))
@@ -113,6 +114,33 @@ const couponController = new CouponController(couponUsecase)
 
 route.get('/api/user/couponsToShow',(req,res)=>couponController.couponToShow(req,res))
 
+//-------------------------------------------------------------------------------------------------------------//
+import userConversationRepository from '../repository/userConversationRepository'
+import UserConversationController from '../../adapter/userConversationController'
+import UserConversationUsecase from '../../usecase/userConversationUsercase'
+
+const userConversationRepo = new userConversationRepository()
+const userConversationUsercase = new UserConversationUsecase(userConversationRepo)
+const userConversationController = new UserConversationController(userConversationUsercase)
+
+
+route.post('/api/user/newConversation',(protect),(req,res)=>userConversationController.newConversation(req,res))
+route.get('/api/user/getConversations',(protect),(req,res)=>userConversationController.getConversations(req,res))
+route.get('/api/user/getConversation',(protect),(req,res)=>userConversationController.getConversation(req,res))
+
+
+//----------------------------------------------------------------------------------------------------------------//
+
+import userMessageRepository from '../repository/userMessage'
+import UserMessageController from '../../adapter/userMessageController'
+import UserMessageUsecase from '../../usecase/userMessageUsecase'
+
+const userMessageRepo = new userMessageRepository
+const userMessageUsecase = new UserMessageUsecase(userMessageRepo)
+const userMessageController = new UserMessageController(userMessageUsecase)
+
+route.post('/api/user/newMessage',(protect),(req,res)=>userMessageController.newMessage(req,res))
+route.get('/api/user/getMessages',(protect),(req,res)=>userMessageController.getMessages(req,res))
 
 
 export default route

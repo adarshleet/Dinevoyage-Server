@@ -89,6 +89,17 @@ class userController {
     }
 
 
+    async findUserById(req:Request,res:Response){
+        try {
+            const userId = req.query.userId as string
+            const userFound = await this.userUsecase.findUser(userId)
+            res.status(200).json(userFound)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
     //change user name
     async changeName(req:Request,res:Response){
         try {
