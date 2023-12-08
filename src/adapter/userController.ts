@@ -88,7 +88,6 @@ class userController {
         }
     }
 
-
     async findUserById(req:Request,res:Response){
         try {
             const userId = req.query.userId as string
@@ -144,7 +143,6 @@ class userController {
     async changeMobile(req:Request,res:Response){
         try {
             const {otp,mobile} = req.body
-            console.log(mobile)
             let userId
             const token = req.cookies.userJWT
             if(token){
@@ -181,6 +179,53 @@ class userController {
             const passwordChangeStatus = await this.userUsecase.changePassword(userId,newPassword,currentPassword)
             res.status(200).json(passwordChangeStatus)
 
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    async forgotPassword(req:Request,res:Response){
+        try {
+            const mobile = req.query.mobile as string | any
+            const userFound = await this.userUsecase.mobileExistCheck(mobile)
+            console.log(mobile)
+
+            if (userFound.data) {
+                req.app.locals = mobile
+                const verify = await this.userUsecase.verifyMobile(mobile)
+                res.status(200).json(verify)
+            } else {
+                res.status(200).json({ data: false, message: 'Mobile number not registered' })
+            }
+
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    //verifyMobile for forgot password
+    async verifyMobile(req:Request,res:Response){
+        try {
+            const otp = req.body.otp
+            const mobile = req.app.locals as string | any
+            const mobileVerify = await this.userUsecase.verifyOtp(mobile,otp)
+            res.status(200).json(mobileVerify)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    //forgot password change
+    async forgotPasswordChange(req:Request,res:Response){
+        try {
+            const password = req.body.password
+            const mobile = req.app.locals as string | any
+            const passwordChange = await this.userUsecase.forgotPasswordChange(mobile,password)
+            res.status(200).json(passwordChange)
         } catch (error) {
             console.log(error)
         }

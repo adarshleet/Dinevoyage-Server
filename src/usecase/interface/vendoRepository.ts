@@ -7,6 +7,7 @@ interface VendorRepository{
     changeVendorName(vendorId:string,name:string)
     changeMobile(vendorId:string,mobile:string)
     changePassword(vendorId:string,password:string)
+    forgotPasswordChange(mobile:string,password:string)
 
     findVendorById(id:string)
 }

@@ -31,6 +31,9 @@ route.post('/api/vendor/verifyMobile',(protect),(req,res)=>controller.verifyNewM
 route.put('/api/vendor/changeMobile',(protect),(req,res)=>controller.changeMobile(req,res))
 route.put('/api/vendor/changePassword',(protect),(req,res)=>controller.changePassword(req,res))
 
+route.get('/api/vendor/forgotPassword',(req,res)=>controller.forgotPassword(req,res))
+route.put('/api/vendor/forgotPasswordChange',(req,res)=>controller.forgotPasswordChange(req,res))
+
 //-------------------------------------------------------------------------------//
 
 //vendor restaurant management

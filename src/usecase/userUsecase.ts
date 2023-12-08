@@ -222,6 +222,9 @@ class Userusecase {
         }
     }
 
+
+    
+
     //password change
     async changePassword(userId:string,password:string,currentPassword:string){
         try {
@@ -242,6 +245,25 @@ class Userusecase {
                         data:passwordMatch
                     }
                 }
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
+
+
+    // change password forgot
+    async forgotPasswordChange(mobile:string,password:string){
+        try {
+            const hashedPassword = await this.Encrypt.createHash(password) 
+            const passwordChange = await this.userRepository.forgotPasswordChange(mobile,hashedPassword)
+            return{
+                status:200,
+                data:passwordChange
             }
         } catch (error) {
             return{

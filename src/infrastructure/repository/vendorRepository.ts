@@ -56,6 +56,15 @@ class vendoRepository implements VendorRepository{
         }
     }
 
+    async forgotPasswordChange(mobile: string, password: string) {
+        try {
+            const passwordChange = await vendorModel.updateOne({mobile},{$set:{password}})
+            return passwordChange
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 }
 
 export default vendoRepository

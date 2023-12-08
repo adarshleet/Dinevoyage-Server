@@ -9,6 +9,7 @@ interface UserRepository{
     usernameChange(userId: string , name:string)
     mobileChange(userId:string , mobile:string)
     changePassword(userId:string,password:string)
+    forgotPasswordChange(mobile:string,password:string)
 
     restaurantsToShow(page:number)
     singleRestaurant(restauarantId:string)

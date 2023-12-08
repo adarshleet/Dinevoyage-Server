@@ -255,6 +255,23 @@ class Vendorusecase {
             }
         }
     }
+
+
+    async forgotPasswordChange(mobile:string,password:string){
+        try {
+            const hashedPassword = await this.encrypt.createHash(password) 
+            const passwordChange = await this.vendorRepository.forgotPasswordChange(mobile,hashedPassword)
+            return{
+                status:200,
+                data:passwordChange
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
     
 
 

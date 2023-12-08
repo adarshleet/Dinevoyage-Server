@@ -64,7 +64,14 @@ class userRepository implements UserRepository{
         }
     }
 
-
+    async forgotPasswordChange(mobile: string, password: string) {
+        try {
+            const passwordChange = await UserModel.updateOne({mobile},{$set:{password}})
+            return passwordChange
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 
 

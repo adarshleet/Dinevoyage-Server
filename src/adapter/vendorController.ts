@@ -180,6 +180,40 @@ class vendorController {
     }
 
 
+
+    async forgotPassword(req:Request,res:Response){
+        try {
+            const mobile = req.query.mobile as string | any
+            const userFound = await this.vendorUsecase.mobileExistCheck(mobile)
+            console.log(mobile)
+
+            if (userFound.data) {
+                req.app.locals = mobile
+                const verify = await this.vendorUsecase.verifyMobile(mobile)
+                res.status(200).json(verify)
+            } else {
+                res.status(200).json({ data: false, message: 'Mobile number not registered' })
+            }
+
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    async forgotPasswordChange(req:Request,res:Response){
+        try {
+            const password = req.body.password
+            const mobile = req.app.locals as string | any
+            const passwordChange = await this.vendorUsecase.forgotPasswordChange(mobile,password)
+            res.status(200).json(passwordChange)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
     async vendorLogout(req: Request, res: Response) {
         try {
             res.cookie('vendorJWT', '', {

@@ -31,10 +31,14 @@ route.get('/api/user/logout',(req,res)=>controller.userLogout(req,res))
 
 route.get('/api/user/findUser',(req,res)=>controller.findUser(req,res))
 route.get('/api/user/findUserById',(req,res)=>controller.findUserById(req,res))
-route.put('/api/user/changeName',(req,res)=>controller.changeName(req,res))
-route.post('/api/user/verifyNewMobile',(req,res)=>controller.verifyNewMobile(req,res))
-route.put('/api/user/changeMobile',(req,res)=>controller.changeMobile(req,res))
-route.put('/api/user/changePassword',(req,res)=>controller.changePassword(req,res))
+route.put('/api/user/changeName',(protect),(req,res)=>controller.changeName(req,res))
+route.post('/api/user/verifyNewMobile',(protect),(req,res)=>controller.verifyNewMobile(req,res))
+route.put('/api/user/changeMobile',(protect),(req,res)=>controller.changeMobile(req,res))
+route.put('/api/user/changePassword',(protect),(req,res)=>controller.changePassword(req,res))
+
+route.get('/api/user/forgotPassword',(req,res)=>controller.forgotPassword(req,res))
+route.post('/api/user/mobileVerify',(req,res)=>controller.verifyMobile(req,res))
+route.put('/api/user/forgotPasswordChange',(req,res)=>controller.forgotPasswordChange(req,res))
 
 route.get('/api/user/restaurantsToDisplay',(req,res)=>controller.restaurantsToDisplay(req,res))
 route.get('/api/user/singleRestaurant',(req,res)=>controller.singleRestaurant(req,res))
@@ -124,9 +128,9 @@ const userConversationUsercase = new UserConversationUsecase(userConversationRep
 const userConversationController = new UserConversationController(userConversationUsercase)
 
 
-route.post('/api/user/newConversation',(protect),(req,res)=>userConversationController.newConversation(req,res))
-route.get('/api/user/getConversations',(protect),(req,res)=>userConversationController.getConversations(req,res))
-route.get('/api/user/getConversation',(protect),(req,res)=>userConversationController.getConversation(req,res))
+route.post('/api/user/newConversation',(req,res)=>userConversationController.newConversation(req,res))
+route.get('/api/user/getConversations',(req,res)=>userConversationController.getConversations(req,res))
+route.get('/api/user/getConversation',(req,res)=>userConversationController.getConversation(req,res))
 
 
 //----------------------------------------------------------------------------------------------------------------//
@@ -139,8 +143,26 @@ const userMessageRepo = new userMessageRepository
 const userMessageUsecase = new UserMessageUsecase(userMessageRepo)
 const userMessageController = new UserMessageController(userMessageUsecase)
 
-route.post('/api/user/newMessage',(protect),(req,res)=>userMessageController.newMessage(req,res))
-route.get('/api/user/getMessages',(protect),(req,res)=>userMessageController.getMessages(req,res))
+route.post('/api/user/newMessage',(req,res)=>userMessageController.newMessage(req,res))
+route.get('/api/user/getMessages',(req,res)=>userMessageController.getMessages(req,res))
+
+//------------------------------------------------------------------------------------------------------------------//
+
+import reviewRepository from '../repository/reviewRepository'
+import ReviewController from '../../adapter/reviewController'
+import ReviewUsecase from '../../usecase/reviewUsecase'
+
+const reviewRepo = new reviewRepository()
+const reviewUsecase = new ReviewUsecase(reviewRepo)
+const reviewController = new ReviewController(reviewUsecase)
+
+route.post('/api/user/addReview',(protect),(req,res)=>reviewController.addReview(req,res))
+route.get('/api/user/getReviews',(req,res)=>reviewController.getReviews(req,res))
+route.get('/api/user/averageRating',(req,res)=>reviewController.getAverage(req,res))
+route.get('/api/user/userInBooking',(protect),(req,res)=>reviewController.userInBooking(req,res))
+route.get('/api/user/findReview',(protect),(req,res)=>reviewController.findReview(req,res))
+route.put('/api/user/editReview',(protect),(req,res)=>reviewController.editReview(req,res))
+
 
 
 export default route
