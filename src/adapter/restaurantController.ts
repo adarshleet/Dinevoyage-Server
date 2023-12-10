@@ -16,13 +16,14 @@ class restaurantController{
             const decoded = jwt.verify(token, process.env.JWT_KEY as string) as JwtPayload;
             let vendorId = decoded.id
 
-            const {restaurantName,landmark,locality,district,openingTime,closingTime,minCost,googlemapLocation,contactNumber,tableCounts} = req.body
+            const {restaurantName,landmark,locality,location,district,openingTime,closingTime,minCost,googlemapLocation,contactNumber,tableCounts} = req.body
             const banners = req.files
             const restaurantData = {
                 vendorId:vendorId,
                 restaurantName,
                 landmark,
                 locality,
+                location,
                 district,
                 openingTime,
                 closingTime,
@@ -32,6 +33,7 @@ class restaurantController{
                 tableCounts,
                 banners
             }
+
 
             const restaurantAdd = await this.restaurantUsecase.addRestaurant(restaurantData)
             res.status(200).json(restaurantAdd);

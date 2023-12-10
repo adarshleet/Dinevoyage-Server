@@ -14,6 +14,7 @@ export interface IRestaurants extends Document {
     contactNumber: string;
     googlemapLocation: string;
     tableCounts: object;
+    location : object
     status: Number;
     banners: Array<string>;
     cuisines: Array<string>;
@@ -37,6 +38,14 @@ const restaurantSchema: Schema = new Schema({
     },
     district: {
         type: String
+    },
+    location:{
+        longitude:{
+            type:Number
+        },
+        latitude:{
+            type:Number
+        }
     },
     openingTime: {
         type: String

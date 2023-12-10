@@ -12,6 +12,7 @@ interface Restaurant{
     minCost?:string,
     contactNumber?:string,
     tableCounts?: object,
+    locatiion ?:object,
     status?: string,
     banners?: Array<Object> | any
 }

@@ -83,7 +83,7 @@ class userRepository implements UserRepository{
 
         const restaurantIdStrings = restaurantIds.map((res)=>res.restaurantId?.toString())
 
-        const limit = 3
+        const limit = 6
         
         const restaurants = await restaurantModel.find({ _id: { $in: restaurantIdStrings } }).skip((page-1)*limit).limit(limit)
         const totalCount = await restaurantModel.find({ _id: { $in: restaurantIdStrings } }).countDocuments()
