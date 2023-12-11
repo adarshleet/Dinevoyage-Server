@@ -42,6 +42,7 @@ route.put('/api/user/forgotPasswordChange',(req,res)=>controller.forgotPasswordC
 
 route.get('/api/user/restaurantsToDisplay',(req,res)=>controller.restaurantsToDisplay(req,res))
 route.get('/api/user/singleRestaurant',(req,res)=>controller.singleRestaurant(req,res))
+route.get('/api/user/restaurantsForMap',(req,res)=>controller.restaurantsForMap(req,res))
 
 
 

@@ -12,6 +12,7 @@ interface UserRepository{
     forgotPasswordChange(mobile:string,password:string)
 
     restaurantsToShow(page:number)
+    restaurantsToShowInMap()
     singleRestaurant(restauarantId:string)
 }
 

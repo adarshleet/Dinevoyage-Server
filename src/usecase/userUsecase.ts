@@ -289,6 +289,23 @@ class Userusecase {
     }
 
 
+    //restaurants for displaying in map
+    async restaurantsForMap(){
+        try {
+            const restaurants = await this.userRepository.restaurantsToShowInMap()
+            return{
+                status:200,
+                data:restaurants
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
+
     //single restaurant page
     async singleRestaurant(restauarantId:string){
         try {

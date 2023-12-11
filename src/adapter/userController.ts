@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, json } from "express";
 import Userusecase from "../usecase/userUsecase";
 import User from "../domain/user";
 import jwt,{JwtPayload} from "jsonwebtoken";
@@ -250,6 +250,17 @@ class userController {
         try {
             const page = parseInt(req.query.page as string)
             const restaurants = await this.userUsecase.restaurantsToDisplay(page)
+            res.status(200).json(restaurants)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    async restaurantsForMap(req:Request,res:Response){
+        try {
+            const restaurants = await this.userUsecase.restaurantsForMap()
+            console.log(restaurants)
             res.status(200).json(restaurants)
         } catch (error) {
             console.log(error)

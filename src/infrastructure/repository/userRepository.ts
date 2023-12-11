@@ -98,6 +98,27 @@ class userRepository implements UserRepository{
 
 
 
+    //restaurants for map
+    async restaurantsToShowInMap() {
+        try {
+            const restaurantIds = await kitchenModel.find({
+                items: { $exists: true, $not: { $size: 0 } }
+            }, { restaurantId: 1, _id: 0 })
+
+            const restaurantIdStrings = restaurantIds.map((res)=>res.restaurantId?.toString())
+
+            const restaurants = await restaurantModel.find({ _id: { $in: restaurantIdStrings } })
+
+            return restaurants
+
+
+        } catch (error) {
+            console.log(error)
+        } 
+    }
+
+
+
     //single restaurant page
     async singleRestaurant(restauarantId: string) {
         const restaurant = await restaurantModel.findOne({_id:restauarantId})
