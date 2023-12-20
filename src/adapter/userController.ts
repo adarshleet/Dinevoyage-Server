@@ -58,8 +58,9 @@ class userController {
             if (loginStatus.data && typeof loginStatus.data === 'object' && 'token' in loginStatus.data) {
                 res.cookie('userJWT', loginStatus.data.token, {
                     httpOnly: true,
-                    sameSite: 'strict',
-                    maxAge: 30 * 24 * 60 * 60 * 1000
+                    sameSite: 'none',
+                    secure : process.env.NODE_ENV !== 'development',
+                    maxAge: 30 * 24 * 60 * 60 * 1000 , 
                 });
             }
             

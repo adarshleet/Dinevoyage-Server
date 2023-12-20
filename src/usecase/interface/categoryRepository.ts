@@ -1,10 +1,10 @@
 
 
 interface categoryRepository{
-    addCategory(restaurantId:string,category:string)
-    editCategory(categoryId:string,category:string)
-    viewCategories(restaurantId:string,search:string,page:number)
-    changeCategoryStatus(categoryId:string)
+    addCategory(restaurantId:string,category:string):Promise<any>
+    editCategory(categoryId:string,category:string):Promise<any>
+    viewCategories(restaurantId:string,search:string,page:number):Promise<any>
+    changeCategoryStatus(categoryId:string):Promise<any>
 }
 
 export default categoryRepository

@@ -1,23 +1,23 @@
 import Booking from "../../domain/booking"
 
 interface BookingRepository{
-    dateSeatDetails(restaurantId:string,date:string,time:string)
-    confirmBooking(bookingDetails:Booking)
-    tableCounts(restaurantId:string,date:string,time:string)
-    userBookings(userId:string)
-    userBookingCancellation(bookingId:string,reason:string)
+    dateSeatDetails(restaurantId:string,date:string,time:string):Promise<Booking | null>
+    confirmBooking(bookingDetails:Booking):Promise<any>
+    tableCounts(restaurantId:string,date:string,time:string):Promise<any>
+    userBookings(userId:string):Promise<Array<Booking> | null>
+    userBookingCancellation(bookingId:string,reason:string):Promise<any>
 
 
     //vendor
     //allbookings
-    allBookings(restaurantId:string,page:number)
-    changeBookingStatus(bookingId:string,reason:string)
+    allBookings(restaurantId:string,page:number):Promise<any>
+    changeBookingStatus(bookingId:string,reason:string):Promise<any>
 
-    salesChart(restaurantId:string)
+    salesChart(restaurantId:string):Promise<any>
 
 
     //admin
-    salesDetails()
+    salesDetails():Promise<any>
 
 }
 

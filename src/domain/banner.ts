@@ -1,5 +1,5 @@
 interface Banner{
-    path ?:string
+    path ?:string;
 }
 
 export default Banner

@@ -1,19 +1,19 @@
 import User from '../../domain/user'
 
 interface UserRepository{
-    save(user:User),
-    mobileExistCheck(mobile:string),
-    emailExistCheck(email:string),
-    findUserById(user:string)
+    save(user:User):Promise<any>
+    mobileExistCheck(mobile:string):Promise<any>
+    emailExistCheck(email:string):Promise<any>
+    findUserById(user:string):Promise<any>
 
-    usernameChange(userId: string , name:string)
-    mobileChange(userId:string , mobile:string)
-    changePassword(userId:string,password:string)
-    forgotPasswordChange(mobile:string,password:string)
+    usernameChange(userId: string , name:string):Promise<any>
+    mobileChange(userId:string , mobile:string):Promise<any>
+    changePassword(userId:string,password:string):Promise<any>
+    forgotPasswordChange(mobile:string,password:string):Promise<any>
 
-    restaurantsToShow(page:number)
-    restaurantsToShowInMap()
-    singleRestaurant(restauarantId:string)
+    restaurantsToShow(page:number):Promise<any>
+    restaurantsToShowInMap():Promise<any>
+    singleRestaurant(restauarantId:string):Promise<any>
 }
 
 export default UserRepository

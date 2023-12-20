@@ -11,25 +11,25 @@ interface TableCounts {
     [key: string]: number;
 }
 class bookingRepository implements BookingRepository {
-    async dateSeatDetails(restaurantId: string, date: string, time: string) {
+    async dateSeatDetails(restaurantId: string, date: string, time: string):Promise<Booking | null> {
         try {
-            const seatDetails = await bookingModel.findOne({ restaurantId, bookings: { $elemMatch: { date, time } } })
-
+            const seatDetails = await bookingModel.findOne({ restaurantId, bookings: { $elemMatch: { date, time } } }) as Booking
             return seatDetails
         } catch (error) {
             console.log(error);
+            return null
         }
     }
 
-    async confirmBooking(bookingDetails: Booking) {
+    async confirmBooking(bookingDetails: Booking):Promise<any> {
         try {
             const restaurantId = bookingDetails.restaurantId
             if(bookingDetails?.appliedCoupon?.couponName){
                 const addUserToCoupon = await couponModel.updateOne({couponName:bookingDetails?.appliedCoupon.couponName},{$push:{usedUsers:bookingDetails.user}})
             }
 
-            if(bookingDetails.walletAmountUsed > 0){
-                const walletUpdate = await UserModel.updateOne({_id:bookingDetails.user},{$inc:{wallet:-bookingDetails.walletAmountUsed},$push:{walletHistory:{
+            if(bookingDetails?.walletAmountUsed ?? 0 > 0){
+                const walletUpdate = await UserModel.updateOne({_id:bookingDetails.user},{$inc:{wallet:-(bookingDetails.walletAmountUsed ?? 0)},$push:{walletHistory:{
                     transactionType: 'Table Booking',
                     method:'Debit',
                     amount: bookingDetails.walletAmountUsed,
@@ -44,7 +44,7 @@ class bookingRepository implements BookingRepository {
         }
     }
 
-    async tableCounts(restaurantId: string, date: string, time: string) {
+    async tableCounts(restaurantId: string, date: string, time: string):Promise<any> {
         try {
             const seatCounts = await bookingModel.aggregate([
                 {
@@ -110,8 +110,6 @@ class bookingRepository implements BookingRepository {
                 // Calculate the difference
                 const result = calculateDifference();
 
-                // Print the difference
-                console.log(result);
                 return result
             } else {
                 console.log('Restaurant details not found.');
@@ -123,13 +121,13 @@ class bookingRepository implements BookingRepository {
 
 
     //user bookings
-    async userBookings(userId: string) {
+    async userBookings(userId: string):Promise<Array<Booking> | null> {
         try {
-            const bookings = await bookingModel.find({ 'bookings.user': userId }).populate('restaurantId')
-            console.log(bookings)
+            const bookings = await bookingModel.find({ 'bookings.user': userId }).populate('restaurantId') as Array<Booking> | null
             return bookings
         } catch (error) {
             console.log(error)
+            return null
         }
     }
 

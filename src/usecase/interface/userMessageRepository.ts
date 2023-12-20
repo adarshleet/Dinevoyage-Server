@@ -1,8 +1,8 @@
 import UserMessage from "../../domain/userMessage"
 
 interface UserMessageRepository{
-    newMessage(message:UserMessage)
-    findMessages(conversationId:string)
+    newMessage(message:UserMessage):Promise<any>
+    findMessages(conversationId:string):Promise<any>
 }
 
 
