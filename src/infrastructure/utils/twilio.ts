@@ -8,7 +8,7 @@ const serviceID = process.env.SERVICE_SID
 const accountSID = process.env.ACC_SID
 const authToken = process.env.AUTH_TOKEN
 
-const client = new Twilio('AC8d4bf4bf01f1bca9eddbe2dbd66abc7a', 'cc3f234f256fa5ef0b31f9a7b875178b');
+const client = new Twilio(accountSID, authToken);
 
 
 class TwilioService implements Itwilio {
