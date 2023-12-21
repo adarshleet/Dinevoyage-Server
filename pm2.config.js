@@ -5,6 +5,8 @@ module.exports = {
     env: {
         ACC_SID : 'AC8d4bf4bf01f1bca9eddbe2dbd66abc7a',
         AUTH_TOKEN : 'cc3f234f256fa5ef0b31f9a7b875178b',
-        SERVICE_SID : 'VA0368af8cae07819ac37e7e6fc5f82cd9'
+        SERVICE_SID : 'VA0368af8cae07819ac37e7e6fc5f82cd9',
+        NODE_ENV: 'production',
+        PORT: 3000,
     },
   };
