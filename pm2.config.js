@@ -8,7 +8,7 @@ module.exports = {
         // SERVICE_SID : 'VA0368af8cae07819ac37e7e6fc5f82cd9',
         NODE_ENV: 'production',
         PORT: 3000,
-        JWT_KEY : abc123,
+        JWT_KEY : 'abc123',
         MONGO_URI : "mongodb+srv://adarshravi:adarsh98475@dinevoyage.s4rqywm.mongodb.net/DineVoyage?retryWrites=true&w=majority"
     },
 };
