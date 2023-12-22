@@ -16,7 +16,6 @@ class TwilioService implements Itwilio {
     async sendTwilioOtp(mobile: string): Promise<boolean> {
         try {
             if(serviceID){
-                console.log('check')
                 await client.verify.v2
                 .services(serviceID).verifications.create({
                     to: `+91${mobile}`,
