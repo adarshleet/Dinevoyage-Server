@@ -45,6 +45,7 @@ class Userusecase {
     async verifyMobile(mobile: string) {
         try {
             const verify = await this.twilioService.sendTwilioOtp(mobile)
+            console.log('here also')
             return {
                 status: 200,
                 data: verify,

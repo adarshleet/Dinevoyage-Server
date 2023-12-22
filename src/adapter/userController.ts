@@ -12,6 +12,7 @@ class userController {
     async signUp(req: Request, res: Response) {
         try {
             const user = req.body
+            console.log(user)
             if (user.isGoogle) {
                 const userFound = await this.userUsecase.emailExistCheck(user.email)
                 if (!userFound.data) {
