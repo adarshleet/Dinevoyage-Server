@@ -6,7 +6,7 @@ module.exports = {
         NODE_ENV: 'production',
         PORT: 3000,
         CLOUDINARY_CLOUD : 'dfbyutwmz',
-        CLOUDINARY_API_KEY : 616888345499255,
+        CLOUDINARY_API_KEY : '616888345499255',
         CLOUDINARY_API_SECRET : 'n8GoExGOO1f4_Vp63f3KJoDC5CA',
     },
 };
