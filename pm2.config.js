@@ -3,12 +3,14 @@ module.exports = {
     watch: true, // Auto-restart the app when files change (optional)
     ignore_watch: ['node_modules', 'logs'], // Ignore certain directories from auto-restart (optional)
     env: {
-        // ACC_SID : 'AC8d4bf4bf01f1bca9eddbe2dbd66abc7a',
-        // AUTH_TOKEN : 'cc3f234f256fa5ef0b31f9a7b875178b',
-        // SERVICE_SID : 'VA0368af8cae07819ac37e7e6fc5f82cd9',
         NODE_ENV: 'production',
         PORT: 3000,
-        // MONGO_URI : "mongodb+srv://adarshravi:adarsh98475@dinevoyage.s4rqywm.mongodb.net/DineVoyage?retryWrites=true&w=majority",
-        // CORS_URL : 'http://localhost:5000'
+        CLOUDINARY_CLOUD : 'dfbyutwmz',
+        CLOUDINARY_API_KEY : '616888345499255',
+        CLOUDINARY_API_SECRET : 'n8GoExGOO1f4_Vp63f3KJoDC5CA',
+
+
+        STRIPE_API : 'sk_test_51OEOTHSFAVCVwY62x0N8IvUkwA0QkI6nQmji6nwfmLV9PaVNu2z575ruttZagRdBqeabY1IUC43GbxUEn3SogR4g00fnJRhx0T'
+
     },
 };
