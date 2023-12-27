@@ -27,7 +27,9 @@ import { SocketRepository } from '../utils/socketRepository'
         // Allow requests from 'http://localhost:3000'
         app.use(
             cors({
-            origin: process.env.CORS_URL,
+            // origin: process.env.CORS_URL,
+            origin: 'https://dinvoyage-client.vercel.app',
+
             methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
             credentials: true, // If you need to send cookies or authentication headers
             })
