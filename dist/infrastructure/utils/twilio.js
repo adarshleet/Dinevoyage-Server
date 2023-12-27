@@ -23,13 +23,13 @@ class TwilioService {
     sendTwilioOtp(mobile) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                // if(serviceID){
-                //     await client.verify.v2
-                //     .services(serviceID).verifications.create({
-                //         to: `+91${mobile}`,
-                //         channel: "sms",
-                //     })
-                // }
+                if (serviceID) {
+                    yield client.verify.v2
+                        .services(serviceID).verifications.create({
+                        to: `+91${mobile}`,
+                        channel: "sms",
+                    });
+                }
                 return true;
             }
             catch (error) {
@@ -41,12 +41,12 @@ class TwilioService {
     verifyOtp(mobile, otp) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                // if(serviceID){
-                //     const var_check = await client.verify.v2
-                //     .services(serviceID)
-                //     .verificationChecks.create({ to: `+91${mobile}`, code: otp });
-                //     return var_check.status === "approved";
-                // }
+                if (serviceID) {
+                    const var_check = yield client.verify.v2
+                        .services(serviceID)
+                        .verificationChecks.create({ to: `+91${mobile}`, code: otp });
+                    return var_check.status === "approved";
+                }
                 return true;
             }
             catch (error) {

@@ -21,6 +21,7 @@ class userController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const user = req.body;
+                console.log(user);
                 if (user.isGoogle) {
                     const userFound = yield this.userUsecase.emailExistCheck(user.email);
                     if (!userFound.data) {

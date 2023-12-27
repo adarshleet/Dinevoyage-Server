@@ -25,7 +25,8 @@ app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cookie_parser_1.default)());
 // Allow requests from 'http://localhost:3000'
 app.use((0, cors_1.default)({
-    origin: process.env.CORS_URL,
+    // origin: process.env.CORS_URL,
+    origin: 'https://dinvoyage-client.vercel.app',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // If you need to send cookies or authentication headers
 }));
