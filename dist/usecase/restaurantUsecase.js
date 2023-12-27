@@ -237,5 +237,22 @@ class RestaurantUsecase {
             }
         });
     }
+    popularRestaurants() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const restauarants = yield this.restaurantRepository.popularRestaurants();
+                return {
+                    status: 200,
+                    data: restauarants
+                };
+            }
+            catch (error) {
+                return {
+                    status: 400,
+                    data: error
+                };
+            }
+        });
+    }
 }
 exports.default = RestaurantUsecase;
