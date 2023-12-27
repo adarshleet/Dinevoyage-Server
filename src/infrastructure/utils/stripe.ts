@@ -1,5 +1,7 @@
 import Stripe from "stripe";
-const stripeApi = process.env.STRIPE_API as string
+// const stripeApi = process.env.STRIPE_API as string
+const stripeApi = 'sk_test_51OEOTHSFAVCVwY62x0N8IvUkwA0QkI6nQmji6nwfmLV9PaVNu2z575ruttZagRdBqeabY1IUC43GbxUEn3SogR4g00fnJRhx0T'
+
 const stripe = new Stripe(stripeApi)
 
 import IStripe from "../../usecase/interface/stripe";
