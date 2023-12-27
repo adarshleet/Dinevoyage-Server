@@ -212,6 +212,17 @@ class restaurantController{
     }
 
 
+    //newest popular restaurants
+    async popularRestaurants(req:Request,res:Response){
+        try {
+            const popularRestaurants = await this.restaurantUsecase.popularRestaurants()
+            res.status(200).json(popularRestaurants)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
 }
 
 export default restaurantController

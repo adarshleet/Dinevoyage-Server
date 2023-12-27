@@ -14,6 +14,8 @@ interface RestaurantRepository{
     removeRestaurantBanner(restauarantId:string,image:string):Promise<any>
     editRestaurant(restaurantId:string,restaurantDetails:Restaurant):Promise<any>
 
+    popularRestaurants():Promise<any>
+
 
     searchRestaurant(searchQuery:string):Promise<any>
     filterRestaurant(cuisines:Array<string>,facilities:Array<string>,page:number):Promise<any>

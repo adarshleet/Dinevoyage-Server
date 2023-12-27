@@ -234,6 +234,21 @@ class RestaurantUsecase {
         }
     }
 
+    async popularRestaurants(){
+        try {
+            const restauarants = await this.restaurantRepository.popularRestaurants()
+            return{
+                status:200,
+                data:restauarants
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
 }
 
 export default RestaurantUsecase
