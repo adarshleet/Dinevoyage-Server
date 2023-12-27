@@ -13,7 +13,8 @@ export class SocketRepository {
     constructor(httpServer: HttpServer) {
         this.io = new SocketIOServer(httpServer, {
             cors: {
-                origin: 'http://localhost:3000'
+                // origin: 'http://localhost:5000'
+                origin: 'https://dinvoyage-client.vercel.app'
             }
         });
 
