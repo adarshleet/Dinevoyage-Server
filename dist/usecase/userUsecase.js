@@ -41,6 +41,7 @@ class Userusecase {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const verify = yield this.twilioService.sendTwilioOtp(mobile);
+                console.log('here also');
                 return {
                     status: 200,
                     data: verify,
