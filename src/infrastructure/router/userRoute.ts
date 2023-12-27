@@ -105,6 +105,7 @@ const restaurantControll = new restaurantController(restaurantusecase)
 
 route.get('/api/user/search',(req,res)=>restaurantControll.searchRestaurants(req,res))
 route.post('/api/user/filterRestaurants',(req,res)=>restaurantControll.filterRestaurants(req,res))
+route.get('/api/user/popularRestaurants',(req,res)=>restaurantControll.popularRestaurants(req,res))
 
 //-----------------------------------------------------------------------------------------------------------//
 

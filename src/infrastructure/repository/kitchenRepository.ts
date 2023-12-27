@@ -56,6 +56,8 @@ class kitchenRepository implements KitchenRepository {
                 }
             }
             const itemEditStatus = await kitchenModel.updateOne({ 'items._id': itemId }, { $set: { 'items.$': itemData } })
+            console.log('here')
+
             return itemEditStatus
         } catch (error) {
             console.log(error)

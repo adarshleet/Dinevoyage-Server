@@ -54,7 +54,9 @@ class KitchenController{
             delete itemData.image
             
             const itemEditStatus = await this.KitchenUsecase.editItem(itemId,itemData,image)
+            console.log(itemEditStatus)
             res.status(200).json(itemEditStatus)
+        
 
         } catch (error) {
             console.log(error)

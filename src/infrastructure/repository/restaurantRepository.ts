@@ -191,6 +191,17 @@ class restaurantRepository implements RestaurantRepository {
         }
     }
 
+
+
+    async popularRestaurants(): Promise<any> {
+        try {
+            const popularRestaurants = await restaurantModel.find({status:4}).sort({ createdAt: -1 }).limit(3)
+            return popularRestaurants
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 }
 
 export default restaurantRepository
