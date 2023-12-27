@@ -76,6 +76,7 @@ const restaurantusecase = new restaurantUsecase_1.default(restaurantRepo, cloudi
 const restaurantControll = new restaurantController_1.default(restaurantusecase);
 route.get('/api/user/search', (req, res) => restaurantControll.searchRestaurants(req, res));
 route.post('/api/user/filterRestaurants', (req, res) => restaurantControll.filterRestaurants(req, res));
+route.get('/api/user/popularRestaurants', (req, res) => restaurantControll.popularRestaurants(req, res));
 //-----------------------------------------------------------------------------------------------------------//
 const couponRepository_1 = __importDefault(require("../repository/couponRepository"));
 const couponController_1 = __importDefault(require("../../adapter/couponController"));

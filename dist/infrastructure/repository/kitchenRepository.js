@@ -66,6 +66,7 @@ class kitchenRepository {
                     }
                 }
                 const itemEditStatus = yield KitchenModel_1.default.updateOne({ 'items._id': itemId }, { $set: { 'items.$': itemData } });
+                console.log('here');
                 return itemEditStatus;
             }
             catch (error) {

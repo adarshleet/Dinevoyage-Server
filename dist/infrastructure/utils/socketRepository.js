@@ -42,7 +42,7 @@ class SocketRepository {
         this.io = new socket_io_1.Server(httpServer, {
             cors: {
                 // origin: 'http://localhost:5000'
-                origin: 'https://dinvoyage-client.vercel.app'
+                origin: process.env.CORS_URL
             }
         });
         this.io.on("connection", this.handleConnection);

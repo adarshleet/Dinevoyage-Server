@@ -219,5 +219,17 @@ class restaurantController {
             }
         });
     }
+    //newest popular restaurants
+    popularRestaurants(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const popularRestaurants = yield this.restaurantUsecase.popularRestaurants();
+                res.status(200).json(popularRestaurants);
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
 }
 exports.default = restaurantController;

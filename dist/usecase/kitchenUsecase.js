@@ -54,6 +54,7 @@ class KitchenUsecase {
                 if (image) {
                     itemData.image = yield this.cloudinary.saveToCloudinary(image);
                 }
+                console.log(itemId);
                 const itemEditStatus = yield this.KitchenRepository.editItem(itemId, itemData);
                 return {
                     status: 200,

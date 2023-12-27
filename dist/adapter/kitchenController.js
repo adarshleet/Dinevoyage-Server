@@ -52,6 +52,7 @@ class KitchenController {
                 const image = req.file;
                 delete itemData.image;
                 const itemEditStatus = yield this.KitchenUsecase.editItem(itemId, itemData, image);
+                console.log(itemEditStatus);
                 res.status(200).json(itemEditStatus);
             }
             catch (error) {

@@ -192,5 +192,16 @@ class restaurantRepository {
             }
         });
     }
+    popularRestaurants() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const popularRestaurants = yield restaurantModel_1.default.find({ status: 4 }).sort({ createdAt: -1 }).limit(3);
+                return popularRestaurants;
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
 }
 exports.default = restaurantRepository;
