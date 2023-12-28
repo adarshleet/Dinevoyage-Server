@@ -6,6 +6,7 @@ import restaurantModel from "../database/restaurantModel";
 import Booking from "../../domain/booking";
 import vendorModel from "../database/vendorModel";
 import couponModel from "../database/couponModal";
+import schedule from 'node-schedule';
 
 interface TableCounts {
     [key: string]: number;
@@ -38,10 +39,37 @@ class bookingRepository implements BookingRepository {
             }
 
 
+            //taking next day of the booking for changing the status
+            const currentDate = new Date(bookingDetails.date as any);
+            const nextDay = new Date(currentDate);
+            nextDay.setDate(currentDate.getDate() + 1);
+
+            
+
+
 
             const bookingConfirm = await bookingModel.updateOne({ restaurantId }, { $push: { bookings: bookingDetails } },{upsert:true})
-            console.log(bookingConfirm)
+
+
+            schedule.scheduleJob(nextDay, async function async() {
+                await bookingModel.updateOne(
+                    {
+                        restaurantId,
+                        'bookings.date': bookingDetails.date,
+                        'bookings.time': bookingDetails.time,
+                        'bookings.orderStatus': 1
+                    },
+                    {
+                        $set: {
+                            'bookings.$.orderStatus': 4
+                        }
+                })
+            });
+
+
+
             return bookingConfirm
+
         } catch (error) {
             console.log(error);
         }

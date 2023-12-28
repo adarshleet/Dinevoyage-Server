@@ -152,7 +152,7 @@ class Userusecase {
                     }
                     const passwordMatch = yield this.Encrypt.compare(user.password, userFound.password);
                     if (passwordMatch) {
-                        const token = this.jwtCreate.createJwt(userFound._id);
+                        const token = this.jwtCreate.createJwt(userFound._id, 'user');
                         return {
                             status: 200,
                             data: {

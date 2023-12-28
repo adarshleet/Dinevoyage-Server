@@ -5,10 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 class JwtCreate {
-    createJwt(userId) {
+    createJwt(userId, role) {
         const jwtKey = process.env.JWT_KEY;
         if (jwtKey) {
-            const token = jsonwebtoken_1.default.sign({ id: userId }, jwtKey);
+            const token = jsonwebtoken_1.default.sign({ id: userId, role: role }, jwtKey);
             return token;
         }
         throw new Error("JWT_KEY is not defined");

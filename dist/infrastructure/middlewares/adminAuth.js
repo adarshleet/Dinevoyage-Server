@@ -20,6 +20,9 @@ const protect = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
     if (token) {
         try {
             const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_KEY);
+            if (decoded && (!decoded.role || decoded.role != 'admin')) {
+                return res.status(401).json({ message: 'Not authorized, invalid token' });
+            }
             if (decoded) {
                 next();
             }

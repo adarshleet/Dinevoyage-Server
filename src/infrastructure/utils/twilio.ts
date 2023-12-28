@@ -15,13 +15,13 @@ class TwilioService implements Itwilio {
 
     async sendTwilioOtp(mobile: string): Promise<boolean> {
         try {
-            if(serviceID){
-                await client.verify.v2
-                .services(serviceID).verifications.create({
-                    to: `+91${mobile}`,
-                    channel: "sms",
-                })
-            }
+            // if(serviceID){
+            //     await client.verify.v2
+            //     .services(serviceID).verifications.create({
+            //         to: `+91${mobile}`,
+            //         channel: "sms",
+            //     })
+            // }
             return true
         } catch (error) {
             console.log(error)
@@ -31,12 +31,12 @@ class TwilioService implements Itwilio {
 
     async verifyOtp(mobile: string, otp: string): Promise<boolean> {
         try {
-            if(serviceID){
-                const var_check = await client.verify.v2
-                .services(serviceID)
-                .verificationChecks.create({ to: `+91${mobile}`, code: otp });
-                return var_check.status === "approved";
-            }
+            // if(serviceID){
+            //     const var_check = await client.verify.v2
+            //     .services(serviceID)
+            //     .verificationChecks.create({ to: `+91${mobile}`, code: otp });
+            //     return var_check.status === "approved";
+            // }
             return true
         } catch (error) {
             console.log(error)
