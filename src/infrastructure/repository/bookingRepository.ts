@@ -37,7 +37,6 @@ class bookingRepository implements BookingRepository {
                 }}})
             }
 
-            console.log('herererererererere',bookingDetails)
 
 
             const bookingConfirm = await bookingModel.updateOne({ restaurantId }, { $push: { bookings: bookingDetails } },{upsert:true})
