@@ -22,8 +22,8 @@ class StripePayment implements IStripe{
             payment_method_types:["card"],
             line_items:lineItems,
             mode:'payment',
-            success_url: 'http://localhost:3000/bookingConfirmed',
-            cancel_url : 'https://localhost:3000/cancel'
+            success_url: 'https://dinvoyage-client.vercel.app/bookingConfirmed',
+            cancel_url : 'https://dinvoyage-client.vercel.app/cancel'
         })
 
         console.log("Stripe Checkout Session ID:", session.id);
