@@ -35,6 +35,7 @@ class BookingController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const bookingDetails = req.app.locals;
+                console.log('dfdfd', bookingDetails);
                 if (req.body.data.object.status == 'complete') {
                     const bookingConfirm = yield this.bookingUsecase.confirmBooking(bookingDetails);
                     res.status(200).json(bookingConfirm);
@@ -69,8 +70,9 @@ class BookingController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const guestData = req.body;
+                req.app.locals.guestData = guestData;
                 yield this.session.sessionSetup(req, guestData);
-                const sessionDetails = req.session;
+                const sessionDetails = req.app.locals.guestData;
                 const seatCounts = yield this.bookingUsecase.tableCounts(guestData.restaurantId, guestData.date, guestData.time);
                 res.status(200).json({ seatCounts, sessionDetails });
             }
@@ -95,7 +97,8 @@ class BookingController {
                 bookingDetails.user = user;
                 req.app.locals = bookingDetails;
                 yield this.session.sessionSetup(req, bookingDetails);
-                const sessionDetails = req.session;
+                // const sessionDetails = req.session
+                const sessionDetails = req.app.locals.guestData;
                 const paymentDetails = yield this.bookingUsecase.makePayment(bookingDetails);
                 res.status(200).json(paymentDetails);
             }
