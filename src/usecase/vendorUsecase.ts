@@ -124,7 +124,7 @@ class Vendorusecase {
                 }
                 const passwordMatch = await this.encrypt.compare(vendor.password,vendorFound.password)
                 if(passwordMatch){
-                    const token = this.jwtCreate.createJwt(vendorFound._id)
+                    const token = this.jwtCreate.createJwt(vendorFound._id,'vendor')
                     return {
                         status: 200,
                         data: {

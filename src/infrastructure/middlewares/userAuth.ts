@@ -20,7 +20,12 @@ const protect = async (req: Request, res: Response, next: NextFunction) => {
     if (token) {
         try {
             const decoded = jwt.verify(token, process.env.JWT_KEY as string) as JwtPayload;
-            const user = await userRepo.findUserById(decoded.id as string);
+
+            if (decoded && (!decoded.role || decoded.role != 'user')) {
+                return res.status(401).json({ message: 'Not authorized, invalid token' });
+            }
+
+            const user = await userRepo.findUserById(decoded.id as string) 
             if (user) {
                 // req.userId = user._id;
                 if (user.isBlocked) {

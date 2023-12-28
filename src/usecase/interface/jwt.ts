@@ -1,5 +1,5 @@
 interface Ijwt{
-    createJwt(userId:string):string
+    createJwt(userId:string,role:string):string
 }
 
 export default Ijwt

@@ -22,7 +22,7 @@ class Adminusecase {
             console.log(adminFound)
             if (adminFound) {
                 const passwordMatch = await this.Encrypt.compare(admin.password, adminFound.password);
-                const token = this.JwtCreate.createJwt(adminFound._id);
+                const token = this.JwtCreate.createJwt(adminFound._id ,'admin');
     
                 if (passwordMatch) {
                     return {

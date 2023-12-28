@@ -22,6 +22,9 @@ const protect = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
     if (token) {
         try {
             const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_KEY);
+            if (decoded && (!decoded.role || decoded.role != 'vendor')) {
+                return res.status(401).json({ message: 'Not authorized, invalid token' });
+            }
             const vendor = yield vendorRepo.findVendorById(decoded.id);
             if (vendor) {
                 // req.userId = user._id;

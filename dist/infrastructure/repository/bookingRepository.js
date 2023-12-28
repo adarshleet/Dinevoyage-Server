@@ -18,6 +18,7 @@ const mongoose_1 = require("mongoose");
 const restaurantModel_1 = __importDefault(require("../database/restaurantModel"));
 const vendorModel_1 = __importDefault(require("../database/vendorModel"));
 const couponModal_1 = __importDefault(require("../database/couponModal"));
+const node_schedule_1 = __importDefault(require("node-schedule"));
 class bookingRepository {
     dateSeatDetails(restaurantId, date, time) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -47,9 +48,25 @@ class bookingRepository {
                                 date: Date.now()
                             } } });
                 }
-                console.log('herererererererere', bookingDetails);
+                //taking next day of the booking for changing the status
+                const currentDate = new Date(bookingDetails.date);
+                const nextDay = new Date(currentDate);
+                nextDay.setDate(currentDate.getDate() + 1);
                 const bookingConfirm = yield bookingsModel_1.default.updateOne({ restaurantId }, { $push: { bookings: bookingDetails } }, { upsert: true });
-                console.log(bookingConfirm);
+                node_schedule_1.default.scheduleJob(nextDay, function async() {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        yield bookingsModel_1.default.updateOne({
+                            restaurantId,
+                            'bookings.date': bookingDetails.date,
+                            'bookings.time': bookingDetails.time,
+                            'bookings.orderStatus': 1
+                        }, {
+                            $set: {
+                                'bookings.$.orderStatus': 4
+                            }
+                        });
+                    });
+                });
                 return bookingConfirm;
             }
             catch (error) {
