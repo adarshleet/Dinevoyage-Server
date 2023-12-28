@@ -135,6 +135,8 @@ const couponController = new CouponController(couponUsecase)
 
 router.post('/api/admin/addCoupon',(protect),(req,res)=>couponController.addCoupon(req,res))
 router.get('/api/admin/allCoupons',(protect),(req,res)=>couponController.allCoupons(req,res))
+router.put('/api/admin/editCoupon',(protect),(req,res)=>couponController.editCoupon(req,res))
+router.put('/api/admin/couponStatusChange',(protect),(req,res)=>couponController.couponStatusChange(req,res))
 
 
 //-------------------------------------------------------------------------------------------------------------------------//

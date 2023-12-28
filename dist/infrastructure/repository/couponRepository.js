@@ -43,6 +43,37 @@ class CouponRepository {
             }
         });
     }
+    editCoupon(coupon) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                console.log(coupon);
+                const couponEdit = yield couponModal_1.default.findByIdAndUpdate(coupon._id, { $set: coupon });
+                return couponEdit;
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    couponStatusChange(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const existingCoupon = yield couponModal_1.default.findById(id);
+                console.log(existingCoupon, id);
+                if (existingCoupon) {
+                    const couponEdit = yield couponModal_1.default.findByIdAndUpdate(id, {
+                        $set: {
+                            isListed: !existingCoupon.isListed
+                        }
+                    }, { new: true });
+                    return couponEdit;
+                }
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
     getAllCoupon(page) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

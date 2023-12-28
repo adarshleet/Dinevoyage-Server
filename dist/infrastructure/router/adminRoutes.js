@@ -95,5 +95,7 @@ const couponUsecase = new couponUsecase_1.default(couponRepo);
 const couponController = new couponController_1.default(couponUsecase);
 router.post('/api/admin/addCoupon', (adminAuth_1.protect), (req, res) => couponController.addCoupon(req, res));
 router.get('/api/admin/allCoupons', (adminAuth_1.protect), (req, res) => couponController.allCoupons(req, res));
+router.put('/api/admin/editCoupon', (adminAuth_1.protect), (req, res) => couponController.editCoupon(req, res));
+router.put('/api/admin/couponStatusChange', (adminAuth_1.protect), (req, res) => couponController.couponStatusChange(req, res));
 //-------------------------------------------------------------------------------------------------------------------------//
 exports.default = router;

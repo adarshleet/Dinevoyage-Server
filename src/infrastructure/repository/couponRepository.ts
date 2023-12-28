@@ -37,6 +37,40 @@ class CouponRepository implements couponRepository{
     }
 
 
+    async editCoupon(coupon: Coupon): Promise<any> {
+        try {
+            console.log(coupon)
+            const couponEdit = await couponModel.findByIdAndUpdate(coupon._id,{$set:coupon})
+            return couponEdit
+        } catch (error) {
+            console.log(error)
+        }    
+    }
+
+
+    async couponStatusChange(id:string): Promise<any> {
+        try {
+            const existingCoupon:any = await couponModel.findById(id);
+            console.log(existingCoupon,id)
+            if (existingCoupon) {
+                const couponEdit = await couponModel.findByIdAndUpdate(
+                  id,
+                  {
+                    $set: {
+                      isListed: !existingCoupon.isListed
+                    }
+                  },
+                  { new: true }
+                );
+              
+                return couponEdit
+              }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
     async getAllCoupon(page:number) {
         try {
             const limit = 5

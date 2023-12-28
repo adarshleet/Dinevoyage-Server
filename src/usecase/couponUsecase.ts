@@ -22,6 +22,37 @@ class CouponUsecase{
         }
     }
 
+    async editCoupon(coupon:Coupon){
+        try {
+            const couponEdit = await this.couponRepository.editCoupon(coupon)
+            return{
+                status:200,
+                data:couponEdit
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
+
+    async couponStatusChange(id:string){
+        try {
+            const statusChange = await this.couponRepository.couponStatusChange(id)
+            return{
+                status:200,
+                data:statusChange
+            }
+        } catch (error) {
+            return{
+                status:400,
+                data:error
+            }
+        }
+    }
+
 
 
     async getAllCoupons(page:number){
