@@ -37,7 +37,9 @@ class bookingRepository implements BookingRepository {
                 }}})
             }
 
-            const bookingConfirm = await bookingModel.updateOne({ restaurantId }, { $push: { bookings: bookingDetails } }, { upsert: true })
+
+            const bookingConfirm = await bookingModel.updateOne({ restaurantId }, { $push: { bookings: bookingDetails } },{upsert:true})
+
             return bookingConfirm
         } catch (error) {
             console.log(error);
@@ -123,7 +125,7 @@ class bookingRepository implements BookingRepository {
     //user bookings
     async userBookings(userId: string):Promise<Array<Booking> | null> {
         try {
-            const bookings = await bookingModel.find({ 'bookings.user': userId }).populate('restaurantId') as Array<Booking> | null
+            const bookings = await bookingModel.find({ 'bookings.user': userId, 'restaurantId': { $ne: null } }).populate('restaurantId') as Array<Booking> | null
             return bookings
         } catch (error) {
             console.log(error)
@@ -145,16 +147,15 @@ class bookingRepository implements BookingRepository {
                 },
                 { new: true }
             );
+            const bookingDetails = await bookingModel.findOne({'bookings._id':bookingId},{ 'bookings.$': 1 })
 
-            const bookingDetails = await bookingModel.findOne({'booking._id':bookingId})
-
-            // const booking = bookingDetails?.bookings[0]
-            // const walletUpdate = await UserModel.updateOne({_id:booking?.user},{$inc:{wallet:-booking?.walletAmountUsed},$push:{walletHistory:{
-            //     transactionType: 'Booking Cancellation',
-            //     method:'Debit',
-            //     amount: booking.walletAmountUsed,
-            //     date: Date.now()
-            // }}})
+            const booking = bookingDetails?.bookings[0] as any
+            const walletUpdate = await UserModel.updateOne({_id:booking?.user},{$inc:{wallet:booking?.totalAmount-100},$push:{walletHistory:{
+                transactionType: 'Booking Cancellation',
+                method:'Credit',
+                amount: booking?.totalAmount-100,
+                date: Date.now()
+            }}})
 
             return bookingStatus
         } catch (error) {
@@ -205,13 +206,14 @@ class bookingRepository implements BookingRepository {
                 { new: true }
             );
 
-            // const booking = bookingStatus?.bookings[0]
-            // const walletUpdate = await UserModel.updateOne({_id:booking?.user},{$inc:{wallet:-booking?.walletAmountUsed},$push:{walletHistory:{
-            //     transactionType: 'Booking Cancellation',
-            //     method:'Debit',
-            //     amount: booking.walletAmountUsed,
-            //     date: Date.now()
-            // }}})
+            const booking = bookingStatus?.bookings[0] as any
+            console.log(booking)
+            const walletUpdate = await UserModel.updateOne({_id:booking?.user},{$inc:{wallet:booking?.totalAmount},$push:{walletHistory:{
+                transactionType: 'Booking Cancellation By Admin',
+                method:'Credit',
+                amount: booking.totalAmount,
+                date: Date.now()
+            }}})
             
             return bookingStatus
         } catch (error) {
