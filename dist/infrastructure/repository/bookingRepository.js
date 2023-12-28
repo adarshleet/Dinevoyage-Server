@@ -127,7 +127,7 @@ class bookingRepository {
     userBookings(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const bookings = yield bookingsModel_1.default.find({ 'bookings.user': userId }).populate('restaurantId');
+                const bookings = yield bookingsModel_1.default.find({ 'bookings.user': userId, 'restaurantId': { $ne: null } }).populate('restaurantId');
                 return bookings;
             }
             catch (error) {
@@ -145,14 +145,14 @@ class bookingRepository {
                 }, {
                     $set: { 'bookings.$.orderStatus': 3, 'bookings.$.cancelReason': reason }
                 }, { new: true });
-                const bookingDetails = yield bookingsModel_1.default.findOne({ 'booking._id': bookingId });
-                // const booking = bookingDetails?.bookings[0]
-                // const walletUpdate = await UserModel.updateOne({_id:booking?.user},{$inc:{wallet:-booking?.walletAmountUsed},$push:{walletHistory:{
-                //     transactionType: 'Booking Cancellation',
-                //     method:'Debit',
-                //     amount: booking.walletAmountUsed,
-                //     date: Date.now()
-                // }}})
+                const bookingDetails = yield bookingsModel_1.default.findOne({ 'bookings._id': bookingId }, { 'bookings.$': 1 });
+                const booking = bookingDetails === null || bookingDetails === void 0 ? void 0 : bookingDetails.bookings[0];
+                const walletUpdate = yield userModel_1.default.updateOne({ _id: booking === null || booking === void 0 ? void 0 : booking.user }, { $inc: { wallet: (booking === null || booking === void 0 ? void 0 : booking.totalAmount) - 100 }, $push: { walletHistory: {
+                            transactionType: 'Booking Cancellation',
+                            method: 'Credit',
+                            amount: (booking === null || booking === void 0 ? void 0 : booking.totalAmount) - 100,
+                            date: Date.now()
+                        } } });
                 return bookingStatus;
             }
             catch (error) {
@@ -191,13 +191,14 @@ class bookingRepository {
                 }, {
                     $set: { 'bookings.$.orderStatus': 2, 'bookings.$.cancelReason': reason }
                 }, { new: true });
-                // const booking = bookingStatus?.bookings[0]
-                // const walletUpdate = await UserModel.updateOne({_id:booking?.user},{$inc:{wallet:-booking?.walletAmountUsed},$push:{walletHistory:{
-                //     transactionType: 'Booking Cancellation',
-                //     method:'Debit',
-                //     amount: booking.walletAmountUsed,
-                //     date: Date.now()
-                // }}})
+                const booking = bookingStatus === null || bookingStatus === void 0 ? void 0 : bookingStatus.bookings[0];
+                console.log(booking);
+                const walletUpdate = yield userModel_1.default.updateOne({ _id: booking === null || booking === void 0 ? void 0 : booking.user }, { $inc: { wallet: booking === null || booking === void 0 ? void 0 : booking.totalAmount }, $push: { walletHistory: {
+                            transactionType: 'Booking Cancellation By Admin',
+                            method: 'Credit',
+                            amount: booking.totalAmount,
+                            date: Date.now()
+                        } } });
                 return bookingStatus;
             }
             catch (error) {
