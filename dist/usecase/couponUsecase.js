@@ -30,6 +30,40 @@ class CouponUsecase {
             }
         });
     }
+    editCoupon(coupon) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const couponEdit = yield this.couponRepository.editCoupon(coupon);
+                return {
+                    status: 200,
+                    data: couponEdit
+                };
+            }
+            catch (error) {
+                return {
+                    status: 400,
+                    data: error
+                };
+            }
+        });
+    }
+    couponStatusChange(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const statusChange = yield this.couponRepository.couponStatusChange(id);
+                return {
+                    status: 200,
+                    data: statusChange
+                };
+            }
+            catch (error) {
+                return {
+                    status: 400,
+                    data: error
+                };
+            }
+        });
+    }
     getAllCoupons(page) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

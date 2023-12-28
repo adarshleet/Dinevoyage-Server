@@ -29,6 +29,30 @@ class CouponController {
             }
         });
     }
+    editCoupon(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const coupon = req.body;
+                const couponEdit = yield this.CouponUsecase.editCoupon(coupon);
+                res.status(200).json(couponEdit);
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    couponStatusChange(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const id = req.query.couponId;
+                const statusChange = yield this.CouponUsecase.couponStatusChange(id);
+                res.status(200).json(statusChange);
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
     allCoupons(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

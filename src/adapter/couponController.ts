@@ -20,6 +20,28 @@ class CouponController{
     }
 
 
+    async editCoupon(req:Request,res:Response){
+        try {
+            const coupon = req.body
+            const couponEdit =  await this.CouponUsecase.editCoupon(coupon)
+            res.status(200).json(couponEdit)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    async couponStatusChange(req:Request,res:Response){
+        try {
+            const id = req.query.couponId as string
+            const statusChange = await this.CouponUsecase.couponStatusChange(id)
+            res.status(200).json(statusChange)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
     async allCoupons(req:Request,res:Response){
         try {
             const page = parseInt(req.query.page as string)

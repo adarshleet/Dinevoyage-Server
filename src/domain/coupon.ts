@@ -6,7 +6,7 @@ interface Coupon{
     minimumPurchase : number,
     expiryDate : string,
     usedUsers : Array<string> | null,
-    isListed: boolean | null
+    isListed: boolean
 }
 
 export default Coupon
