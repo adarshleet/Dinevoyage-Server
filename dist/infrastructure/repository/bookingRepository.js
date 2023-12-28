@@ -47,7 +47,9 @@ class bookingRepository {
                                 date: Date.now()
                             } } });
                 }
+                console.log('herererererererere', bookingDetails);
                 const bookingConfirm = yield bookingsModel_1.default.updateOne({ restaurantId }, { $push: { bookings: bookingDetails } }, { upsert: true });
+                console.log(bookingConfirm);
                 return bookingConfirm;
             }
             catch (error) {

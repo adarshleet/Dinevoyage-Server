@@ -30,6 +30,7 @@ class BookingController{
     async confirmBooking(req:Request,res:Response){
         try {
             const bookingDetails = req.app.locals as Booking
+            console.log('dfdfd',bookingDetails)
             if(req.body.data.object.status == 'complete'){
         
                 const bookingConfirm = await this.bookingUsecase.confirmBooking(bookingDetails)
@@ -67,8 +68,10 @@ class BookingController{
         try {
             const guestData = req.body
             
+            req.app.locals.guestData = guestData
+
             await this.session.sessionSetup(req,guestData);
-            const sessionDetails = req.session
+            const sessionDetails = req.app.locals.guestData
 
             const seatCounts = await this.bookingUsecase.tableCounts(guestData.restaurantId,guestData.date,guestData.time)
             res.status(200).json({seatCounts,sessionDetails})
@@ -95,7 +98,9 @@ class BookingController{
             
             req.app.locals = bookingDetails
             await this.session.sessionSetup(req,bookingDetails);
-            const sessionDetails = req.session
+            // const sessionDetails = req.session
+            const sessionDetails = req.app.locals.guestData
+
             const paymentDetails = await this.bookingUsecase.makePayment(bookingDetails)
             res.status(200).json(paymentDetails)
         } catch (error) {

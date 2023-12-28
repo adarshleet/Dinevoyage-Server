@@ -100,7 +100,8 @@ class KitchenController{
             }
             const kitchenAllItems = await this.KitchenUsecase.allKitchenItems(restaurantId,veg)
             // session data of guests
-            const sessionData = req.session
+            // const sessionData = req.session
+            const sessionData = req.app.locals.guestData
             res.status(200).json({kitchenAllItems,sessionData})
         } catch (error) {
             console.log(error)
