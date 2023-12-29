@@ -22,6 +22,7 @@ class TwilioService implements Itwilio {
             //         channel: "sms",
             //     })
             // }
+
             return true
         } catch (error) {
             console.log(error)
@@ -37,6 +38,7 @@ class TwilioService implements Itwilio {
             //     .verificationChecks.create({ to: `+91${mobile}`, code: otp });
             //     return var_check.status === "approved";
             // }
+            
             return true
         } catch (error) {
             console.log(error)
