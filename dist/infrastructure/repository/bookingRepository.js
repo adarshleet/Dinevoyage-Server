@@ -146,7 +146,7 @@ class bookingRepository {
     userBookings(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const bookings = yield bookingsModel_1.default.find({ 'bookings.user': userId, 'restaurantId': { $ne: null } }).populate('restaurantId');
+                const bookings = yield bookingsModel_1.default.find({ 'bookings.user': userId }, { 'restaurantId': { $ne: null } }).populate('restaurantId');
                 return bookings;
             }
             catch (error) {
