@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const otpless_node_js_auth_sdk_1 = require("otpless-node-js-auth-sdk");
+// import {sendOTP} from 'otpless-node-js-auth-sdk'
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 class TwilioService {
@@ -26,8 +26,6 @@ class TwilioService {
                 //         channel: "sms",
                 //     })
                 // }
-                const response = yield (0, otpless_node_js_auth_sdk_1.sendOTP)(`+91${mobile}`, null, null, null, null, null, null, process.env.OTP_CLIENT_ID, process.env.OTP_CLIENT_SECRET);
-                return response;
                 return true;
             }
             catch (error) {

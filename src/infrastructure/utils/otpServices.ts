@@ -1,6 +1,5 @@
-// @ts-ignore
 import IOtpServices from '../../usecase/interface/twilioInterface'
-import {sendOTP} from 'otpless-node-js-auth-sdk'
+// import {sendOTP} from 'otpless-node-js-auth-sdk'
 
 import dotenv from 'dotenv'
 dotenv.config()
