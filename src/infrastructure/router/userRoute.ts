@@ -10,7 +10,7 @@ import { protect } from '../middlewares/userAuth'
 import userController from '../../adapter/userController'
 import userRepository from '../repository/userRepository'
 import Userusecase from '../../usecase/userUsecase'
-import TwilioService from '../utils/twilio'
+import TwilioService from '../utils/otpServices'
 import Encrypt from '../utils/hashPassword'
 import JwtCreate from '../utils/jwtCreate'
 

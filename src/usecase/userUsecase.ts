@@ -1,6 +1,6 @@
 import User from "../domain/user"
 import userRepository from "../infrastructure/repository/userRepository"
-import TwilioService from './../infrastructure/utils/twilio'
+import TwilioService from '../infrastructure/utils/otpServices'
 import Encrypt from "../infrastructure/utils/hashPassword"
 import JwtCreate from "../infrastructure/utils/jwtCreate"
 

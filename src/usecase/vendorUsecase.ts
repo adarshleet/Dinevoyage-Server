@@ -1,6 +1,6 @@
 import Vendor from "../domain/vendor";
 import VendorRepository from "./interface/vendoRepository";
-import TwilioService from './../infrastructure/utils/twilio'
+import TwilioService from '../infrastructure/utils/otpServices'
 import Encrypt from "../infrastructure/utils/hashPassword"
 import JwtCreate from "../infrastructure/utils/jwtCreate"
 

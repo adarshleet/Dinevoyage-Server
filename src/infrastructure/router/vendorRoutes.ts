@@ -7,7 +7,7 @@ import { protect } from '../middlewares/vendorAuth'
 import vendorController from '../../adapter/vendorController'
 import vendoRepository from '../repository/vendorRepository'
 import Vendorusecase from '../../usecase/vendorUsecase'
-import TwilioService from '../utils/twilio'
+import TwilioService from '../utils/otpServices'
 import Encrypt from '../utils/hashPassword'
 import JwtCreate from '../utils/jwtCreate'
 

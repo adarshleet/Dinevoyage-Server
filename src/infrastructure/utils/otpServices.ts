@@ -1,17 +1,13 @@
-import { Twilio } from 'twilio'
-import Itwilio from '../../usecase/interface/twilioInterface'
+// @ts-ignore
+import IOtpServices from '../../usecase/interface/twilioInterface'
+import {sendOTP} from 'otpless-node-js-auth-sdk'
 
 import dotenv from 'dotenv'
 dotenv.config()
 
-const serviceID = process.env.SERVICE_SID
-const accountSID = process.env.ACC_SID
-const authToken = process.env.AUTH_TOKEN
-
-const client = new Twilio(accountSID, authToken);
 
 
-class TwilioService implements Itwilio {
+class TwilioService implements IOtpServices {
 
     async sendTwilioOtp(mobile: string): Promise<boolean> {
         try {
