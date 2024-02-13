@@ -11,6 +11,8 @@ class TwilioService implements IOtpServices {
 
     async sendTwilioOtp(mobile: string): Promise<boolean> {
         try {
+            console.log(process.env.OTP_CLIENT_ID, 
+                process.env.OTP_CLIENT_SECRET)
             const response =await sendOTP(`91${mobile}`, null, 'SMS', undefined, undefined, 60, 6, process.env.OTP_CLIENT_ID, process.env.OTP_CLIENT_SECRET)
             return response.orderId
         } catch (error) {
