@@ -12,21 +12,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// import {sendOTP} from 'otpless-node-js-auth-sdk'
+// @ts-ignore
+const otpless_node_js_auth_sdk_1 = require("otpless-node-js-auth-sdk");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 class TwilioService {
     sendTwilioOtp(mobile) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                // if(serviceID){
-                //     await client.verify.v2
-                //     .services(serviceID).verifications.create({
-                //         to: `+91${mobile}`,
-                //         channel: "sms",
-                //     })
-                // }
-                return true;
+                const response = yield (0, otpless_node_js_auth_sdk_1.sendOTP)(`91${mobile}`, null, 'SMS', undefined, undefined, 60, 6, process.env.OTP_CLIENT_ID, process.env.OTP_CLIENT_SECRET);
+                return response.orderId;
             }
             catch (error) {
                 console.log(error);
@@ -34,15 +29,12 @@ class TwilioService {
             }
         });
     }
-    verifyOtp(mobile, otp) {
+    verifyOtp(mobile, otp, orderId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                // if(serviceID){
-                //     const var_check = await client.verify.v2
-                //     .services(serviceID)
-                //     .verificationChecks.create({ to: `+91${mobile}`, code: otp });
-                //     return var_check.status === "approved";
-                // }
+                const response = yield (0, otpless_node_js_auth_sdk_1.verifyOTP)(null, `+91${mobile}`, orderId, otp, process.env.OTP_CLIENT_ID, process.env.OTP_CLIENT_SECRET);
+                console.log(response);
+                return response.isOTPVerified;
                 return true;
             }
             catch (error) {

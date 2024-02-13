@@ -1,1 +1,0 @@
-declare module 'otpless-node-js-auth-sdk';

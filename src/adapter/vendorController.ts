@@ -45,7 +45,8 @@ class vendorController {
             const vendor: Vendor = req.app.locals as Vendor
             const otp = req.body.otp
             // console.log(otp, vendor)
-            const verifyOtp = await this.vendorUsecase.verifyOtp(vendor.mobile, otp)
+            const orderId = req.app.locals.orderId
+            const verifyOtp = await this.vendorUsecase.verifyOtp(vendor.mobile, otp,orderId)
             // console.log(verifyOtp)
             if (verifyOtp.data) {
                 const vendorSave = await this.vendorUsecase.saveVendor(vendor)
@@ -150,7 +151,8 @@ class vendorController {
                 vendorId = decoded.id
             }
 
-            const changeMobileStatus = await this.vendorUsecase.changeMobile(vendorId,mobile,otp)
+            const orderId = req.app.locals.orderId
+            const changeMobileStatus = await this.vendorUsecase.changeMobile(vendorId,mobile,otp,orderId)
             res.status(200).json(changeMobileStatus)
 
 

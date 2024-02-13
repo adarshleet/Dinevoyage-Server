@@ -70,9 +70,9 @@ class Vendorusecase {
 
 
     //verifying mobile and otp
-    async verifyOtp(mobile: string, otp: string) {
+    async verifyOtp(mobile: string, otp: string,orderId:string) {
         try {
-            const verifyOtp = await this.twilioService.verifyOtp(mobile, otp)
+            const verifyOtp = await this.twilioService.verifyOtp(mobile, otp,orderId)
             return {
                 status: 200,
                 data: verifyOtp
@@ -196,9 +196,9 @@ class Vendorusecase {
 
 
     //verify otp and change mobile
-    async changeMobile(vendorId:string,mobile:string,otp:string){
+    async changeMobile(vendorId:string,mobile:string,otp:string,orderId:string){
         try {
-            const verifyOtp = await this.twilioService.verifyOtp(mobile, otp)
+            const verifyOtp = await this.twilioService.verifyOtp(mobile, otp,orderId)
             if(verifyOtp){
                 const changeMobileStatus = await this.vendorRepository.changeMobile(vendorId,mobile)
                 return{

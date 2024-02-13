@@ -56,7 +56,8 @@ class vendorController {
                 const vendor = req.app.locals;
                 const otp = req.body.otp;
                 // console.log(otp, vendor)
-                const verifyOtp = yield this.vendorUsecase.verifyOtp(vendor.mobile, otp);
+                const orderId = req.app.locals.orderId;
+                const verifyOtp = yield this.vendorUsecase.verifyOtp(vendor.mobile, otp, orderId);
                 // console.log(verifyOtp)
                 if (verifyOtp.data) {
                     const vendorSave = yield this.vendorUsecase.saveVendor(vendor);
@@ -157,7 +158,8 @@ class vendorController {
                     const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_KEY);
                     vendorId = decoded.id;
                 }
-                const changeMobileStatus = yield this.vendorUsecase.changeMobile(vendorId, mobile, otp);
+                const orderId = req.app.locals.orderId;
+                const changeMobileStatus = yield this.vendorUsecase.changeMobile(vendorId, mobile, otp, orderId);
                 res.status(200).json(changeMobileStatus);
             }
             catch (error) {

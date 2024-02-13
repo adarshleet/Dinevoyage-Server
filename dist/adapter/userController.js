@@ -37,6 +37,7 @@ class userController {
                     if (!userFound.data) {
                         req.app.locals = user;
                         const verify = yield this.userUsecase.verifyMobile(user.mobile);
+                        req.app.locals.orderId = verify.data;
                         res.status(200).json(verify);
                     }
                     else {
@@ -54,7 +55,8 @@ class userController {
             try {
                 const user = req.app.locals;
                 const otp = req.body.otp;
-                const verifyOtp = yield this.userUsecase.verifyOtp(user.mobile, otp);
+                const orderId = req.app.locals.orderId;
+                const verifyOtp = yield this.userUsecase.verifyOtp(user.mobile, otp, orderId);
                 if (verifyOtp.data) {
                     const userSave = yield this.userUsecase.saveUser(user);
                 }
@@ -165,7 +167,8 @@ class userController {
                     const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_KEY);
                     userId = decoded.id;
                 }
-                const verifyOtp = yield this.userUsecase.verifyOtp(mobile, otp);
+                const orderId = req.app.locals.orderId;
+                const verifyOtp = yield this.userUsecase.verifyOtp(mobile, otp, orderId);
                 if (verifyOtp.data) {
                     console.log(mobile);
                     const userSave = yield this.userUsecase.changeMobile(userId, mobile);
@@ -222,7 +225,8 @@ class userController {
             try {
                 const otp = req.body.otp;
                 const mobile = req.app.locals;
-                const mobileVerify = yield this.userUsecase.verifyOtp(mobile, otp);
+                const orderId = req.app.locals.orderId;
+                const mobileVerify = yield this.userUsecase.verifyOtp(mobile, otp, orderId);
                 res.status(200).json(mobileVerify);
             }
             catch (error) {

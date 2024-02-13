@@ -69,10 +69,10 @@ class Vendorusecase {
         });
     }
     //verifying mobile and otp
-    verifyOtp(mobile, otp) {
+    verifyOtp(mobile, otp, orderId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const verifyOtp = yield this.twilioService.verifyOtp(mobile, otp);
+                const verifyOtp = yield this.twilioService.verifyOtp(mobile, otp, orderId);
                 return {
                     status: 200,
                     data: verifyOtp
@@ -202,10 +202,10 @@ class Vendorusecase {
         });
     }
     //verify otp and change mobile
-    changeMobile(vendorId, mobile, otp) {
+    changeMobile(vendorId, mobile, otp, orderId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const verifyOtp = yield this.twilioService.verifyOtp(mobile, otp);
+                const verifyOtp = yield this.twilioService.verifyOtp(mobile, otp, orderId);
                 if (verifyOtp) {
                     const changeMobileStatus = yield this.vendorRepository.changeMobile(vendorId, mobile);
                     return {

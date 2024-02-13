@@ -27,6 +27,7 @@ class userController {
                 if (!userFound.data) {
                     req.app.locals = user
                     const verify = await this.userUsecase.verifyMobile(user.mobile)
+                    req.app.locals.orderId = verify.data
                     res.status(200).json(verify)
                 } else {
                     res.status(200).json({ data: false, message: 'Mobile number already in use' })
@@ -41,7 +42,8 @@ class userController {
         try {
             const user: User = req.app.locals as User
             const otp = req.body.otp
-            const verifyOtp = await this.userUsecase.verifyOtp(user.mobile, otp)
+            const orderId = req.app.locals.orderId
+            const verifyOtp = await this.userUsecase.verifyOtp(user.mobile, otp,orderId)
             if (verifyOtp.data) {
                 const userSave = await this.userUsecase.saveUser(user)
             }
@@ -152,7 +154,8 @@ class userController {
                 userId = decoded.id
             }
 
-            const verifyOtp = await this.userUsecase.verifyOtp(mobile, otp)
+            const orderId = req.app.locals.orderId
+            const verifyOtp = await this.userUsecase.verifyOtp(mobile, otp,orderId)
             if (verifyOtp.data) {
                 console.log(mobile)
                 const userSave = await this.userUsecase.changeMobile(userId,mobile)
@@ -213,7 +216,8 @@ class userController {
         try {
             const otp = req.body.otp
             const mobile = req.app.locals as string | any
-            const mobileVerify = await this.userUsecase.verifyOtp(mobile,otp)
+            const orderId = req.app.locals.orderId
+            const mobileVerify = await this.userUsecase.verifyOtp(mobile,otp,orderId)
             res.status(200).json(mobileVerify)
         } catch (error) {
             console.log(error)

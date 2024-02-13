@@ -60,9 +60,9 @@ class Userusecase {
 
 
     //verifying mobile and otp
-    async verifyOtp(mobile: string, otp: string) {
+    async verifyOtp(mobile: string, otp: string,orderId:string) {
         try {
-            const verifyOtp = await this.twilioService.verifyOtp(mobile, otp)
+            const verifyOtp = await this.twilioService.verifyOtp(mobile, otp,orderId)
             return {
                 status: 200,
                 data: verifyOtp
