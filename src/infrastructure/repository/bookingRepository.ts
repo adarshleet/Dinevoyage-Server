@@ -154,8 +154,27 @@ class bookingRepository implements BookingRepository {
     //user bookings
     async userBookings(userId: string):Promise<Array<Booking> | null> {
         try {
-            const bookings:any = await bookingModel.find({'bookings.user': userId}, {'restaurantId': { $ne: null }} ).populate('restaurantId') as Array<Booking> | null
-            return bookings
+            // console.log('its here')
+            // const bookings:any = await bookingModel.find({'bookings.user': userId}, {restaurantId: { $exists: true, $ne: null } } ).populate('restaurantId') as Array<Booking> | null
+            // return bookings
+            const bookings: Array<Booking> | null = await bookingModel.aggregate([
+                {
+                  $match: {
+                    'bookings.user': new Types.ObjectId(userId),
+                    restaurantId: { $ne: null }
+                  }
+                },
+                {
+                  $lookup: {
+                    from: 'restaurants', // Assuming the name of the collection is 'restaurants'
+                    localField: 'restaurantId',
+                    foreignField: '_id',
+                    as: 'restaurantId'
+                  }
+                }
+              ]);
+              console.log(bookings)
+              return bookings
         } catch (error) {
             console.log(error)
             return null

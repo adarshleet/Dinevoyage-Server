@@ -146,7 +146,26 @@ class bookingRepository {
     userBookings(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const bookings = yield bookingsModel_1.default.find({ 'bookings.user': userId }, { 'restaurantId': { $ne: null } }).populate('restaurantId');
+                // console.log('its here')
+                // const bookings:any = await bookingModel.find({'bookings.user': userId}, {restaurantId: { $exists: true, $ne: null } } ).populate('restaurantId') as Array<Booking> | null
+                // return bookings
+                const bookings = yield bookingsModel_1.default.aggregate([
+                    {
+                        $match: {
+                            'bookings.user': new mongoose_1.Types.ObjectId(userId),
+                            restaurantId: { $ne: null }
+                        }
+                    },
+                    {
+                        $lookup: {
+                            from: 'restaurants', // Assuming the name of the collection is 'restaurants'
+                            localField: 'restaurantId',
+                            foreignField: '_id',
+                            as: 'restaurantId'
+                        }
+                    }
+                ]);
+                console.log(bookings);
                 return bookings;
             }
             catch (error) {

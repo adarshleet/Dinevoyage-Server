@@ -36,13 +36,13 @@ const cuisineRepo = new cuisineRepository()
 const cuisineusecase = new CuisineUseCase(cuisineRepo)
 const cuisineControll = new cuisineController(cuisineusecase)
 
-router.get('/api/admin/allFacilities',(protect),(req,res)=>cuisineControll.allFacilities(req,res))
+router.get('/api/admin/allFacilities',(req,res)=>cuisineControll.allFacilities(req,res))
 router.post('/api/admin/addFacility',(protect),(req,res)=>cuisineControll.addFacility(req,res))
 router.post('/api/admin/editFacility',(protect),(req,res)=>cuisineControll.editFacility(req,res))
 router.post('/api/admin/deleteFacility',(protect),(req,res)=>cuisineControll.deleteFacility(req,res))
 
 router.post('/api/admin/addCuisine',(protect),(req,res)=>cuisineControll.addCuisine(req,res))
-router.get('/api/admin/allCuisines',(protect),(req,res)=>cuisineControll.allCuisines(req,res))
+router.get('/api/admin/allCuisines',(req,res)=>cuisineControll.allCuisines(req,res))
 router.post('/api/admin/editCuisine',(protect),(req,res)=>cuisineControll.editCuisine(req,res))
 router.post('/api/admin/deleteCuisine',(protect),(req,res)=>cuisineControll.deleteCuisine(req,res))
 
@@ -82,7 +82,7 @@ const bannerController = new BannerController(bannerUsecase)
 
 
 router.post('/api/admin/addBanner',(protect),multerMid.single('image'),(req,res)=>bannerController.addBanner(req,res))
-router.get('/api/admin/getBanners',(protect),(req,res)=>bannerController.getBanners(req,res))
+router.get('/api/admin/getBanners',(req,res)=>bannerController.getBanners(req,res))
 router.put('/api/admin/deleteBanner',(protect),(req,res)=>bannerController.deleteBanner(req,res))
 
 

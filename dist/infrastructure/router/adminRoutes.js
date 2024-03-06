@@ -31,12 +31,12 @@ const cuisineUsecase_1 = __importDefault(require("../../usecase/cuisineUsecase")
 const cuisineRepo = new cuisineRepository_1.default();
 const cuisineusecase = new cuisineUsecase_1.default(cuisineRepo);
 const cuisineControll = new cuisineController_1.default(cuisineusecase);
-router.get('/api/admin/allFacilities', (adminAuth_1.protect), (req, res) => cuisineControll.allFacilities(req, res));
+router.get('/api/admin/allFacilities', (req, res) => cuisineControll.allFacilities(req, res));
 router.post('/api/admin/addFacility', (adminAuth_1.protect), (req, res) => cuisineControll.addFacility(req, res));
 router.post('/api/admin/editFacility', (adminAuth_1.protect), (req, res) => cuisineControll.editFacility(req, res));
 router.post('/api/admin/deleteFacility', (adminAuth_1.protect), (req, res) => cuisineControll.deleteFacility(req, res));
 router.post('/api/admin/addCuisine', (adminAuth_1.protect), (req, res) => cuisineControll.addCuisine(req, res));
-router.get('/api/admin/allCuisines', (adminAuth_1.protect), (req, res) => cuisineControll.allCuisines(req, res));
+router.get('/api/admin/allCuisines', (req, res) => cuisineControll.allCuisines(req, res));
 router.post('/api/admin/editCuisine', (adminAuth_1.protect), (req, res) => cuisineControll.editCuisine(req, res));
 router.post('/api/admin/deleteCuisine', (adminAuth_1.protect), (req, res) => cuisineControll.deleteCuisine(req, res));
 //-------------------------------------------------------------------------------------------//
@@ -61,7 +61,7 @@ const BannerRepository = new bannerRepository_1.default();
 const bannerUsecase = new bannerUsecase_1.default(BannerRepository, cloudinary);
 const bannerController = new bannerrController_1.default(bannerUsecase);
 router.post('/api/admin/addBanner', (adminAuth_1.protect), multerMiddleware_1.multerMid.single('image'), (req, res) => bannerController.addBanner(req, res));
-router.get('/api/admin/getBanners', (adminAuth_1.protect), (req, res) => bannerController.getBanners(req, res));
+router.get('/api/admin/getBanners', (req, res) => bannerController.getBanners(req, res));
 router.put('/api/admin/deleteBanner', (adminAuth_1.protect), (req, res) => bannerController.deleteBanner(req, res));
 //---------------------------------------------------------------------------------------------------------------------//
 //location management by admin

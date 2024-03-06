@@ -20,6 +20,7 @@ class TwilioService {
     sendTwilioOtp(mobile) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                console.log(process.env.OTP_CLIENT_ID, process.env.OTP_CLIENT_SECRET);
                 const response = yield (0, otpless_node_js_auth_sdk_1.sendOTP)(`91${mobile}`, null, 'SMS', undefined, undefined, 60, 6, process.env.OTP_CLIENT_ID, process.env.OTP_CLIENT_SECRET);
                 return response.orderId;
             }
